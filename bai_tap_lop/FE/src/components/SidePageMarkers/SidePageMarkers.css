@@ -21,7 +21,6 @@
   height: 88px;
   padding: 10px 12px;
   background-color: var(--marker-bg);
-  background-image: url("../../assets/images/natural-paper.png");
   border: none;
   cursor: pointer;
   font-size: 15px;
