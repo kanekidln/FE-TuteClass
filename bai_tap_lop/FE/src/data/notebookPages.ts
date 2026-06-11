@@ -1,1 +1,1 @@
-export * from "../features/notebook";
+export * from "../features/student/notebook";

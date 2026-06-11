@@ -21,3 +21,224 @@
 .app-header:hover {
   transform: translate(-50%, 8px);
 }
+
+.app-header__surface {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 72px;
+  padding: 12px 26px;
+  border: 1px solid rgba(255, 255, 255, .65);
+  border-radius: 999px;
+  color: #4b5563;
+  background: rgba(255, 255, 255, .92);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, .14);
+}
+
+.app-header__left,
+.app-header__right,
+.app-header__nav,
+.app-header__profile,
+.workspace-switch {
+  display: flex;
+  align-items: center;
+}
+
+.app-header__left {
+  gap: 30px;
+  min-width: 0;
+}
+
+.app-header__right {
+  gap: 14px;
+}
+
+.app-header__brand {
+  color: var(--tute-orange);
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -.04em;
+  white-space: nowrap;
+}
+
+.app-header__brand span {
+  color: #1f2937;
+}
+
+.app-header__nav {
+  gap: 18px;
+  min-width: 0;
+}
+
+.app-header__nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #5b6475;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+
+.app-header__nav-link:hover,
+.app-header__nav-link.is-active {
+  color: var(--tute-orange);
+}
+
+.app-header__nav-link.is-active {
+  padding-bottom: 2px;
+  border-bottom: 2px solid var(--tute-orange);
+}
+
+.app-header__nav-icon,
+.app-header__notification-icon,
+.app-header__profile-caret,
+.app-header__logout-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.workspace-switch {
+  padding: 4px;
+  border: 1px solid rgba(77, 150, 255, .18);
+  border-radius: 999px;
+  background: #f5f8ff;
+}
+
+.workspace-switch__button {
+  min-width: 96px;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  color: #516072;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 800;
+  transition: background-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+
+.workspace-switch__button.is-active {
+  color: #fff;
+  background: linear-gradient(135deg, #4d96ff, #346dff);
+  box-shadow: 0 10px 20px rgba(52, 109, 255, .24);
+}
+
+.app-header__notification {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #dbe2eb;
+  border-radius: 999px;
+  color: #6b7280;
+  background: #f9fafb;
+}
+
+.app-header__notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  color: #fff;
+  background: #ef4444;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.app-header__profile {
+  gap: 10px;
+  padding: 6px 10px 6px 8px;
+  border: 1px solid #dbe2eb;
+  border-radius: 999px;
+  background: #f9fafb;
+}
+
+.app-header__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.app-header__profile-name {
+  color: #111827;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.app-header__logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  color: #4338ca;
+  background: #e0e7ff;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+@media (max-width: 1160px) {
+  .app-header__surface {
+    padding-inline: 18px;
+  }
+
+  .app-header__nav {
+    display: none;
+  }
+}
+
+@media (max-width: 880px) {
+  .app-header__surface {
+    min-height: auto;
+    display: grid;
+    gap: 14px;
+    border-radius: 28px;
+    padding: 14px 16px;
+  }
+
+  .app-header__left,
+  .app-header__right {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-header {
+    width: calc(100% - 1rem);
+  }
+
+  .workspace-switch {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .workspace-switch__button {
+    flex: 1 1 0;
+  }
+
+  .app-header__right {
+    gap: 10px;
+  }
+
+  .app-header__profile {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}
