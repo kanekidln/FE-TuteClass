@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tuteclass - Lịch học lớp Toán 9A</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "tute-orange": "#FF6B35",
+              "tute-blue": "#4D96FF",
+              "tute-paper": "#FFFDF7",
+              "tute-gray": "#F3F4F6"
+            },
+            fontFamily: {
+              handwriting: ['"Patrick Hand"', "cursive"],
+              fancy: ['"Dancing Script"', "cursive"],
+              sans: ["Nunito", "sans-serif"]
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="font-sans text-gray-800 px-4">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

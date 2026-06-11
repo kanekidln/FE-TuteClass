@@ -1,0 +1,1 @@
+export { ClassTabs } from "./ClassTabs";

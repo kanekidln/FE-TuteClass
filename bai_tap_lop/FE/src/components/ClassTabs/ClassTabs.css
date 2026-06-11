@@ -1,0 +1,125 @@
+.class-fold-tab-wrap {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  overflow: hidden;
+}
+
+.class-fold-tab-wrap.current-tab-wrap {
+  z-index: 12;
+}
+
+.notebook-page-shell.is-flipping .class-fold-tab-wrap,
+.notebook-page-shell.is-flipping .class-fold-tab-wrap.current-tab-wrap,
+.notebook-page-shell.is-flipping .class-tab-nav {
+  z-index: 1;
+}
+
+.notebook-page-shell.is-flipping .class-fold-tab::before {
+  opacity: 0;
+}
+
+.class-tab-nav {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  min-width: 72px;
+  min-height: 68px;
+  background-color: #2563eb;
+  background-image: url("../../assets/images/natural-paper.png");
+  border: none;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  color: white;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), inset 0 -1px 0 rgba(0,0,0,.08);
+  transition: background-color .15s ease, transform .08s ease;
+}
+
+.class-tab-nav:hover {
+  background-color: #1d4ed8;
+  transform: translateY(1px);
+}
+
+.class-tab-nav svg {
+  width: 26px;
+  height: 26px;
+}
+
+.class-fold-tab-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.class-tab-list {
+  display: grid;
+  grid-template-columns: 72px repeat(4, minmax(0, 1fr)) 72px;
+  gap: 8px;
+  align-items: start;
+  padding: 0 16px;
+}
+
+.class-fold-tab {
+  --fold: 16px;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  background-image: url("../../assets/images/natural-paper.png");
+  clip-path: polygon(0 0, calc(100% - var(--fold)) 0, 100% var(--fold), 100% 100%, 0 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), inset 0 -1px 0 rgba(0,0,0,.08);
+  transition: filter .15s ease, transform .08s ease;
+}
+
+.class-fold-tab::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--fold);
+  height: var(--fold);
+  background: linear-gradient(135deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.25) 45%, rgba(0,0,0,.18) 100%);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  border-bottom-left-radius: 5px;
+  pointer-events: none;
+}
+
+.class-fold-tab:hover {
+  filter: brightness(.97);
+  transform: translateY(1px);
+}
+
+.current-tab-wrap .class-fold-tab {
+  transform: translateY(0);
+}
+
+.class-fold-tab.current-class {
+  background-color: #60a5fa;
+  background-image: url("../../assets/images/natural-paper.png");
+  border-color: #2563eb;
+}
+
+.class-fold-tab.english-class {
+  background-color: #eab308;
+}
+
+.class-fold-tab.physics-class {
+  background-color: #f87171;
+}
+
+.class-fold-tab.literature-class {
+  background-color: #a78bfa;
+}

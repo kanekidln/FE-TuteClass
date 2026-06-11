@@ -1,0 +1,27 @@
+.notebook-spiral {
+  position: absolute;
+  left: var(--spiral-left);
+  top: 36px;
+  bottom: 36px;
+  width: var(--spiral-column-width);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+  transition: opacity .01s ease;
+}
+
+.notebook-container.spiral-hidden .notebook-spiral {
+  opacity: 0;
+  transition-duration: .14s;
+}
+
+.spiral-ring {
+  width: var(--spiral-column-width);
+  height: 38px;
+  background-image: url("../../assets/images/Notebook-Spiral-Binding-Single.png");
+  background-size: var(--spiral-image-width) auto;
+  background-repeat: no-repeat;
+  background-position: center;
+}

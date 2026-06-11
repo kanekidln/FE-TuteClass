@@ -1,0 +1,83 @@
+.side-page-markers {
+  position: absolute;
+  top: 0;
+  right: -104px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8rem;
+  z-index: auto;
+}
+
+.page-marker {
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 120px;
+  height: 88px;
+  padding: 10px 12px;
+  background-color: var(--marker-bg);
+  background-image: url("../../assets/images/natural-paper.png");
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  transition: background-color .15s, transform .1s;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.page-marker svg,
+.page-marker span {
+  position: relative;
+  z-index: 1;
+}
+
+.page-marker svg {
+  flex: 0 0 auto;
+}
+
+.page-marker:hover {
+  background-color: var(--marker-hover);
+  transform: translateX(3px);
+  z-index: 4;
+}
+
+.page-marker.active {
+  transform: translateX(4px);
+  box-shadow: 0 12px 18px rgba(15, 23, 42, .16);
+  z-index: 14;
+}
+
+.page-marker.overview {
+  --marker-bg: #0d9488;
+  --marker-hover: #0f766e;
+}
+
+.page-marker.schedule {
+  --marker-bg: #2563eb;
+  --marker-hover: #1d4ed8;
+}
+
+.page-marker.assignments {
+  --marker-bg: #4f46e5;
+  --marker-hover: #4338ca;
+}
+
+.page-marker.resources {
+  --marker-bg: #0284c7;
+  --marker-hover: #0369a1;
+}
+
+.page-marker.discussion {
+  --marker-bg: #dc2626;
+  --marker-hover: #b91c1c;
+}

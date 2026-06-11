@@ -1,0 +1,34 @@
+.notebook-stage {
+  --side-marker-outset: 104px;
+  margin-left: auto;
+  margin-right: auto;
+  transform: none;
+  width: calc(100% - 64px);
+  min-width: 1300px;
+  max-width: 1380px;
+  left: calc(var(--side-marker-outset) / -2);
+}
+
+.notebook-container {
+  --spiral-left: -40px;
+  --spiral-column-width: 115px;
+  --spiral-image-width: 70px;
+  --spiral-gap: -4px;
+  --notebook-height: clamp(620px, calc(100vh - 170px), 668px);
+  position: relative;
+  overflow: visible;
+  min-height: var(--notebook-height);
+  height: var(--notebook-height);
+  padding-left: calc(var(--spiral-column-width) + var(--spiral-left) + var(--spiral-gap)) !important;
+  z-index: 10;
+  background-color: #fff;
+  background-image: linear-gradient(#e5e7eb 1px, transparent 1px);
+  background-size: 100% 24px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .2);
+}
+
+.paper-texture {
+  background-color: #fffcf0;
+  background-image: url("../assets/images/natural-paper.png");
+}
