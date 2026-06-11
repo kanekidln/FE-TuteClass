@@ -1,0 +1,55 @@
+.standard-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.standard-note-card {
+  border-radius: 0.75rem;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  padding: 1rem;
+}
+
+.standard-note-card.orange {
+  background-color: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.standard-note-card.indigo {
+  background-color: #fff7ed;
+  border-color: #fed7aa;
+}
+
+.standard-note-card.blue {
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.standard-note-card.green {
+  background-color: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.standard-note-card h3 {
+  margin: 0 0 12px;
+  color: #1e3a8a;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.standard-note-card p,
+.standard-note-card ul {
+  margin: 0;
+  color: #475569;
+  font-size: 0.75rem;
+  line-height: 1.7;
+}
+
+.standard-note-card ul {
+  padding-left: 16px;
+}
+
+.standard-note-card li + li {
+  margin-top: 8px;
+}
