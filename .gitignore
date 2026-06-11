@@ -38,3 +38,4 @@ Thumbs.dbs
 
 *.log
 vite-dev.out.log
+vite-dev.err.log
