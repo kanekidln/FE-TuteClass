@@ -1,0 +1,152 @@
+.notebook-spread-header {
+  position: relative;
+}
+
+.notebook-spread-title {
+  margin: 0;
+  color: var(--ink-900);
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 3vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.notebook-spread-title-accent {
+  color: var(--tute-blue);
+}
+
+.notebook-spread-subtitle {
+  margin: 0.5rem 0 0;
+  color: #59708e;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.notebook-spread-tape {
+  width: 104px;
+  height: 30px;
+  border-radius: 8px;
+  opacity: 0.92;
+  background:
+    linear-gradient(90deg, transparent 0 10px, rgba(255,255,255,.25) 10px 17px, transparent 17px 28px),
+    #ead8b9;
+  box-shadow: 0 10px 18px rgba(93, 64, 30, 0.12);
+}
+
+.notebook-section-card {
+  border-color: var(--paper-border) !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(90deg, rgba(255, 198, 198, 0.18) 0 1px, transparent 1px 100%),
+    repeating-linear-gradient(0deg, transparent 0 25px, rgba(96, 122, 154, 0.06) 25px 26px),
+    rgba(255, 249, 238, 0.91) !important;
+  box-shadow: 0 18px 30px rgba(93, 64, 30, 0.12) !important;
+}
+
+.notebook-section-heading {
+  color: var(--ink-900);
+}
+
+.notebook-section-heading span {
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.notebook-section-subtitle {
+  color: #59708e !important;
+  font-weight: 700;
+}
+
+.standard-insight-card {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 22px !important;
+  box-shadow: 0 14px 24px rgba(93, 64, 30, 0.1) !important;
+}
+
+.standard-insight-card.orange {
+  background: linear-gradient(135deg, #fff0d9, #ffe4c7);
+  border-color: rgba(244, 81, 30, 0.24);
+}
+
+.standard-insight-card.blue {
+  background: linear-gradient(135deg, #edf5ff, #dde9ff);
+  border-color: rgba(11, 94, 238, 0.2);
+}
+
+.standard-insight-card.green {
+  background: linear-gradient(135deg, #edf8f0, #def5df);
+  border-color: rgba(34, 197, 94, 0.22);
+}
+
+.standard-insight-card.purple {
+  background: linear-gradient(135deg, #f2ecff, #e7dbff);
+  border-color: rgba(139, 92, 246, 0.2);
+}
+
+.standard-checklist-card {
+  border: 1px solid rgba(11, 94, 238, 0.16);
+  border-radius: 22px;
+  background: rgba(255, 254, 248, 0.8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.standard-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.standard-note-card {
+  border-radius: 1.2rem;
+  border: 1px solid var(--paper-border);
+  box-shadow: 0 16px 28px rgba(93, 64, 30, 0.12);
+  padding: 1rem;
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+}
+
+.standard-note-card.orange {
+  background-color: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.standard-note-card.indigo {
+  background-color: #fff7ed;
+  border-color: #fed7aa;
+}
+
+.standard-note-card.blue {
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.standard-note-card.green {
+  background-color: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.standard-note-card h3 {
+  margin: 0 0 12px;
+  color: var(--ink-900);
+  font-family: var(--font-handwriting);
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.standard-note-card p,
+.standard-note-card ul {
+  margin: 0;
+  color: #475569;
+  font-size: 0.75rem;
+  line-height: 1.7;
+}
+
+.standard-note-card ul {
+  padding-left: 16px;
+}
+
+.standard-note-card li + li {
+  margin-top: 8px;
+}

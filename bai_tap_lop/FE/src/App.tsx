@@ -1,43 +1,51 @@
-import { useEffect } from "react";
-import { FlipBook } from "./components/FlipBook";
+import { useEffect, useState } from "react";
 import { MainHeader } from "./components/MainHeader";
-import { classTabs, DEFAULT_NOTEBOOK_LOCATION, notebookPages, sectionMarkers, useNotebookController } from "./features/notebook";
-import { NotebookLayout } from "./layouts/NotebookLayout";
+import { StudentNotebookWorkspace } from "./features/student/notebook";
+import { TeacherScheduleWorkspace } from "./features/teacher/schedule";
+
+type Workspace = "student" | "teacher";
+
+const DEFAULT_WORKSPACE: Workspace = "student";
+
+function getWorkspaceFromHash(hash: string): Workspace {
+  return hash === "#teacher" ? "teacher" : DEFAULT_WORKSPACE;
+}
 
 export default function App() {
-  const navigation = useNotebookController(notebookPages, DEFAULT_NOTEBOOK_LOCATION);
-  const currentPage = notebookPages[navigation.currentIndex];
+  const [activeWorkspace, setActiveWorkspace] = useState<Workspace>(() => getWorkspaceFromHash(window.location.hash));
 
   useEffect(() => {
-    document.title = `Tuteclass - ${currentPage.navLabel} lớp ${currentPage.className}`;
-  }, [currentPage]);
+    const syncWorkspace = () => {
+      setActiveWorkspace(getWorkspaceFromHash(window.location.hash));
+    };
+
+    if (!window.location.hash) {
+      window.history.replaceState(null, "", "#student");
+    }
+
+    syncWorkspace();
+    window.addEventListener("hashchange", syncWorkspace);
+
+    return () => {
+      window.removeEventListener("hashchange", syncWorkspace);
+    };
+  }, []);
+
+  const handleWorkspaceChange = (workspace: Workspace) => {
+    const nextHash = `#${workspace}`;
+
+    if (window.location.hash !== nextHash) {
+      window.location.hash = nextHash;
+      return;
+    }
+
+    setActiveWorkspace(workspace);
+  };
 
   return (
     <>
-      <MainHeader />
-      <NotebookLayout
-        activeClassKey={currentPage.classKey}
-        activeSectionKey={currentPage.sectionKey}
-        classItems={classTabs}
-        isFlipping={Boolean(navigation.transition)}
-        isSpiralHidden={navigation.spiralHidden}
-        markerItems={sectionMarkers}
-        onClassChange={navigation.goToClass}
-        onNextClass={navigation.goToNextClass}
-        onPreviousClass={navigation.goToPreviousClass}
-        onSectionChange={navigation.goToSection}
-      >
-        <FlipBook
-          accelerateTransition={navigation.accelerateTransition}
-          currentIndex={navigation.currentIndex}
-          faceBackOnly={navigation.faceBackOnly}
-          onRequestNext={navigation.goNext}
-          onRequestPrevious={navigation.goPrevious}
-          onTransitionComplete={navigation.completeTransition}
-          pages={notebookPages}
-          transition={navigation.transition}
-        />
-      </NotebookLayout>
+      <MainHeader activeWorkspace={activeWorkspace} onWorkspaceChange={handleWorkspaceChange} />
+      {activeWorkspace === "teacher" ? <TeacherScheduleWorkspace /> : <StudentNotebookWorkspace />}
     </>
   );
 }

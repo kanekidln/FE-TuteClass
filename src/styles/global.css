@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Merriweather:wght@700;900&family=Nunito:wght@400;600;700;800;900&family=Patrick+Hand&family=Playfair+Display:wght@700;800;900&display=swap");
+
+:root {
+  color: #092b63;
+  background: #f1dfc4;
+  font-family: "Nunito", system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    linear-gradient(rgba(255, 249, 238, 0.72), rgba(255, 249, 238, 0.72)),
+    repeating-linear-gradient(0deg, rgba(156, 128, 96, 0.18) 0 1px, transparent 1px 34px),
+    #f1dfc4;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgba(255, 241, 225, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #7e8fa4;
+}

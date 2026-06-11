@@ -1,1 +1,1 @@
-export { useNotebookController as useFlipBookNavigation } from "../features/notebook";
+export { useNotebookController as useFlipBookNavigation } from "../features/student/notebook";

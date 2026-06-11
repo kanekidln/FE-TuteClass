@@ -1,0 +1,16 @@
+.teacher-shell {
+  min-height: 100vh;
+  color: #092b63;
+  font-family: "Nunito", system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.teacher-shell button,
+.teacher-shell input,
+.teacher-shell select,
+.teacher-shell textarea {
+  font: inherit;
+}

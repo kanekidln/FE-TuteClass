@@ -21,14 +21,18 @@
   height: var(--notebook-height);
   padding-left: calc(var(--spiral-column-width) + var(--spiral-left) + var(--spiral-gap)) !important;
   z-index: 10;
-  background-color: #fff;
-  background-image: linear-gradient(#e5e7eb 1px, transparent 1px);
-  background-size: 100% 24px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, .2);
+  border-color: var(--paper-border) !important;
+  background:
+    linear-gradient(90deg, rgba(255, 198, 198, 0.38) 0 2px, transparent 2px 100%),
+    repeating-linear-gradient(0deg, transparent 0 23px, var(--paper-line) 23px 24px),
+    var(--paper-bg);
+  border-radius: 24px;
+  box-shadow: var(--paper-shadow);
 }
 
 .paper-texture {
-  background-color: #fffcf0;
-  background-image: url("../assets/images/natural-paper.png");
+  background:
+    linear-gradient(90deg, rgba(255, 198, 198, 0.18) 0 1px, transparent 1px 100%),
+    repeating-linear-gradient(0deg, transparent 0 25px, rgba(96, 122, 154, 0.08) 25px 26px),
+    var(--paper-note-bg);
 }

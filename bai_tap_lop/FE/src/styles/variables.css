@@ -1,9 +1,17 @@
 :root {
-  --tute-orange: #ff6b35;
-  --tute-blue: #4d96ff;
-  --tute-paper: #fffdf7;
-  --tute-gray: #f3f4f6;
-  --font-handwriting: "Patrick Hand", cursive;
-  --font-fancy: "Dancing Script", cursive;
-  --font-sans: "Nunito", sans-serif;
+  --tute-orange: #f4511e;
+  --tute-blue: #0b5eee;
+  --tute-paper: #fffef8;
+  --tute-gray: #f4ede2;
+  --font-handwriting: "Patrick Hand", "Comic Neue", cursive;
+  --font-display: "Playfair Display", "Merriweather", serif;
+  --font-fancy: "Playfair Display", "Merriweather", serif;
+  --font-sans: "Nunito", system-ui, sans-serif;
+  --ink-900: #092b63;
+  --ink-700: #43556e;
+  --paper-border: #eadcc7;
+  --paper-line: rgba(96, 122, 154, 0.13);
+  --paper-bg: rgba(255, 254, 248, 0.94);
+  --paper-note-bg: rgba(255, 249, 238, 0.96);
+  --paper-shadow: 0 22px 44px rgba(93, 64, 30, 0.14);
 }
