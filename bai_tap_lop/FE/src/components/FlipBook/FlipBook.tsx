@@ -1,6 +1,7 @@
 import type { CSSProperties, UIEvent } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { NotebookPage, PageTransition } from "../../features/notebook";
+import { OverviewSpread } from "../../spreads/OverviewSpread";
 import { ScheduleSpread } from "../../spreads/ScheduleSpread";
 import { StandardSpread } from "../../spreads/StandardSpread";
 import "./FlipBook.css";
@@ -31,6 +32,10 @@ type PageFrameProps = {
 function renderSpread(page: NotebookPage) {
   if (page.spreadType === "schedule") {
     return <ScheduleSpread data={page.data} />;
+  }
+
+  if (page.sectionKey === "overview") {
+    return <OverviewSpread classKey={page.classKey} className={page.className} subtitle={page.data.subtitle} />;
   }
 
   return <StandardSpread data={page.data} />;
