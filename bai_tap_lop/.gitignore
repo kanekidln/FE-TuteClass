@@ -1,0 +1,4 @@
+FE/node_modules/
+FE/dist/
+FE/tsconfig.tsbuildinfo
+FE/tsconfig.node.tsbuildinfo

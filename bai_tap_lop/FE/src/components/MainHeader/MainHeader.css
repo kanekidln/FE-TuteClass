@@ -1,0 +1,23 @@
+.header-hover-zone {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 18px;
+  z-index: 60;
+}
+
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: calc(100% - 2rem);
+  transform: translate(-50%, calc(-100% - 8px));
+  z-index: 70;
+  transition: transform .2s ease;
+}
+
+.header-hover-zone:hover + .app-header,
+.app-header:hover {
+  transform: translate(-50%, 8px);
+}

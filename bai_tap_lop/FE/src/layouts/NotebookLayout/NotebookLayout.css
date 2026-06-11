@@ -1,0 +1,15 @@
+@import "../../styles/notebook.css";
+
+.notebook-page-shell {
+  position: relative;
+}
+
+.notebook-page-shell.is-flipping {
+  z-index: 0;
+}
+
+.notebook-content-viewport {
+  position: absolute;
+  inset: 0;
+  min-height: 100%;
+}
