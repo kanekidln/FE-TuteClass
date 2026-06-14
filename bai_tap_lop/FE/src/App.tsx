@@ -110,24 +110,6 @@ export default function App() {
       <TeacherScheduleWorkspace reopenLessonDetail={teacherRoute.reopenLessonDetail} />
     );
 
-  const activeTeacherSection: TeacherNotebookSection =
-    teacherRoute.view === "overview" ? "overview" : teacherRoute.view === "documents" ? "resources" : "schedule";
-  const activeTeacherClassName = teacherRoute.view === "schedule" ? "Web Foundation K12" : teacherRoute.params.className;
-
-  const teacherContent =
-    teacherRoute.view === "documents" ? (
-      <TeacherDocumentsPage
-        classId={teacherRoute.params.classId}
-        className={teacherRoute.params.className}
-        scope={teacherRoute.params.scope}
-        type={teacherRoute.params.type}
-      />
-    ) : teacherRoute.view === "overview" ? (
-      <TeacherOverviewPage classId={teacherRoute.params.classId} className={teacherRoute.params.className} />
-    ) : (
-      <TeacherScheduleWorkspace reopenLessonDetail={teacherRoute.reopenLessonDetail} />
-    );
-
   return (
     <>
       <MainHeader activeWorkspace={activeWorkspace} onWorkspaceChange={handleWorkspaceChange} />
@@ -136,15 +118,11 @@ export default function App() {
       ) : activeRoute === "register" ? (
         <RegisterPage />
       ) : activeRoute === "teacher" ? (
-        (
         <TeacherNotebookShell activeClassName={activeTeacherClassName} activeSection={activeTeacherSection}>
           {teacherContent}
         </TeacherNotebookShell>
-      )
       ) : (
-        (
         <StudentNotebookWorkspace />
-      )
       )}
     </>
   );

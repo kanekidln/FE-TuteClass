@@ -63,8 +63,9 @@
   background: rgba(255, 252, 245, 0.93);
   color: #43556e;
   cursor: pointer;
-  font-family: var(--font-handwriting);
-  font-size: 0.96rem;
+  font-family: var(--font-sans);
+  font-size: clamp(15px, 1.09vw, 20px);
+  font-weight: 900;
   line-height: 1;
   box-shadow: 0 12px 20px rgba(93, 64, 30, 0.08);
 }
@@ -89,8 +90,9 @@
   background: rgba(255, 255, 255, 0.58);
   color: #43556e;
   cursor: pointer;
-  font-family: var(--font-handwriting);
-  font-size: 0.78rem;
+  font-family: var(--font-sans);
+  font-size: clamp(13px, 0.84vw, 16px);
+  font-weight: 900;
 }
 
 .assignment-filter.is-active {
@@ -123,9 +125,9 @@
   min-height: 38px;
   padding: 0 0.68rem;
   color: #2f3a4b;
-  font-family: var(--font-handwriting);
-  font-size: 0.76rem;
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-size: clamp(13px, 0.84vw, 17px);
+  font-weight: 900;
   border-bottom: 1px solid rgba(233, 214, 183, 0.75);
 }
 
@@ -190,8 +192,8 @@
   padding: 0.52rem 0.68rem;
   border-bottom: 1px solid rgba(233, 214, 183, 0.62);
   color: #41556d;
-  font-size: 0.68rem;
-  font-weight: 700;
+  font-size: clamp(13px, 0.84vw, 17px);
+  font-weight: 800;
 }
 
 .assignment-row:last-child {
@@ -201,7 +203,7 @@
 .assignment-row strong {
   display: block;
   color: #24344d;
-  font-size: 0.72rem;
+  font-size: clamp(13px, 0.9vw, 18px);
   font-weight: 900;
   line-height: 1.25;
 }
@@ -221,15 +223,18 @@
 }
 
 .assignment-type-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-grid;
+  place-items: center;
   width: 34px;
   height: 34px;
   border-radius: 9px;
   color: #fff;
   font-size: 0.9rem;
   font-weight: 900;
+  line-height: 1;
+  padding-top: 2px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .assignment-type-icon--not-started {
@@ -257,11 +262,12 @@
 .assignment-status {
   display: inline-flex !important;
   width: fit-content;
-  padding: 0.25rem 0.52rem;
+  padding: 0.3rem 0.62rem;
   border-radius: 8px;
   font-family: var(--font-handwriting);
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   font-weight: 700;
+  line-height: 1;
 }
 
 .assignment-status--not-started {
@@ -282,16 +288,17 @@
 
 .assignment-action {
   appearance: none;
-  min-width: 70px;
-  padding: 0.34rem 0.52rem;
+  min-width: 82px;
+  padding: 0.4rem 0.62rem;
   border: 1px solid rgba(124, 58, 237, 0.42);
   border-radius: 9px;
   background: rgba(255, 255, 255, 0.72);
   color: #7c3aed;
   cursor: pointer;
   font-family: var(--font-handwriting);
-  font-size: 0.66rem;
+  font-size: 0.82rem;
   font-weight: 700;
+  line-height: 1;
 }
 
 .assignment-score-value {
@@ -370,7 +377,7 @@
   margin: 0 0 0.58rem;
   color: #15959a;
   font-family: var(--font-handwriting);
-  font-size: 1.12rem;
+  font-size: 1.34rem;
   font-weight: 400;
   line-height: 1.05;
   text-align: center;
@@ -386,8 +393,8 @@
   margin: 0;
   color: #2f5368;
   font-family: var(--font-handwriting);
-  font-size: 0.76rem;
-  line-height: 1.4;
+  font-size: 0.9rem;
+  line-height: 1.42;
 }
 
 .assignment-note-list {
@@ -450,7 +457,7 @@
   align-items: center;
   color: #1f6f78;
   font-family: var(--font-handwriting);
-  font-size: 0.72rem;
+  font-size: 0.88rem;
 }
 
 .assignment-stat-dot {
@@ -478,7 +485,7 @@
   color: #16a34a;
   cursor: pointer;
   font-family: var(--font-handwriting);
-  font-size: 0.78rem;
+  font-size: 0.94rem;
 }
 
 .assignment-work-panel {

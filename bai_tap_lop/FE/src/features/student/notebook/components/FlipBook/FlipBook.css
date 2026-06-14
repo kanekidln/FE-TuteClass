@@ -233,6 +233,16 @@
   display: none;
 }
 
+.spread-page[data-section="overview"] .spread-more {
+  display: none;
+}
+
+.spread-page[data-section="overview"] .spread-scroll {
+  overflow-y: hidden;
+  padding-top: 24px;
+  padding-bottom: 22px;
+}
+
 .spread-page[data-section="discussion"] .spread-scroll {
   padding-top: 20px;
   padding-bottom: 18px;

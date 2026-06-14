@@ -28,6 +28,7 @@
     var(--paper-bg);
   border-radius: 24px;
   box-shadow: var(--paper-shadow);
+  font-family: var(--font-sans);
 }
 
 .paper-texture {
@@ -48,21 +49,25 @@
   .assignments-feedback-card,
   .assignments-history-card
 ) {
-  font-family: var(--font-handwriting);
-  letter-spacing: 0.01em;
+  font-family: var(--font-sans);
+  letter-spacing: 0;
 }
 
 .notebook-container :is(
-  .overview-note-card,
-  .student-note-card,
-  .resources-note,
-  .discussion-side-note,
-  .standard-note-card,
-  .assignments-side-card,
-  .assignments-summary-card,
-  .assignments-feedback-card,
-  .assignments-history-card
-) :is(input, textarea, button, table, .resources-table, .assignments-table, .discussion-chat-panel) {
-  font-family: var(--font-sans);
-  letter-spacing: 0;
+  .overview-note-label,
+  .student-note-title,
+  .resources-note-title,
+  .discussion-side-title,
+  .standard-note-card h3,
+  .assignment-tab,
+  .assignment-work-tab,
+  .resources-tab,
+  .discussion-tab span:last-child,
+  .student-note-button,
+  .overview-note-action,
+  .resources-note-link
+) {
+  font-family: var(--font-handwriting);
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }

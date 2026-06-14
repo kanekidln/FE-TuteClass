@@ -242,7 +242,6 @@ export function AssignmentsSpread({ data }: AssignmentsSpreadProps) {
                     ))}
                   </div>
                 </div>
-                <p className="assignment-helper">{data.footerLeft}</p>
               </>
             ) : (
               <>

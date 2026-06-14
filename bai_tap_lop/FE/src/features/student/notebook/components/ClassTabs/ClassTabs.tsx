@@ -33,7 +33,7 @@ export function ClassTabs({ activeClassKey, items, onClassChange, onNextClass, o
                 }`}
               >
                 <div className="flex items-center gap-1">
-                  <span className={`${isActive ? "text-xl text-blue-800" : "text-lg text-gray-700"} font-handwriting`}>
+                  <span className={`${isActive ? "text-xl text-blue-800" : "text-lg text-black"} font-handwriting`}>
                     {classItem.name}
                   </span>
                   {isActive && <span className="text-yellow-400">★</span>}
