@@ -6,7 +6,7 @@
   margin: 0;
   color: var(--ink-900);
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 3vw, 3.2rem);
+  font-size: clamp(31px, 3.22vw, 48px);
   line-height: 1;
   letter-spacing: -0.03em;
 }

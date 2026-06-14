@@ -221,6 +221,33 @@
   opacity: 0.8;
 }
 
+.spread-page[data-section="discussion"] .spread-more {
+  display: none;
+}
+
+.spread-page[data-section="resources"] .spread-more {
+  display: none;
+}
+
+.spread-page[data-section="assignments"] .spread-more {
+  display: none;
+}
+
+.spread-page[data-section="discussion"] .spread-scroll {
+  padding-top: 20px;
+  padding-bottom: 18px;
+}
+
+.spread-page[data-section="resources"] .spread-scroll {
+  padding-top: 24px;
+  padding-bottom: 20px;
+}
+
+.spread-page[data-section="assignments"] .spread-scroll {
+  padding-top: 24px;
+  padding-bottom: 20px;
+}
+
 .spread-more .chev {
   font-size: 15px;
   animation: spread-bob 1.4s ease-in-out infinite;

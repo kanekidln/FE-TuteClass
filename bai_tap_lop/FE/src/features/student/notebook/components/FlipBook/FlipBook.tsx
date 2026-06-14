@@ -1,9 +1,11 @@
 import type { CSSProperties, UIEvent } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { NotebookPage, PageTransition } from "../..";
+import { AssignmentsSpread } from "../../spreads/AssignmentsSpread";
+import { DiscussionSpread } from "../../spreads/DiscussionSpread";
 import { OverviewSpread } from "../../spreads/OverviewSpread";
+import { ResourcesSpread } from "../../spreads/ResourcesSpread";
 import { ScheduleSpread } from "../../spreads/ScheduleSpread";
-import { StandardSpread } from "../../spreads/StandardSpread";
 import "./FlipBook.css";
 
 const TURN_DEG = -176;
@@ -34,11 +36,19 @@ function renderSpread(page: NotebookPage) {
     return <ScheduleSpread data={page.data} />;
   }
 
-  if (page.sectionKey === "overview") {
-    return <OverviewSpread classKey={page.classKey} className={page.className} subtitle={page.data.subtitle} />;
+  if (page.spreadType === "discussion") {
+    return <DiscussionSpread data={page.data} />;
   }
 
-  return <StandardSpread data={page.data} />;
+  if (page.spreadType === "resources") {
+    return <ResourcesSpread data={page.data} />;
+  }
+
+  if (page.spreadType === "assignments") {
+    return <AssignmentsSpread data={page.data} />;
+  }
+
+  return <OverviewSpread classKey={page.classKey} className={page.className} subtitle={page.data.subtitle} />;
 }
 
 function PageFrame({ page, faceBackOnly = false, interactive = false, mode, onTransitionComplete }: PageFrameProps) {

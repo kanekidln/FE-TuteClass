@@ -45,33 +45,36 @@ type MiniCalendarProps = {
 
 export function MiniCalendar({ dates = defaultDates, monthLabel = "Tháng 5, 2024" }: MiniCalendarProps) {
   return (
-    <div className="schedule-panel p-4 rounded-xl border border-orange-100 shadow-sm text-xs">
-      <div className="flex justify-between items-center mb-4">
+    <div className="schedule-panel student-note-card student-mini-calendar-card rounded-xl border border-orange-100 shadow-sm text-xs relative">
+      <div className="student-note-pin student-note-pin--slate" aria-hidden="true" />
+
+      <div className="mini-calendar-header">
         <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
         </svg>
-        <div className="font-bold text-blue-900">{monthLabel}</div>
+        <div className="mini-calendar-month">{monthLabel}</div>
         <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
         </svg>
       </div>
-      <div className="grid grid-cols-7 gap-y-2 text-center text-[10px]">
+
+      <div className="mini-calendar-grid">
         {["T2", "T3", "T4", "T5", "T6", "T7", "CN"].map((day, index) => (
-          <div className={index === 6 ? "text-red-400" : "text-gray-400"} key={day}>
+          <div className={`mini-calendar-day ${index === 6 ? "mini-calendar-day--sun" : ""}`} key={day}>
             {day}
           </div>
         ))}
         {dates.map((dateItem, index) => {
           const className =
             dateItem.state === "active"
-              ? "bg-blue-500 text-white w-6 h-6 flex items-center justify-center rounded-full mx-auto"
+              ? "mini-calendar-date mini-calendar-date--active"
               : dateItem.state === "muted"
-                ? "text-gray-300"
+                ? "mini-calendar-date mini-calendar-date--muted"
                 : dateItem.state === "sun"
-                  ? "text-red-500"
+                  ? "mini-calendar-date mini-calendar-date--sun"
                   : dateItem.state === "sun-muted"
-                    ? "text-red-200"
-                    : "";
+                    ? "mini-calendar-date mini-calendar-date--sun-muted"
+                    : "mini-calendar-date";
 
           return (
             <div className={className} key={`${dateItem.value}-${index}`}>
@@ -79,9 +82,6 @@ export function MiniCalendar({ dates = defaultDates, monthLabel = "Tháng 5, 202
             </div>
           );
         })}
-      </div>
-      <div className="mt-2 flex justify-center">
-        <div className="w-1 h-1 bg-blue-500 rounded-full" />
       </div>
     </div>
   );

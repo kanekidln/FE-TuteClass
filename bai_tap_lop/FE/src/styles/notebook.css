@@ -14,7 +14,7 @@
   --spiral-column-width: 115px;
   --spiral-image-width: 70px;
   --spiral-gap: -4px;
-  --notebook-height: clamp(620px, calc(100vh - 170px), 668px);
+  --notebook-height: clamp(655px, calc(100vh - 156px), 655px);
   position: relative;
   overflow: visible;
   min-height: var(--notebook-height);
@@ -35,4 +35,34 @@
     linear-gradient(90deg, rgba(255, 198, 198, 0.18) 0 1px, transparent 1px 100%),
     repeating-linear-gradient(0deg, transparent 0 25px, rgba(96, 122, 154, 0.08) 25px 26px),
     var(--paper-note-bg);
+}
+
+.notebook-container :is(
+  .overview-note-card,
+  .student-note-card,
+  .resources-note,
+  .discussion-side-note,
+  .standard-note-card,
+  .assignments-side-card,
+  .assignments-summary-card,
+  .assignments-feedback-card,
+  .assignments-history-card
+) {
+  font-family: var(--font-handwriting);
+  letter-spacing: 0.01em;
+}
+
+.notebook-container :is(
+  .overview-note-card,
+  .student-note-card,
+  .resources-note,
+  .discussion-side-note,
+  .standard-note-card,
+  .assignments-side-card,
+  .assignments-summary-card,
+  .assignments-feedback-card,
+  .assignments-history-card
+) :is(input, textarea, button, table, .resources-table, .assignments-table, .discussion-chat-panel) {
+  font-family: var(--font-sans);
+  letter-spacing: 0;
 }

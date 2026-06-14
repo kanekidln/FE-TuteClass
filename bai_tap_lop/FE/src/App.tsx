@@ -2,32 +2,48 @@ import { useEffect, useState } from "react";
 import { MainHeader } from "./components/MainHeader";
 import { StudentNotebookWorkspace } from "./features/student/notebook";
 import { TeacherScheduleWorkspace } from "./features/teacher/schedule";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
 
 type Workspace = "student" | "teacher";
+type AppRoute = Workspace | "login" | "register";
 
 const DEFAULT_WORKSPACE: Workspace = "student";
 
-function getWorkspaceFromHash(hash: string): Workspace {
-  return hash === "#teacher" ? "teacher" : DEFAULT_WORKSPACE;
+function getRouteFromHash(hash: string): AppRoute {
+  if (hash === "#teacher") {
+    return "teacher";
+  }
+
+  if (hash === "#register") {
+    return "register";
+  }
+
+  if (hash === "#login") {
+    return "login";
+  }
+
+  return DEFAULT_WORKSPACE;
 }
 
 export default function App() {
-  const [activeWorkspace, setActiveWorkspace] = useState<Workspace>(() => getWorkspaceFromHash(window.location.hash));
+  const [activeRoute, setActiveRoute] = useState<AppRoute>(() => getRouteFromHash(window.location.hash));
+  const activeWorkspace: Workspace = activeRoute === "teacher" ? "teacher" : "student";
 
   useEffect(() => {
-    const syncWorkspace = () => {
-      setActiveWorkspace(getWorkspaceFromHash(window.location.hash));
+    const syncRoute = () => {
+      setActiveRoute(getRouteFromHash(window.location.hash));
     };
 
     if (!window.location.hash) {
       window.history.replaceState(null, "", "#student");
     }
 
-    syncWorkspace();
-    window.addEventListener("hashchange", syncWorkspace);
+    syncRoute();
+    window.addEventListener("hashchange", syncRoute);
 
     return () => {
-      window.removeEventListener("hashchange", syncWorkspace);
+      window.removeEventListener("hashchange", syncRoute);
     };
   }, []);
 
@@ -39,13 +55,21 @@ export default function App() {
       return;
     }
 
-    setActiveWorkspace(workspace);
+    setActiveRoute(workspace);
   };
 
   return (
     <>
       <MainHeader activeWorkspace={activeWorkspace} onWorkspaceChange={handleWorkspaceChange} />
-      {activeWorkspace === "teacher" ? <TeacherScheduleWorkspace /> : <StudentNotebookWorkspace />}
+      {activeRoute === "login" ? (
+        <LoginPage />
+      ) : activeRoute === "register" ? (
+        <RegisterPage />
+      ) : activeRoute === "teacher" ? (
+        <TeacherScheduleWorkspace />
+      ) : (
+        <StudentNotebookWorkspace />
+      )}
     </>
   );
 }
