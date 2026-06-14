@@ -22,6 +22,8 @@ import {
   Users,
   X,
 } from "lucide-react";
+import { createTeacherOverviewHash } from "../../../overview/utils/teacherOverviewRoute";
+import { createTeacherDocumentsHash } from "../../../documents/utils/teacherDocumentsRoute";
 import "./LessonDetailModal.css";
 
 export interface LessonInfo {
@@ -188,6 +190,18 @@ function LessonDetailModal({ isOpen, onClose }: LessonDetailModalProps) {
     setCommentValue("");
   };
 
+  const openClassOverview = () => {
+    window.history.replaceState({ returnToLessonDetail: true }, "", "#teacher");
+    window.history.pushState(null, "", createTeacherOverviewHash(lessonInfo.className));
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+  };
+
+  const openSessionDocuments = () => {
+    window.history.replaceState({ returnToLessonDetail: true }, "", "#teacher");
+    window.history.pushState(null, "", createTeacherDocumentsHash(lessonInfo.className, "sessions"));
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+  };
+
   const modal = (
     <AnimatePresence>
       {isOpen && (
@@ -218,7 +232,7 @@ function LessonDetailModal({ isOpen, onClose }: LessonDetailModalProps) {
             <h2 id="lesson-detail-title">Chi tiết buổi học - Lập trình Web cơ bản</h2>
 
             <div className="lesson-info-row">
-              <InfoCard icon={<Users size={36} />} accent="green" label="Lớp:" value={lessonInfo.className} />
+              <InfoCard icon={<Users size={36} />} accent="green" label="Lớp:" value={lessonInfo.className} onClick={openClassOverview} />
               <InfoCard icon={<PenLine size={35} />} accent="purple" label="Điểm danh:" value={lessonInfo.attendance} />
               <InfoCard
                 icon={<CalendarDays size={35} />}
@@ -284,7 +298,7 @@ function LessonDetailModal({ isOpen, onClose }: LessonDetailModalProps) {
               </section>
             </div>
 
-            <button className="lesson-document-bar" type="button">
+            <button className="lesson-document-bar" type="button" onClick={openSessionDocuments}>
               <FileText size={36} />
               <strong>Tài liệu</strong>
               <span>12 tài liệu</span>
@@ -338,9 +352,36 @@ interface InfoCardProps {
   label: string;
   value: string;
   actionIcon?: ReactNode;
+  onClick?: () => void;
 }
 
-function InfoCard({ icon, accent, label, value, actionIcon }: InfoCardProps) {
+function InfoCard({ icon, accent, label, value, actionIcon, onClick }: InfoCardProps) {
+  const content = (
+    <>
+      <span className="lesson-info-icon">{icon}</span>
+      <span>{label}</span>
+      <strong>{value}</strong>
+      {actionIcon && (
+        <button type="button" className="lesson-mini-edit" aria-label="Sá»­a ngÃ y há»c">
+          {actionIcon}
+        </button>
+      )}
+    </>
+  );
+
+  if (onClick) {
+    return (
+      <motion.button
+        className={`lesson-info-card lesson-info-card-button ${accent}`}
+        type="button"
+        onClick={onClick}
+        whileHover={{ y: -3 }}
+      >
+        {content}
+      </motion.button>
+    );
+  }
+
   return (
     <motion.article className={`lesson-info-card ${accent}`} whileHover={{ y: -3 }}>
       <span className="lesson-info-icon">{icon}</span>

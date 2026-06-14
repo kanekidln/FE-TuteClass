@@ -11,7 +11,7 @@ import type {
 } from "../types/teacherSchedule.types";
 
 export const SCHEDULE_START_TIME = "07:00";
-export const SCHEDULE_HOUR_HEIGHT = 92;
+export const SCHEDULE_HOUR_HEIGHT = 45;
 
 export const teacherWeekDays: TeacherWeekDay[] = [
   { id: 1, label: "Thứ 2", shortLabel: "T2", date: "13/05" },
@@ -20,9 +20,27 @@ export const teacherWeekDays: TeacherWeekDay[] = [
   { id: 4, label: "Thứ 5", shortLabel: "T5", date: "16/05" },
   { id: 5, label: "Thứ 6", shortLabel: "T6", date: "17/05" },
   { id: 6, label: "Thứ 7", shortLabel: "T7", date: "18/05" },
+  { id: 7, label: "CN", shortLabel: "CN", date: "19/05" },
 ];
 
-export const teacherScheduleTimeLabels = ["07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"];
+export const teacherScheduleTimeLabels = [
+  "07:00",
+  "08:00",
+  "09:00",
+  "10:00",
+  "11:00",
+  "12:00",
+  "13:00",
+  "14:00",
+  "15:00",
+  "16:00",
+  "17:00",
+  "18:00",
+  "19:00",
+  "20:00",
+  "21:00",
+  "22:00",
+];
 
 export const teacherLessons: TeacherLessonItem[] = [
   { id: "mon-9a-am", className: "9A", subject: "Toán", day: 1, startTime: "07:00", endTime: "08:30", variant: "primary", clickable: true },
