@@ -2,14 +2,18 @@ import { useEffect } from "react";
 import TeacherSchedulePage from "./components/TeacherSchedulePage";
 import "./teacherShell.css";
 
-export function TeacherScheduleWorkspace() {
+interface TeacherScheduleWorkspaceProps {
+  reopenLessonDetail?: boolean;
+}
+
+export function TeacherScheduleWorkspace({ reopenLessonDetail = false }: TeacherScheduleWorkspaceProps) {
   useEffect(() => {
     document.title = "Tuteclass - Lịch dạy";
   }, []);
 
   return (
     <div className="teacher-shell">
-      <TeacherSchedulePage />
+      <TeacherSchedulePage initialLessonModalOpen={reopenLessonDetail} />
     </div>
   );
 }
