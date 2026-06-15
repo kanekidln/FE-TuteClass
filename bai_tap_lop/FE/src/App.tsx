@@ -13,6 +13,8 @@ import {
 } from "./features/teacher/overview/utils/teacherOverviewRoute";
 import { parseTeacherDocumentsHash } from "./features/teacher/documents/utils/teacherDocumentsRoute";
 import type { TeacherDocumentsRouteParams } from "./features/teacher/documents";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
 
 type Workspace = "student" | "teacher";
 type TeacherRoute =
@@ -20,11 +22,24 @@ type TeacherRoute =
   | { view: "assignments" }
   | { view: "overview"; params: TeacherOverviewRouteParams }
   | { view: "documents"; params: TeacherDocumentsRouteParams };
+type AppRoute = Workspace | "login" | "register";
 
 const DEFAULT_WORKSPACE: Workspace = "student";
 
-function getWorkspaceFromHash(hash: string): Workspace {
-  return hash.startsWith("#teacher") ? "teacher" : DEFAULT_WORKSPACE;
+function getRouteFromHash(hash: string): AppRoute {
+  if (hash.startsWith("#teacher")) {
+    return "teacher";
+  }
+
+  if (hash === "#register") {
+    return "register";
+  }
+
+  if (hash === "#login") {
+    return "login";
+  }
+
+  return DEFAULT_WORKSPACE;
 }
 
 function getTeacherRouteFromHash(hash: string): TeacherRoute {
@@ -50,12 +65,13 @@ function getTeacherRouteFromHash(hash: string): TeacherRoute {
 }
 
 export default function App() {
-  const [activeWorkspace, setActiveWorkspace] = useState<Workspace>(() => getWorkspaceFromHash(window.location.hash));
+  const [activeRoute, setActiveRoute] = useState<AppRoute>(() => getRouteFromHash(window.location.hash));
+  const activeWorkspace: Workspace = activeRoute === "teacher" ? "teacher" : "student";
   const [teacherRoute, setTeacherRoute] = useState<TeacherRoute>(() => getTeacherRouteFromHash(window.location.hash));
 
   useEffect(() => {
-    const syncWorkspace = () => {
-      setActiveWorkspace(getWorkspaceFromHash(window.location.hash));
+    const syncRoute = () => {
+      setActiveRoute(getRouteFromHash(window.location.hash));
       setTeacherRoute(getTeacherRouteFromHash(window.location.hash));
     };
 
@@ -63,11 +79,11 @@ export default function App() {
       window.history.replaceState(null, "", "#student");
     }
 
-    syncWorkspace();
-    window.addEventListener("hashchange", syncWorkspace);
+    syncRoute();
+    window.addEventListener("hashchange", syncRoute);
 
     return () => {
-      window.removeEventListener("hashchange", syncWorkspace);
+      window.removeEventListener("hashchange", syncRoute);
     };
   }, []);
 
@@ -79,7 +95,7 @@ export default function App() {
       return;
     }
 
-    setActiveWorkspace(workspace);
+    setActiveRoute(workspace);
   };
 
   const activeTeacherSection: TeacherNotebookSection =
@@ -118,7 +134,11 @@ export default function App() {
         activeWorkspace={activeWorkspace}
         onWorkspaceChange={handleWorkspaceChange}
       />
-      {activeWorkspace === "teacher" ? (
+      {activeRoute === "login" ? (
+        <LoginPage />
+      ) : activeRoute === "register" ? (
+        <RegisterPage />
+      ) : activeRoute === "teacher" ? (
         <TeacherNotebookShell activeClassName={activeTeacherClassName} activeSection={activeTeacherSection}>
           {teacherContent}
         </TeacherNotebookShell>

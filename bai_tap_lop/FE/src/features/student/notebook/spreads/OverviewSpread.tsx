@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { PaperCard } from "../components/common/PaperCard";
 import type { ClassKey } from "..";
 import { overviewDashboardContent } from "../content/overviewDashboardContent";
@@ -60,6 +61,7 @@ function OverviewIcon({ name }: { name: IconName }) {
 
 export function OverviewSpread({ classKey, className, subtitle }: OverviewSpreadProps) {
   const content = overviewDashboardContent[classKey];
+  const [isTuitionOpen, setIsTuitionOpen] = useState(false);
 
   return (
     <div className="overview-spread">
@@ -91,7 +93,15 @@ export function OverviewSpread({ classKey, className, subtitle }: OverviewSpread
                 <div className="overview-quick-detail">{card.detail}</div>
               </div>
             </div>
-            {card.actionLabel ? <button className={`overview-note-action tone-${card.tone}`}>{card.actionLabel}</button> : null}
+            {card.actionLabel ? (
+              <button
+                className={`overview-note-action tone-${card.tone}`}
+                onClick={card.icon === "wallet" ? () => setIsTuitionOpen(true) : undefined}
+                type="button"
+              >
+                {card.actionLabel}
+              </button>
+            ) : null}
           </PaperCard>
         ))}
       </section>
@@ -165,6 +175,107 @@ export function OverviewSpread({ classKey, className, subtitle }: OverviewSpread
         </div>
         <div className="overview-footer-quote">{content.footerRight}</div>
       </footer>
+
+      {isTuitionOpen ? (
+        <div className="overview-tuition-backdrop" role="presentation" onMouseDown={() => setIsTuitionOpen(false)}>
+          <section
+            aria-label="Chi tiết học phí lớp học"
+            aria-modal="true"
+            className="overview-tuition-modal"
+            onMouseDown={(event) => event.stopPropagation()}
+            role="dialog"
+          >
+            <button aria-label="Đóng popup học phí" className="overview-tuition-close" onClick={() => setIsTuitionOpen(false)} type="button">
+              ×
+            </button>
+
+            <header className="overview-tuition-header">
+              <span className="overview-tuition-header-icon">
+                <OverviewIcon name="wallet" />
+              </span>
+              <div>
+                <h2>Học phí lớp học</h2>
+                <p>Theo dõi hóa đơn, trạng thái thanh toán và lịch sử công nợ của {className}.</p>
+              </div>
+            </header>
+
+            <div className="overview-tuition-grid">
+              <section className="overview-tuition-panel">
+                <h3>1. Xem hóa đơn</h3>
+                <div className="overview-invoice-card is-current">
+                  <div className="overview-invoice-icon">PDF</div>
+                  <div>
+                    <strong>Hóa đơn #INV-2405-00123</strong>
+                    <span>Lớp: {className}</span>
+                    <span>Tháng: Tháng 05/2024</span>
+                    <button type="button">Xem hóa đơn PDF</button>
+                  </div>
+                  <div className="overview-invoice-meta">
+                    <strong>1.200.000 đ</strong>
+                    <span>Ngày phát hành: 02/05/2024</span>
+                    <span>Hạn thanh toán: 15/05/2024</span>
+                  </div>
+                </div>
+
+                <div className="overview-invoice-card">
+                  <div className="overview-invoice-icon muted">PDF</div>
+                  <div>
+                    <strong>Hóa đơn #INV-2404-00105</strong>
+                    <span>Lớp: {className}</span>
+                    <span>Tháng: Tháng 04/2024</span>
+                    <button type="button">Xem hóa đơn PDF</button>
+                  </div>
+                  <div className="overview-invoice-meta">
+                    <strong>1.200.000 đ</strong>
+                    <span>Ngày phát hành: 02/04/2024</span>
+                    <span>Hạn thanh toán: 15/04/2024</span>
+                  </div>
+                </div>
+                <button className="overview-tuition-wide-button" type="button">Xem tất cả hóa đơn →</button>
+              </section>
+
+              <section className="overview-tuition-panel overview-payment-panel">
+                <h3>2. Trạng thái thanh toán</h3>
+                <div className="overview-payment-status">
+                  <div className="overview-payment-check">✓</div>
+                  <div>
+                    <strong>Đã thanh toán</strong>
+                    <span>Hoàn thành</span>
+                    <p>Hạn thanh toán: 15/05/2024. Bạn đã thanh toán đúng hạn, cảm ơn bạn!</p>
+                  </div>
+                </div>
+                <div className="overview-payment-stats">
+                  <div><span>Tổng tiền</span><strong>1.200.000 đ</strong></div>
+                  <div><span>Đã thanh toán</span><strong>1.200.000 đ</strong></div>
+                  <div><span>Còn lại</span><strong className="danger">0 đ</strong></div>
+                  <div><span>Đúng hạn</span><strong>100%</strong></div>
+                </div>
+
+                <div className="overview-payment-history-head">
+                  <h3>3. Lịch sử thanh toán / công nợ</h3>
+                  <div>Công nợ hiện tại <strong>0 đ</strong></div>
+                </div>
+                <div className="overview-payment-table">
+                  {[
+                    ["12/05/2024", "INV-2405-00123", "05/2024", "1.200.000 đ", "Chuyển khoản", "Đã thanh toán"],
+                    ["10/04/2024", "INV-2404-00105", "04/2024", "1.200.000 đ", "Chuyển khoản", "Đã thanh toán"],
+                    ["11/03/2024", "INV-2403-00087", "03/2024", "1.200.000 đ", "Chuyển khoản", "Đã thanh toán"],
+                    ["02/06/2024", "INV-2406-00145", "06/2024", "1.200.000 đ", "—", "Chưa thanh toán"]
+                  ].map((row) => (
+                    <div className="overview-payment-row" key={row[1]}>
+                      {row.map((cell, cellIndex) => (
+                        <span className={cellIndex === 5 ? (cell === "Đã thanh toán" ? "paid" : "unpaid") : ""} key={`${row[1]}-${cell}`}>
+                          {cell}
+                        </span>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+          </section>
+        </div>
+      ) : null}
     </div>
   );
 }

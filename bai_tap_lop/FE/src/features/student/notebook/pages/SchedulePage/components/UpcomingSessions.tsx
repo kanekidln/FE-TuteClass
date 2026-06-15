@@ -6,7 +6,7 @@ const defaultSessions: UpcomingSession[] = [
     date: "Vào ngày mai (Thứ 4)",
     dateClass: "text-red-500",
     subject: "Toán 9A",
-    teacher: "Thầy Nam - Phòng online 1",
+    teacher: "Cô Lan - Phòng online 2",
     time: "19:00 - 20:30"
   },
   {
@@ -20,39 +20,53 @@ const defaultSessions: UpcomingSession[] = [
 ];
 
 type UpcomingSessionsProps = {
+  compact?: boolean;
+  onSelectSession?: (session: UpcomingSession) => void;
   sessions?: UpcomingSession[];
 };
 
-export function UpcomingSessions({ sessions = defaultSessions }: UpcomingSessionsProps) {
+export function UpcomingSessions({ compact = false, onSelectSession, sessions = defaultSessions }: UpcomingSessionsProps) {
+  const visibleSessions = compact ? sessions.slice(0, 1) : sessions;
+
   return (
-    <div className="upcoming-panel border border-indigo-100 rounded-xl p-4 shadow-sm relative">
-      <div className="absolute top-2 right-2">
+    <div className={`upcoming-panel ${compact ? "student-note-card compact-upcoming-card" : ""} border border-indigo-100 rounded-xl shadow-sm relative`}>
+      {compact ? <div className="student-note-pin" aria-hidden="true" /> : null}
+      <div className="absolute top-3 right-3">
         <svg className="w-4 h-4 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+          <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
         </svg>
       </div>
-      <h3 className="text-indigo-800 font-bold text-sm mb-4">Buổi học sắp tới</h3>
-      {sessions.map((session, index) => (
+
+      <h3 className="compact-upcoming-heading">Buổi học sắp tới</h3>
+
+      {visibleSessions.map((session, index) => (
         <button
           aria-label={`Xem buổi học ${session.subject} ${session.date.toLowerCase()} lúc ${session.time}`}
-          className={`upcoming-session block w-full text-left p-2 ${index === 0 ? "mb-4 -m-2" : "pt-4 -mx-2 border-t border-indigo-100"}`}
+          className={`upcoming-session compact-upcoming-session ${index === 0 ? "" : "compact-upcoming-session--stacked"}`}
           data-session-id={session.id}
           key={session.id}
+          onClick={() => onSelectSession?.(session)}
           type="button"
         >
-          <p className={`${session.dateClass} text-[10px] font-bold mb-2`}>{session.date}</p>
-          <div className="flex gap-2 items-start">
+          <p className={`${session.dateClass} compact-upcoming-date`}>{session.date}</p>
+          <div className="compact-upcoming-content">
             <svg className="w-4 h-4 text-indigo-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+              <path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
             </svg>
-            <div className="text-xs">
-              <div className="font-bold text-indigo-900">{session.time}</div>
-              <div className="font-medium">{session.subject}</div>
-              <div className="text-indigo-500 text-[10px]">{session.teacher}</div>
+            <div className="compact-upcoming-copy">
+              <div className="compact-upcoming-time">{session.time}</div>
+              <div className="compact-upcoming-subject">{session.subject}</div>
+              <div className="compact-upcoming-teacher">{session.teacher}</div>
             </div>
           </div>
         </button>
       ))}
+
+      {compact ? (
+        <button className="student-note-button student-note-button--violet" onClick={() => visibleSessions[0] && onSelectSession?.(visibleSessions[0])} type="button">
+          Xem chi tiết
+        </button>
+      ) : null}
     </div>
   );
 }

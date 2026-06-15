@@ -2,7 +2,7 @@ import type { ClassTabItem, NotebookLocation, SectionMarkerItem } from "../domai
 
 export const DEFAULT_NOTEBOOK_LOCATION: NotebookLocation = {
   classKey: "math",
-  sectionKey: "schedule"
+  sectionKey: "overview"
 };
 
 export const classTabs: ClassTabItem[] = [
