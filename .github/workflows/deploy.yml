@@ -27,15 +27,17 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
+        working-directory: bai_tap_lop/FE
         run: npm install
 
       - name: Build
+        working-directory: bai_tap_lop/FE
         run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: ./bai_tap_lop/FE/dist
 
   deploy:
     environment:
