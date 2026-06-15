@@ -6,14 +6,14 @@
 }
 
 .resources-spread-shell .notebook-spread-header {
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.7rem;
 }
 
 .resources-spread-shell .notebook-spread-title {
   font-family: var(--font-display);
-  font-size: clamp(48px, 4.5vw, 72px);
+  font-size: clamp(31px, 3.22vw, 48px);
   font-weight: 900;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   color: #2f3a4b;
 }
 
@@ -22,10 +22,10 @@
 }
 
 .resources-spread-shell .notebook-spread-subtitle {
-  margin-top: 0.3rem;
+  margin-top: 0.26rem;
   color: #1f5d8c;
   font-family: var(--font-sans);
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 800;
 }
 
@@ -492,7 +492,7 @@
   }
 
   .resources-spread-shell .notebook-spread-title {
-    font-size: clamp(44px, 3.8vw, 60px);
+    font-size: clamp(30px, 2.95vw, 44px);
   }
 
   .resources-spread-layout {

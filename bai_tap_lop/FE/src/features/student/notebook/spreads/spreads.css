@@ -4,23 +4,31 @@
 
 .notebook-spread-title {
   margin: 0;
-  color: var(--ink-900);
+  color: #2f3a4b;
   font-family: var(--font-display);
   font-size: clamp(31px, 3.22vw, 48px);
+  font-weight: 900;
   line-height: 1;
   letter-spacing: -0.03em;
 }
 
 .notebook-spread-title-accent {
-  color: var(--tute-blue);
+  color: #15959a;
 }
 
 .notebook-spread-subtitle {
-  margin: 0.5rem 0 0;
-  color: #59708e;
-  font-size: 0.95rem;
+  margin: 0.26rem 0 0;
+  color: #1f5d8c;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
   font-weight: 800;
   line-height: 1.5;
+}
+
+@media (max-width: 1400px) {
+  .notebook-spread-title {
+    font-size: clamp(30px, 2.95vw, 44px);
+  }
 }
 
 .notebook-spread-tape {

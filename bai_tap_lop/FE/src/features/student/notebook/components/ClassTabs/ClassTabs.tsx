@@ -36,7 +36,7 @@ export function ClassTabs({ activeClassKey, items, onClassChange, onNextClass, o
                   <span className={`${isActive ? "text-xl text-blue-800" : "text-lg text-black"} font-handwriting`}>
                     {classItem.name}
                   </span>
-                  {isActive && <span className="text-yellow-400">★</span>}
+                  {isActive && <span className="text-black">★</span>}
                 </div>
                 <span className={`text-xs font-medium ${isActive ? "text-green-700" : "text-gray-500"}`}>
                   {classItem.teacher}

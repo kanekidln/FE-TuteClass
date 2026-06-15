@@ -7,7 +7,7 @@
 }
 
 .discussion-spread-shell .notebook-spread-header {
-  margin-bottom: 0.62rem;
+  margin-bottom: 0.7rem;
 }
 
 .discussion-spread-shell .notebook-spread-title {
@@ -23,8 +23,8 @@
 }
 
 .discussion-spread-shell .notebook-spread-subtitle {
-  margin-top: 0.22rem;
-  color: #2f3a4b;
+  margin-top: 0.26rem;
+  color: #1f5d8c;
   font-family: var(--font-sans);
   font-size: 0.88rem;
   font-weight: 800;
@@ -495,6 +495,10 @@
 }
 
 @media (max-width: 1400px) {
+  .discussion-spread-shell .notebook-spread-title {
+    font-size: clamp(30px, 2.95vw, 44px);
+  }
+
   .discussion-spread-layout {
     grid-template-columns: minmax(0, 2.02fr) minmax(300px, 0.82fr);
     gap: 1.15rem;
