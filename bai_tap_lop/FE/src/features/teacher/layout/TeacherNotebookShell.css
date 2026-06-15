@@ -185,147 +185,174 @@
   border-radius: 20px;
 }
 
-.teacher-page-turn-layer {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: calc(var(--teacher-spiral-column-width) + var(--teacher-spiral-left) + var(--teacher-spiral-gap));
-  z-index: 20;
-  border-radius: 20px;
+.teacher-flip-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  perspective: 3200px;
+  perspective-origin: 10% 50%;
   overflow: visible;
-  pointer-events: none;
-  opacity: 1;
-  transform: rotateY(0deg);
-  transform-origin: 0 center;
+}
+
+.teacher-spread-book {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
   transform-style: preserve-3d;
-  backface-visibility: hidden;
-  will-change: transform;
+  overflow: visible;
 }
 
-.teacher-page-turn-layer::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  right: -18px;
-  bottom: 8px;
-  width: 34px;
-  z-index: 25;
-  border-radius: 999px;
-  opacity: 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, rgba(54, 34, 18, 0), rgba(54, 34, 18, .18));
-  filter: blur(10px);
-}
-
-.teacher-page-turn-content {
+.teacher-spread-page {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background:
-    linear-gradient(90deg, rgba(255, 198, 198, 0.38) 0 2px, transparent 2px 100%),
-    repeating-linear-gradient(0deg, transparent 0 23px, var(--paper-line) 23px 24px),
-    var(--paper-bg);
-  box-shadow: var(--paper-shadow);
+  overflow: visible;
+  pointer-events: none;
+  opacity: 1;
+  transform-origin: 0 center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: auto;
+  transition: transform var(--teacher-turn-duration, 1080ms) cubic-bezier(0.22, 0.64, 0.2, 1);
 }
 
-.teacher-page-turn-layer::after {
+.teacher-spread-page.page-static {
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.teacher-spread-page.page-under {
+  z-index: 1;
+}
+
+.teacher-spread-page.page-outgoing,
+.teacher-spread-page.page-incoming {
+  z-index: 12;
+}
+
+.teacher-spread-page.turning {
+  will-change: transform;
+}
+
+.teacher-spread-page::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 30;
+  border-radius: 20px;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(34, 21, 11, 0.04), rgba(34, 21, 11, 0.18));
+  transform: translateX(6px);
+  transition:
+    opacity calc(var(--teacher-turn-duration, 1080ms) * 0.48) ease,
+    transform calc(var(--teacher-turn-duration, 1080ms) * 0.48) ease;
+}
+
+.teacher-spread-page.turning::after {
+  opacity: 1;
+  transform: translateX(-6px);
+}
+
+.teacher-spread-leaf {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  transform-origin: 0 center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.teacher-spread-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.teacher-spread-face-front {
+  z-index: 2;
+  opacity: 1;
+  visibility: visible;
+  transform: translateZ(1px);
+}
+
+.teacher-spread-face-back {
+  overflow: hidden;
+  transform: rotateY(180deg) translateZ(1px);
+  background:
+    linear-gradient(90deg, rgba(255, 198, 198, 0.3) 0 2px, transparent 2px 100%),
+    repeating-linear-gradient(0deg, transparent 0 23px, var(--paper-line) 23px 24px),
+    var(--paper-bg);
+  box-shadow:
+    inset -28px 0 36px rgba(105, 70, 39, 0.18),
+    inset 12px 0 18px rgba(255, 255, 255, 0.45);
+}
+
+.teacher-spread-page.face-back-only .teacher-spread-face-front {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.teacher-spread-page-backdrop {
+  position: absolute;
+  inset: 0;
   border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04) 24%, rgba(0, 0, 0, 0.06) 100%),
+    linear-gradient(90deg, rgba(255, 198, 198, 0.28) 0 2px, transparent 2px 100%),
+    repeating-linear-gradient(0deg, transparent 0 23px, var(--paper-line) 23px 24px),
+    var(--paper-bg);
+}
+
+.teacher-spread-page-backshade {
+  position: absolute;
+  top: 0;
+  right: -4px;
+  bottom: 0;
+  width: 16px;
+  background: linear-gradient(90deg, rgba(54, 34, 18, 0), rgba(54, 34, 18, 0.09));
+}
+
+.teacher-spread-page-shell {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 24px;
+  background:
+    linear-gradient(90deg, rgba(255, 198, 198, 0.34) 0 2px, transparent 2px 100%),
+    repeating-linear-gradient(0deg, transparent 0 23px, var(--paper-line) 23px 24px),
+    var(--paper-bg);
+}
+
+.teacher-spread-page-curl {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
   pointer-events: none;
   opacity: 0;
-  background:
-    linear-gradient(94deg, rgba(255, 255, 255, .3) 0, rgba(255, 255, 255, .14) 12%, rgba(255, 255, 255, 0) 28%, rgba(28, 17, 8, .05) 62%, rgba(28, 17, 8, .2) 100%),
-    linear-gradient(90deg, rgba(34, 21, 11, .04), rgba(34, 21, 11, .16));
+  background: linear-gradient(
+    94deg,
+    rgba(255, 255, 255, 0.28) 0,
+    rgba(255, 255, 255, 0.12) 10%,
+    rgba(255, 255, 255, 0) 24%,
+    rgba(28, 17, 8, 0.04) 62%,
+    rgba(28, 17, 8, 0.18) 100%
+  );
+  transition: opacity calc(var(--teacher-turn-duration, 1080ms) * 0.64) ease-in-out;
 }
 
-.teacher-page-turn-layer.turn-forward {
-  animation: teacher-page-turn-forward 1350ms cubic-bezier(0.2, 0.72, 0.18, 1) forwards;
-}
-
-.teacher-page-turn-layer.turn-backward {
-  animation: teacher-page-turn-backward 1350ms cubic-bezier(0.2, 0.72, 0.18, 1) forwards;
-}
-
-.teacher-page-turn-layer::after {
-  animation: teacher-page-turn-gloss 1350ms ease-in-out forwards;
-}
-
-.teacher-page-turn-layer::before {
-  animation: teacher-page-turn-shadow 1350ms ease-in-out forwards;
+.teacher-spread-page.turning .teacher-spread-page-curl {
+  opacity: 1;
 }
 
 .teacher-notebook-container.is-page-turning > .teacher-notebook-content:not(.teacher-page-turn-content) {
   animation: teacher-page-under-reveal 360ms ease-out forwards;
-}
-
-@keyframes teacher-page-turn-forward {
-  from {
-    transform: rotateY(0deg);
-    opacity: 1;
-  }
-
-  55% {
-    opacity: .98;
-  }
-
-  to {
-    transform: rotateY(-176deg);
-    opacity: .72;
-  }
-}
-
-@keyframes teacher-page-turn-backward {
-  from {
-    transform: rotateY(0deg);
-    opacity: 1;
-  }
-
-  55% {
-    opacity: .98;
-  }
-
-  to {
-    transform: rotateY(176deg);
-    opacity: .72;
-  }
-}
-
-@keyframes teacher-page-turn-gloss {
-  0% {
-    opacity: 0;
-    transform: translateX(8px);
-  }
-
-  42% {
-    opacity: .92;
-    transform: translateX(-4px);
-  }
-
-  100% {
-    opacity: .18;
-    transform: translateX(-14px);
-  }
-}
-
-@keyframes teacher-page-turn-shadow {
-  0% {
-    opacity: 0;
-    transform: translateX(0);
-  }
-
-  45% {
-    opacity: .72;
-    transform: translateX(-12px);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateX(-24px);
-  }
 }
 
 @keyframes teacher-page-under-reveal {
@@ -422,7 +449,7 @@
 .teacher-shell-paperclip,
 .teacher-shell-doodle {
   position: absolute;
-  z-index: 1;
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -474,6 +501,7 @@
 .teacher-notebook-content .teaching-schedule-page,
 .teacher-notebook-content .teacher-overview-page,
 .teacher-notebook-content .teacher-documents-page {
+  isolation: isolate;
   height: 100%;
   min-height: 0;
   padding: 14px 18px 16px;
@@ -524,6 +552,55 @@
 
 .teacher-notebook-content .teaching-schedule-page {
   --teacher-schedule-scale: 0.62;
+}
+
+.teacher-notebook-content .schedule-sticker,
+.teacher-notebook-content .binder-clip,
+.teacher-notebook-content .title-pin,
+.teacher-notebook-content .weekly-pin,
+.teacher-notebook-content .month-pin,
+.teacher-notebook-content .today-pin,
+.teacher-notebook-content .title-tape,
+.teacher-notebook-content .weekly-tape,
+.teacher-notebook-content .month-tape,
+.teacher-notebook-content .today-tape,
+.teacher-notebook-content .leaf-doodle,
+.teacher-notebook-content .weekly-paperclip,
+.teacher-notebook-content .paperclip-green,
+.teacher-notebook-content .overview-push-pin,
+.teacher-notebook-content .overview-tape,
+.teacher-notebook-content .overview-paper-clip,
+.teacher-notebook-content .overview-doodle,
+.teacher-notebook-content .overview-notebook-holes,
+.teacher-notebook-content .overview-binder-clip,
+.teacher-notebook-content .teacher-doc-tape,
+.teacher-notebook-content .teacher-doc-paperclip,
+.teacher-notebook-content .teacher-doc-push-pin,
+.teacher-notebook-content .teacher-doc-doodle,
+.teacher-notebook-content .teacher-doc-doodle-loop,
+.teacher-notebook-content .doc-page-binder,
+.teacher-notebook-content .assignment-layout-decorations,
+.teacher-notebook-content .assignment-layout-sticker {
+  z-index: 0 !important;
+  pointer-events: none;
+}
+
+.teacher-notebook-content .schedule-header,
+.teacher-notebook-content .schedule-layout,
+.teacher-notebook-content .schedule-card,
+.teacher-notebook-content .schedule-title-note,
+.teacher-notebook-content .weekly-board,
+.teacher-notebook-content .calendar-card,
+.teacher-notebook-content .today-card,
+.teacher-notebook-content .overview-breadcrumb,
+.teacher-notebook-content .overview-stat-note,
+.teacher-notebook-content .overview-paper-card,
+.teacher-notebook-content .teacher-doc-header,
+.teacher-notebook-content .teacher-doc-body,
+.teacher-notebook-content .teacher-doc-content-card,
+.teacher-notebook-content .assignment-feature > *:not(.assignment-layout-decorations):not(.assignment-layout-sticker) {
+  position: relative;
+  z-index: 2;
 }
 
 .teacher-notebook-content .teacher-doc-main-tabs {

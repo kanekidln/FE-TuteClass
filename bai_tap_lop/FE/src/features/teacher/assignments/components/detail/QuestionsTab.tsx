@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type CSSProperties, useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 export function QuestionsTabOnly() {
@@ -194,11 +194,22 @@ export function QuestionAnswer({ label, text, active }: { label: string; text: s
   );
 }
 
+function chartColor(color: string) {
+  return color.match(/#([0-9a-fA-F]{3,8})/)?.[0] ?? color;
+}
+
+type ChartStyle = CSSProperties & {
+  "--assignment-chart-color": string;
+};
+
 export function Bar({ h, val, label, color }: { h: string; val: string; label: string; color: string }) {
   return (
     <div className="flex h-full flex-col items-center justify-end">
       <span className="mb-1 text-xs font-bold">{val}</span>
-      <div className={`w-8 rounded-t ${color}`} style={{ height: h }} />
+      <div
+        className="assignment-question-chart-bar w-8 rounded-t"
+        style={{ height: h, "--assignment-chart-color": chartColor(color) } as ChartStyle}
+      />
       <span className="mt-1.5 text-xs">{label}</span>
     </div>
   );
@@ -209,7 +220,10 @@ export function ScoreRow({ label, percent, width, color }: { label: string; perc
     <div className="mb-3 grid grid-cols-[60px_1fr] items-center gap-3 text-xs">
       <span>{label}</span>
       <div className="relative h-4 rounded bg-[#f0dfbf]">
-        <div className={`h-full rounded ${color}`} style={{ width }} />
+        <div
+          className="assignment-question-score-bar h-full rounded"
+          style={{ width, "--assignment-chart-color": chartColor(color) } as ChartStyle}
+        />
         <span
           className="absolute top-1/2 -translate-y-1/2 text-[11px] font-bold text-[#40516a]"
           style={{ left: `calc(${width} + 6px)` }}

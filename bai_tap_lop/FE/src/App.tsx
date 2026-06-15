@@ -5,6 +5,7 @@ import { TeacherScheduleWorkspace } from "./features/teacher/schedule";
 import { TeacherOverviewPage } from "./features/teacher/overview";
 import { TeacherDocumentsPage } from "./features/teacher/documents";
 import { AssignmentFeature } from "./features/teacher/assignments";
+import { LandingPage } from "./features/teacher/landingpage";
 import { TeacherNotebookShell, type TeacherNotebookSection } from "./features/teacher/layout";
 import {
   parseTeacherOverviewHash,
@@ -18,6 +19,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 
 type Workspace = "student" | "teacher";
 type TeacherRoute =
+  | { view: "landing" }
   | { view: "schedule"; reopenLessonDetail: boolean }
   | { view: "assignments" }
   | { view: "overview"; params: TeacherOverviewRouteParams }
@@ -43,6 +45,10 @@ function getRouteFromHash(hash: string): AppRoute {
 }
 
 function getTeacherRouteFromHash(hash: string): TeacherRoute {
+  if (hash === "#teacher/landing") {
+    return { view: "landing" };
+  }
+
   if (hash.startsWith("#teacher/assignments")) {
     return { view: "assignments" };
   }
@@ -99,7 +105,7 @@ export default function App() {
   };
 
   const activeTeacherSection: TeacherNotebookSection =
-    teacherRoute.view === "overview"
+    teacherRoute.view === "landing" || teacherRoute.view === "overview"
       ? "overview"
       : teacherRoute.view === "documents"
         ? "resources"
@@ -107,29 +113,31 @@ export default function App() {
           ? "assignments"
           : "schedule";
   const activeTeacherClassName =
-    teacherRoute.view === "schedule" || teacherRoute.view === "assignments" ? "Web Foundation K12" : teacherRoute.params.className;
+    teacherRoute.view === "landing" || teacherRoute.view === "schedule" || teacherRoute.view === "assignments" ? "Web Foundation K12" : teacherRoute.params.className;
 
-  const teacherContent =
-    teacherRoute.view === "assignments" ? (
+  const renderTeacherPage = (section: TeacherNotebookSection) =>
+    section === "assignments" ? (
       <AssignmentFeature />
-    ) : teacherRoute.view === "documents" ? (
+    ) : section === "resources" ? (
       <TeacherDocumentsPage
-        classId={teacherRoute.params.classId}
-        className={teacherRoute.params.className}
-        scope={teacherRoute.params.scope}
-        type={teacherRoute.params.type}
+        classId="web-foundation-k12"
+        className={activeTeacherClassName}
+        scope="sessions"
+        type="link"
       />
-    ) : teacherRoute.view === "overview" ? (
-      <TeacherOverviewPage classId={teacherRoute.params.classId} className={teacherRoute.params.className} />
+    ) : section === "overview" ? (
+      <TeacherOverviewPage classId="web-foundation-k12" className={activeTeacherClassName} />
     ) : (
-      <TeacherScheduleWorkspace reopenLessonDetail={teacherRoute.reopenLessonDetail} />
+      <TeacherScheduleWorkspace reopenLessonDetail={teacherRoute.view === "schedule" ? teacherRoute.reopenLessonDetail : false} />
     );
+
+  const teacherContent = teacherRoute.view === "landing" ? <LandingPage /> : renderTeacherPage(activeTeacherSection);
 
   return (
     <>
       <MainHeader
         activeFeature={
-          activeWorkspace === "teacher" ? (teacherRoute.view === "assignments" ? "assignments" : teacherRoute.view === "overview" ? "landing" : "schedule") : undefined
+          activeWorkspace === "teacher" ? (teacherRoute.view === "assignments" ? "assignments" : teacherRoute.view === "landing" || teacherRoute.view === "overview" ? "landing" : "schedule") : undefined
         }
         activeWorkspace={activeWorkspace}
         onWorkspaceChange={handleWorkspaceChange}
@@ -139,9 +147,11 @@ export default function App() {
       ) : activeRoute === "register" ? (
         <RegisterPage />
       ) : activeRoute === "teacher" ? (
-        <TeacherNotebookShell activeClassName={activeTeacherClassName} activeSection={activeTeacherSection}>
-          {teacherContent}
-        </TeacherNotebookShell>
+        teacherRoute.view === "landing" ? (
+          teacherContent
+        ) : (
+          <TeacherNotebookShell activeClassName={activeTeacherClassName} activeSection={activeTeacherSection} renderPage={renderTeacherPage} />
+        )
       ) : (
         <StudentNotebookWorkspace />
       )}

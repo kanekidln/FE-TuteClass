@@ -3082,3 +3082,39 @@ body:has(.assignment-feature),
 .teacher-notebook-content .assignment-feature .push-pin {
   background-color: currentColor !important;
 }
+
+.teacher-notebook-content .assignment-feature .assignment-question-chart .assignment-question-chart-bar,
+.teacher-notebook-content .assignment-feature .assignment-question-chart .assignment-question-score-bar {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .28), rgba(0, 0, 0, .06)),
+    var(--assignment-chart-color) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .38), 0 3px 6px rgba(47, 39, 28, .12) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-student-card {
+  --student-card-accent: #64748b;
+  border-color: #e5e7eb !important;
+  border-left: 4px solid var(--student-card-accent) !important;
+  background: #ffffff !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, .07) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-student-card.needs-grading {
+  --student-card-accent: #f59e0b;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-student-card.graded {
+  --student-card-accent: #16a34a;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-student-card.late {
+  --student-card-accent: #ef4444;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-student-card.missing {
+  --student-card-accent: #94a3b8;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-student-card .rounded-full {
+  background: #f1f5f9 !important;
+}
