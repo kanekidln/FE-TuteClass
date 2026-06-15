@@ -76,6 +76,13 @@ export function StudentCard({
   student: StudentSubmissionCard;
   onNavigate: (view: AssignmentView) => void;
 }) {
+  const cardToneMap = {
+    orange: "needs-grading",
+    green: "graded",
+    red: "late",
+    gray: "missing",
+  };
+
   const toneMap = {
     orange: "text-orange-700",
     green: "text-green-700",
@@ -90,7 +97,7 @@ export function StudentCard({
   };
 
   return (
-    <section className="soft-paper rounded-xl border border-[#e2cda7] p-3">
+    <section className={`assignment-student-card rounded-xl border p-3 ${cardToneMap[student.statusTone]}`}>
       <div className="flex gap-3">
         <Avatar icon={student.avatar} />
 

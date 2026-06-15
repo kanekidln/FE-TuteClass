@@ -1,4 +1,7 @@
 import { motion } from "framer-motion";
+import { createTeacherOverviewHash } from "../../overview/utils/teacherOverviewRoute";
+
+const teacherOverviewHref = createTeacherOverviewHash("Web Foundation K12");
 
 export function Hero() {
   return (
@@ -10,7 +13,7 @@ export function Hero() {
       <div className="hero-cta-wrap">
         <motion.a
           className="hero-cta"
-          href="#teacher/assignments"
+          href={teacherOverviewHref}
           whileHover={{ y: -3, scale: 1.025 }}
           whileTap={{ scale: 0.97 }}
           transition={{ type: "spring", stiffness: 360, damping: 24 }}
