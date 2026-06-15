@@ -45,7 +45,7 @@ export function QuestionsTabOnly() {
 
 export function QuestionOne({ expanded, onToggle }: { expanded: boolean; onToggle: () => void }) {
   return (
-    <section className="soft-paper overflow-hidden rounded-xl border border-[#e2cda7]">
+    <section className="soft-paper overflow-hidden rounded-xl border border-[#e2cda7]" data-question-type="mcq">
       <QuestionHeader
         no="1"
         badge="Trắc nghiệm"
@@ -89,7 +89,7 @@ export function QuestionOne({ expanded, onToggle }: { expanded: boolean; onToggl
 
 export function QuestionFour({ expanded, onToggle }: { expanded: boolean; onToggle: () => void }) {
   return (
-    <section className="soft-paper overflow-hidden rounded-xl border border-[#e2cda7]">
+    <section className="soft-paper overflow-hidden rounded-xl border border-[#e2cda7]" data-question-type="essay">
       <QuestionHeader
         no="4"
         badge="Tự luận"
@@ -161,7 +161,7 @@ export function QuestionHeader({ no, badge, score, right, answer, stat, color, e
         <span className={`grid h-7 w-7 place-items-center rounded-full text-sm font-bold text-white ${colorMap[color]}`}>
           {no}
         </span>
-        <b className="text-sm text-[#24804c]">{badge}</b>
+        <b className={`text-sm ${badge === "Tự luận" ? "text-[#5940a8]" : "text-[#24804c]"}`}>{badge}</b>
         <span className="text-xs text-[#6b7280]">•</span>
         <span className="text-sm">{score}</span>
       </div>
@@ -232,11 +232,11 @@ export function QuestionSummary({
   expanded: boolean;
   onToggle: () => void;
 }) {
-  const [no, type, score, label, answer, stat, tone] = data;
-  const color = tone === "orange" ? "orange" : tone === "red" ? "red" : "gray";
+  const [no, type, score, label, answer, stat] = data;
+  const color = type === "Tự luận" ? "purple" : "green";
 
   return (
-    <section className="soft-paper overflow-hidden rounded-xl border border-[#e2cda7]">
+    <section className="soft-paper overflow-hidden rounded-xl border border-[#e2cda7]" data-question-type={type === "Tự luận" ? "essay" : "mcq"}>
       <QuestionHeader
         no={no}
         badge={type}

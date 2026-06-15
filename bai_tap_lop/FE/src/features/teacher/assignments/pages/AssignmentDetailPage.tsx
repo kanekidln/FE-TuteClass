@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ArrowLeft, CheckCircle2, Edit3 } from "lucide-react";
-import { NotebookLayout } from "../../../../layouts/NotebookLayout";
 import type { AssignmentView } from "../types";
 import { DetailTabs, StudentsTabOnly, InfoBar, QuestionsTabOnly, ProgressCard, TasksCard, ActivityCard, AttentionCard, QuickFiles } from "../components/detail";
 
@@ -60,8 +59,7 @@ export function AssignmentDetailPage({ onNavigate }: AssignmentDetailPageProps) 
         }
       `}</style>
 
-      <NotebookLayout className="assignment-scroll-shell" contentClassName="assignment-notebook-content">
-        <div className="assignment-detail-vintage min-h-full rounded-xl p-2">
+      <div className="assignment-detail-vintage min-h-full rounded-xl p-2">
           <header className="paper assignment-detail-header flex flex-col gap-3 rounded-sm px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
               <button
@@ -128,8 +126,7 @@ export function AssignmentDetailPage({ onNavigate }: AssignmentDetailPageProps) 
               </div>
             </>
           )}
-        </div>
-      </NotebookLayout>
+      </div>
     </>
   );
 }

@@ -1,5 +1,4 @@
 import { ArrowLeft, Save, Send } from "lucide-react";
-import { NotebookLayout } from "../../../../layouts/NotebookLayout";
 import type { AssignmentView } from "../types";
 import { HeaderButton, StudentList, ProgressBar, SubmissionPanel, ScorePanel } from "../components/grade";
 
@@ -40,8 +39,7 @@ export function AssignmentGradingPage({ onNavigate }: AssignmentGradingPageProps
         }
       `}</style>
 
-      <NotebookLayout className="assignment-scroll-shell" contentClassName="assignment-notebook-content">
-        <div className="assignment-grading-page min-h-full rounded-xl p-2">
+      <div className="assignment-grading-page min-h-full rounded-xl p-2">
           <header className="paper mb-3 flex flex-col gap-3 rounded-sm px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
             <div className="min-w-0">
               <button
@@ -82,8 +80,7 @@ export function AssignmentGradingPage({ onNavigate }: AssignmentGradingPageProps
 
             <ScorePanel />
           </div>
-        </div>
-      </NotebookLayout>
+      </div>
     </>
   );
 }

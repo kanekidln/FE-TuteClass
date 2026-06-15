@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import type { FilterTone, QuestionNavItem } from "./types";
+import type { QuestionNavItem } from "./types";
 
 export function QuestionNavigator({
   activeNumber,
@@ -12,33 +12,8 @@ export function QuestionNavigator({
   onAddQuestion: (count?: number) => void;
   onSelect: (number: number) => void;
 }) {
-  const multipleChoiceCount = items.filter((item) => item.tone === "green").length;
-  const essayCount = items.length - multipleChoiceCount;
-
   return (
-    <section className="assignment-question-navigator soft-paper mt-2 rounded-xl p-2">
-      <div className="assignment-question-filter-panel">
-        <div className="assignment-question-filter-header">
-          <span>Bộ lọc</span>
-          <b>{items.length} câu</b>
-        </div>
-
-        <div className="assignment-question-filter__items">
-          <Filter active label="Tất cả" count={String(items.length)} />
-          <Filter label="Trắc nghiệm" count={String(multipleChoiceCount)} tone="green" />
-          <Filter label="Tự luận" count={String(essayCount)} tone="purple" />
-        </div>
-
-        <div className="assignment-question-legend">
-          <Legend c="bg-[#9bd594]" text="Trắc nghiệm" />
-          <Legend c="bg-[#d8c1ec]" text="Tự luận" />
-          <Legend c="bg-[#ef3030]" text="Chưa lưu" />
-          <Legend c="bg-[#1e9851]" text="Hoàn thành" />
-          <Legend c="bg-[#ff9a1f]" text="Cần kiểm tra" />
-        </div>
-      </div>
-
-      <div className="assignment-question-map-panel">
+      <section className="assignment-question-map-panel mt-2">
         <div className="assignment-question-map-header">
           <div>
             <span>Map câu hỏi</span>
@@ -102,45 +77,6 @@ export function QuestionNavigator({
             <Plus size={18} strokeWidth={3} />
           </button>
         </div>
-      </div>
-
-    </section>
-  );
-}
-
-export function Filter({
-  label,
-  count,
-  active = false,
-  tone,
-}: {
-  label: string;
-  count: string;
-  active?: boolean;
-  tone?: FilterTone;
-}) {
-  return (
-    <button
-      className={[
-        "rounded-md border px-2.5 py-1.5 text-xs font-extrabold",
-        active
-          ? "border-[#2d63ff] bg-[#edf3ff] text-[#1e56cf]"
-          : tone === "green"
-          ? "border-[#d5e6c6] bg-[#f5fbef] text-[#188344]"
-          : "border-[#e0d2e9] bg-[#fbf5ff] text-[#6c45b5]",
-      ].join(" ")}
-    >
-      {label}
-      <span className="ml-2 rounded-full bg-white/70 px-2">{count}</span>
-    </button>
-  );
-}
-
-export function Legend({ c, text }: { c: string; text: string }) {
-  return (
-    <span className="flex items-center gap-2">
-      <i className={`h-3 w-3 rounded-sm ${c}`} />
-      {text}
-    </span>
+      </section>
   );
 }

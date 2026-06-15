@@ -39,11 +39,38 @@
   overflow: hidden;
 }
 
+.teacher-notebook-content .assignment-feature {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding: 14px 18px 16px;
+  background: transparent;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(122, 132, 150, .55) transparent;
+}
+
+.teacher-notebook-content .assignment-feature::-webkit-scrollbar {
+  width: 7px;
+}
+
+.teacher-notebook-content .assignment-feature::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(122, 132, 150, .55);
+}
+
+.teacher-notebook-content .assignment-feature > * {
+  position: relative;
+  z-index: 2;
+}
+
 html:has(.assignment-feature),
 body:has(.assignment-feature),
 #root:has(.assignment-feature) {
   height: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .assignment-feature > .notebook-stage {
@@ -1751,10 +1778,7 @@ body:has(.assignment-feature),
 }
 
 .assignment-feature .assignment-question-navigator {
-  display: grid;
-  grid-template-columns: minmax(280px, .55fr) minmax(0, 1.45fr);
-  gap: .75rem;
-  align-items: start;
+  display: block;
 }
 
 .assignment-feature .assignment-question-filter-panel,
@@ -2009,4 +2033,1052 @@ body:has(.assignment-feature),
   .assignment-feature .assignment-edit-title-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* Teacher schedule visual system for assignment notebook */
+.assignment-feature {
+  --assignment-ink: #092b63;
+  --assignment-heading: #092b63;
+  --assignment-label: #59708e;
+  --assignment-muted: #718097;
+  --assignment-line: #eadcc7;
+  --assignment-line-strong: #e8dcc7;
+  --assignment-input-line: #d8c7ab;
+  --assignment-paper: #fffef8;
+  --assignment-paper-warm: #fff9ee;
+  --assignment-paper-yellow: #fff7e9;
+  --assignment-button-paper: #fffef8;
+  --assignment-surface: rgba(255, 249, 238, .78);
+  --assignment-surface-strong: rgba(255, 249, 238, .91);
+  --assignment-blue: #0b5eee;
+  --assignment-link: #0b5eee;
+  --assignment-purple: #8b5cf6;
+  --assignment-orange: #f4511e;
+  --assignment-orange-soft: #fff0d9;
+  --assignment-red: #ef3f35;
+  --assignment-mint: #22c55e;
+  --assignment-green: #15803d;
+  --assignment-blue-soft: #e8f1ff;
+  --assignment-green-soft: #eaf8ef;
+  --assignment-shadow-paper: 0 22px 44px rgba(93, 64, 30, .14);
+  --assignment-shadow-note: 0 14px 25px rgba(93, 64, 30, .12);
+  --assignment-shadow-note-hover: 0 18px 32px rgba(93, 64, 30, .16);
+  color: var(--assignment-ink);
+  font-family: "Nunito", system-ui, sans-serif;
+}
+
+.assignment-feature > .notebook-stage {
+  --side-marker-outset: 104px;
+  width: calc(100% - 64px);
+  min-width: 1300px;
+  max-width: 1380px;
+  height: calc(100vh - 12px);
+  margin: 4px auto 8px;
+  left: calc(var(--side-marker-outset) / -2);
+}
+
+.assignment-feature .notebook-page-shell {
+  height: 100%;
+}
+
+.assignment-feature .notebook-page-shell-inner {
+  height: calc(100% - 70px);
+}
+
+.assignment-feature .notebook-container.assignment-scroll-shell {
+  --notebook-height: 100%;
+  --spiral-left: -40px;
+  --spiral-column-width: 115px;
+  --spiral-image-width: 70px;
+  --spiral-gap: -4px;
+  min-height: 0;
+  height: 100%;
+  overflow: visible;
+  border: 1px solid var(--paper-border) !important;
+  border-radius: 24px;
+  background:
+    linear-gradient(90deg, rgba(255, 198, 198, .38) 0 2px, transparent 2px 100%),
+    repeating-linear-gradient(0deg, transparent 0 23px, var(--paper-line) 23px 24px),
+    var(--paper-bg);
+  box-shadow: var(--paper-shadow);
+}
+
+.assignment-feature .notebook-spiral {
+  top: 36px;
+  bottom: 36px;
+  z-index: 5;
+}
+
+.assignment-feature .spiral-ring {
+  background-size: var(--spiral-image-width) auto;
+}
+
+.assignment-feature .assignment-notebook-content {
+  z-index: 2;
+  border-radius: 20px;
+  background:
+    linear-gradient(rgba(255, 249, 238, .34), rgba(255, 249, 238, .34)),
+    repeating-linear-gradient(0deg, transparent 0 23px, rgba(96, 122, 154, .08) 23px 24px),
+    transparent;
+  scrollbar-color: rgba(122, 132, 150, .55) transparent;
+}
+
+.assignment-feature .assignment-notebook-content::before {
+  border-radius: 20px;
+  background-image:
+    radial-gradient(circle at 10% 12%, rgba(255, 255, 255, .42), transparent 18%),
+    radial-gradient(circle at 92% 88%, rgba(255, 248, 224, .5), transparent 20%);
+  background-size: auto;
+  opacity: 1;
+}
+
+.assignment-feature .assignment-notebook-content > * {
+  position: relative;
+  z-index: 2;
+}
+
+.assignment-feature .assignment-notebook-content::-webkit-scrollbar-track,
+.assignment-feature .custom-scrollbar::-webkit-scrollbar-track,
+.assignment-feature .assignment-list-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.assignment-feature .assignment-notebook-content::-webkit-scrollbar-thumb,
+.assignment-feature .custom-scrollbar::-webkit-scrollbar-thumb,
+.assignment-feature .assignment-list-scroll::-webkit-scrollbar-thumb {
+  border-color: rgba(255, 249, 238, .9);
+  background: rgba(122, 132, 150, .55);
+}
+
+.assignment-feature h1,
+.assignment-feature .assignment-edit-page h1,
+.assignment-feature .assignment-overview-page h1 {
+  color: #092b63;
+  font-family: "Playfair Display", "Merriweather", serif !important;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+.assignment-feature h2,
+.assignment-feature h3,
+.assignment-feature h4,
+.assignment-feature h5,
+.assignment-feature .font-handwritten-print,
+.assignment-feature .font-headline {
+  color: #092b63;
+  font-family: "Nunito", system-ui, sans-serif !important;
+  font-weight: 900 !important;
+}
+
+.assignment-feature header p,
+.assignment-feature .assignment-edit-page,
+.assignment-feature .assignment-overview-page,
+.assignment-feature .assignment-detail-page {
+  color: #092b63;
+  font-family: "Nunito", system-ui, sans-serif;
+}
+
+.assignment-feature .assignment-edit-page,
+.assignment-feature .assignment-overview-page,
+.assignment-feature .assignment-detail-page,
+.assignment-feature .vintage-page {
+  background: transparent !important;
+}
+
+.assignment-feature .assignment-edit-page .paper,
+.assignment-feature .assignment-edit-page .soft-paper {
+  border: 1px solid #e8dcc7;
+  background:
+    linear-gradient(90deg, rgba(255, 198, 198, .24) 0 2px, transparent 2px 100%),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(96, 122, 154, .1) 31px 32px),
+    #fffef8 !important;
+  box-shadow: var(--assignment-shadow-paper) !important;
+}
+
+.assignment-feature .paper-scrap,
+.assignment-feature .sticky-note,
+.assignment-feature .schedule-card,
+.assignment-feature .assignment-form,
+.assignment-feature .assignment-student-panel,
+.assignment-feature .assignment-question-filter-panel,
+.assignment-feature .assignment-question-map-panel,
+.assignment-feature .assignment-essay-score-panel {
+  border-color: #e8dcc7 !important;
+  background:
+    radial-gradient(circle at 18% 0, rgba(255, 255, 255, .72), transparent 32%),
+    rgba(255, 249, 238, .91) !important;
+  box-shadow: var(--assignment-shadow-paper) !important;
+}
+
+.assignment-feature input,
+.assignment-feature textarea,
+.assignment-feature select,
+.assignment-feature .assignment-edit-input {
+  border-color: #d8c7ab !important;
+  background: #fffaf1 !important;
+  color: #253b5a;
+}
+
+.assignment-feature button[class*="bg-blue-700"],
+.assignment-feature button[class*="bg-primary"],
+.assignment-feature .schedule-primary-button {
+  background: linear-gradient(135deg, #0b5eee, #0a46b7) !important;
+  box-shadow: 0 14px 28px rgba(11, 94, 238, .24) !important;
+}
+
+.assignment-feature button[class*="bg-white"],
+.assignment-feature button[class*="bg-blue-50"],
+.assignment-feature button[class*="bg-orange-50"],
+.assignment-feature button[class*="bg-emerald-50"] {
+  border-color: rgba(11, 94, 238, .28) !important;
+  background: rgba(255, 254, 248, .9) !important;
+  box-shadow: 0 12px 24px rgba(96, 67, 33, .09) !important;
+}
+
+.assignment-feature .assignment-layout-decorations,
+.assignment-feature .assignment-layout-sticker {
+  pointer-events: none;
+}
+
+.assignment-layout-decorations {
+  display: none;
+}
+
+.assignment-feature .assignment-layout-decorations {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.assignment-layout-sticker {
+  position: absolute;
+  z-index: 1;
+  filter: drop-shadow(0 9px 12px rgba(73, 51, 27, .16));
+}
+
+.assignment-layout-sticker.binder-clip {
+  left: 18px;
+  top: 38px;
+  width: 42px;
+  height: 54px;
+  border-radius: 8px 8px 14px 14px;
+  background: linear-gradient(#252525, #111);
+  transform: rotate(-7deg);
+}
+
+.assignment-layout-sticker.binder-clip::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: -16px;
+  width: 22px;
+  height: 22px;
+  border: 4px solid #2f2f2f;
+  border-bottom: 0;
+  border-radius: 14px 14px 0 0;
+}
+
+.assignment-layout-sticker.binder-clip i {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 14px;
+  height: 6px;
+  border-radius: 999px;
+  background: #f7f7f7;
+  opacity: .75;
+}
+
+.assignment-layout-sticker.book-note {
+  right: clamp(20px, 3vw, 46px);
+  top: 25px;
+  display: grid;
+  place-items: center;
+  width: 145px;
+  height: 112px;
+  border: 1px solid #ead9ad;
+  border-radius: 12px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 25px, rgba(186, 165, 92, .18) 25px 26px),
+    #fff5b8;
+  transform: rotate(6deg);
+}
+
+.assignment-layout-sticker.book-note i {
+  width: 52px;
+  height: 42px;
+  border: 4px solid #7b886f;
+  border-top: 0;
+  border-radius: 4px 4px 12px 12px;
+}
+
+.assignment-layout-sticker.bottom-pen {
+  left: 34px;
+  bottom: 22px;
+  width: 126px;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #092b63 0 68%, #f4a85c 68% 78%, #d8c7ab 78% 100%);
+  transform: rotate(-24deg);
+}
+
+.assignment-layout-sticker.notebook-corner {
+  right: -34px;
+  bottom: -42px;
+  width: 220px;
+  height: 155px;
+  border: 1px solid #e1d4c2;
+  border-radius: 18px 0 0 0;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 24px, rgba(92, 113, 145, .14) 24px 25px),
+    #fffef8;
+  opacity: .62;
+  transform: rotate(-3deg);
+}
+
+.assignment-layout-sticker.notebook-corner i {
+  position: absolute;
+  left: 18px;
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  background: repeating-linear-gradient(0deg, #6e788a 0 7px, transparent 7px 18px);
+}
+
+.assignment-layout-sticker.notebook-corner b {
+  position: absolute;
+  left: 46px;
+  top: 28px;
+  width: 78px;
+  height: 18px;
+  border-bottom: 4px solid #f4a85c;
+  border-radius: 50%;
+  transform: rotate(-9deg);
+}
+
+.assignment-layout-sticker.pastel-paper {
+  border-radius: 10px;
+  opacity: .52;
+}
+
+.assignment-layout-sticker.pastel-paper-blue {
+  right: 156px;
+  bottom: 8px;
+  width: 88px;
+  height: 54px;
+  background: #bbdff0;
+  transform: rotate(9deg);
+}
+
+.assignment-layout-sticker.pastel-paper-yellow {
+  right: 94px;
+  bottom: 30px;
+  width: 78px;
+  height: 50px;
+  background: #ffe59a;
+  transform: rotate(-11deg);
+}
+
+@media (max-width: 1180px) {
+  .assignment-feature > .notebook-stage {
+    left: 0;
+    width: calc(100% - 20px);
+    min-width: 0;
+    height: auto;
+    min-height: 100vh;
+    margin: 10px auto;
+  }
+
+  .assignment-feature .notebook-page-shell-inner,
+  .assignment-feature .notebook-container.assignment-scroll-shell {
+    height: auto;
+    min-height: 760px;
+  }
+
+  .assignment-feature .assignment-layout-sticker.book-note,
+  .assignment-feature .assignment-layout-sticker.bottom-pen,
+  .assignment-feature .assignment-layout-sticker.notebook-corner,
+  .assignment-feature .assignment-layout-sticker.pastel-paper {
+    opacity: .36;
+  }
+}
+
+/* Assignment inside TeacherNotebookShell: match schedule page card scale and palette. */
+.teacher-notebook-content .assignment-feature {
+  --assignment-schedule-blue: #0b5eee;
+  --assignment-schedule-blue-dark: #092b63;
+  --assignment-schedule-muted: #59708e;
+  --assignment-schedule-border: #e8dcc7;
+  --assignment-schedule-line: #eadcc7;
+  --assignment-schedule-paper: rgba(255, 249, 238, .91);
+  --assignment-schedule-paper-strong: #fffef8;
+  --assignment-schedule-shadow: 0 22px 44px rgba(93, 64, 30, .14);
+  --assignment-schedule-shadow-soft: 0 18px 32px rgba(96, 67, 33, .14);
+}
+
+.teacher-notebook-content .assignment-feature header.paper {
+  position: relative;
+  min-height: 118px;
+  margin-bottom: 16px !important;
+  padding: 18px 34px 17px 62px !important;
+  border: 1px solid #eadcc7 !important;
+  border-radius: 12px 28px 18px 12px !important;
+  background:
+    linear-gradient(90deg, rgba(255, 198, 198, .4) 0 2px, transparent 2px 100%),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(96, 122, 154, .13) 31px 32px),
+    #fffef8 !important;
+  box-shadow: var(--assignment-schedule-shadow-soft) !important;
+  transform: rotate(-.5deg);
+}
+
+.teacher-notebook-content .assignment-feature header.paper::before,
+.teacher-notebook-content .assignment-feature header.paper::after {
+  content: "";
+  position: absolute;
+  left: 25px;
+  width: 17px;
+  height: 17px;
+  border: 1px solid #e1d4c2;
+  border-radius: 50%;
+  background: var(--paper-bg);
+  box-shadow: inset 0 2px 4px rgba(91, 65, 38, .18);
+  pointer-events: none;
+}
+
+.teacher-notebook-content .assignment-feature header.paper::before {
+  top: 25px;
+}
+
+.teacher-notebook-content .assignment-feature header.paper::after {
+  top: 76px;
+}
+
+.teacher-notebook-content .assignment-feature h1,
+.teacher-notebook-content .assignment-feature .title-font {
+  color: var(--assignment-schedule-blue-dark) !important;
+  font-family: "Playfair Display", "Merriweather", serif !important;
+  font-size: clamp(33px, 4.2vw, 64px) !important;
+  font-weight: 900 !important;
+  line-height: .98 !important;
+  letter-spacing: 0 !important;
+  transform: none !important;
+}
+
+.teacher-notebook-content .assignment-feature header.paper p {
+  margin: 2px 0 0;
+  color: var(--assignment-schedule-muted) !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+}
+
+.teacher-notebook-content .assignment-feature h2 {
+  color: var(--assignment-schedule-blue-dark) !important;
+  font-size: 21px !important;
+  font-weight: 900 !important;
+}
+
+.teacher-notebook-content .assignment-feature .paper,
+.teacher-notebook-content .assignment-feature .soft-paper,
+.teacher-notebook-content .assignment-feature .paper-scrap,
+.teacher-notebook-content .assignment-feature .sticky-note,
+.teacher-notebook-content .assignment-feature .assignment-student-panel,
+.teacher-notebook-content .assignment-feature .assignment-question-filter-panel,
+.teacher-notebook-content .assignment-feature .assignment-question-map-panel,
+.teacher-notebook-content .assignment-feature .assignment-essay-score-panel {
+  border: 1px solid var(--assignment-schedule-border) !important;
+  border-radius: 22px !important;
+  background: var(--assignment-schedule-paper) !important;
+  box-shadow: var(--assignment-schedule-shadow) !important;
+}
+
+.teacher-notebook-content .assignment-feature .paper {
+  background:
+    linear-gradient(90deg, rgba(255, 198, 198, .28) 0 2px, transparent 2px 100%),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(96, 122, 154, .11) 31px 32px),
+    var(--assignment-schedule-paper-strong) !important;
+}
+
+.teacher-notebook-content .assignment-feature .soft-paper {
+  background: rgba(255, 249, 238, .91) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-list-scroll,
+.teacher-notebook-content .assignment-feature .weekly-table,
+.teacher-notebook-content .assignment-feature [class*="border-[#d8bd91]"] {
+  border-color: var(--assignment-schedule-line) !important;
+  background: rgba(255, 254, 248, .78) !important;
+}
+
+.teacher-notebook-content .assignment-feature [class*="bg-[#fff4df]"],
+.teacher-notebook-content .assignment-feature [class*="bg-[#fff8ea]"],
+.teacher-notebook-content .assignment-feature [class*="bg-[#fff7e8]"],
+.teacher-notebook-content .assignment-feature [class*="bg-[#fff9ed]"] {
+  background-color: #fff7e9 !important;
+}
+
+.teacher-notebook-content .assignment-feature [class*="text-[#1459d9]"],
+.teacher-notebook-content .assignment-feature [class*="text-blue-700"],
+.teacher-notebook-content .assignment-feature [class*="text-blue-800"] {
+  color: var(--assignment-schedule-blue) !important;
+}
+
+.teacher-notebook-content .assignment-feature button[class*="bg-[#1459d9]"],
+.teacher-notebook-content .assignment-feature button[class*="bg-blue-700"],
+.teacher-notebook-content .assignment-feature button[class*="bg-primary"] {
+  background: linear-gradient(135deg, #0b5eee, #0a46b7) !important;
+  box-shadow: 0 14px 28px rgba(11, 94, 238, .24) !important;
+}
+
+.teacher-notebook-content .assignment-feature [class*="text-green-700"],
+.teacher-notebook-content .assignment-feature [class*="text-emerald"] {
+  color: #15803d !important;
+}
+
+.teacher-notebook-content .assignment-feature [class*="text-red-600"],
+.teacher-notebook-content .assignment-feature [class*="text-rose"] {
+  color: #ef3f35 !important;
+}
+
+.teacher-notebook-content .assignment-feature [class*="text-violet"],
+.teacher-notebook-content .assignment-feature [class*="text-purple"] {
+  color: #8b5cf6 !important;
+}
+
+/* Card tone differentiation, borrowed from the teacher schedule page. */
+.teacher-notebook-content .assignment-feature {
+  --assignment-card-paper: rgba(255, 249, 238, .91);
+  --assignment-card-blue: linear-gradient(135deg, #f4f8f8, #e9f0f2);
+  --assignment-card-blue-border: rgba(210, 221, 232, .86);
+  --assignment-card-orange: linear-gradient(135deg, #fff0d9, #ffd8b8);
+  --assignment-card-orange-border: rgba(244, 81, 30, .38);
+  --assignment-card-green: linear-gradient(135deg, #f0fae8, #e5efd9);
+  --assignment-card-green-border: #9bb88d;
+  --assignment-card-red: linear-gradient(135deg, #fff1ed, #ffe2dc);
+  --assignment-card-red-border: #ffc9c1;
+  --assignment-card-purple: linear-gradient(135deg, #f5f0ff, #eadfff);
+  --assignment-card-purple-border: #c9b6ef;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-overview-page > .grid > section > .soft-paper {
+  border-color: var(--assignment-card-blue-border) !important;
+  background: var(--assignment-card-blue) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-overview-page aside > .soft-paper:nth-child(1) {
+  border-color: var(--assignment-card-orange-border) !important;
+  background: var(--assignment-card-orange) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-overview-page aside > .soft-paper:nth-child(2) {
+  border-color: var(--assignment-card-red-border) !important;
+  background: var(--assignment-card-red) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-overview-page .soft-paper:nth-child(1 of .soft-paper) h2 svg,
+.teacher-notebook-content .assignment-feature .assignment-overview-page aside > .soft-paper:nth-child(1) h2,
+.teacher-notebook-content .assignment-feature .assignment-overview-page aside > .soft-paper:nth-child(1) h2 svg {
+  color: #f4511e !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-overview-page aside > .soft-paper:nth-child(2) h2,
+.teacher-notebook-content .assignment-feature .assignment-overview-page aside > .soft-paper:nth-child(2) h2 svg {
+  color: #ef3f35 !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-overview-page .grid.grid-cols-1.gap-3 > div:nth-child(1) {
+  border-color: var(--assignment-card-orange-border) !important;
+  background: var(--assignment-card-orange) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-overview-page .grid.grid-cols-1.gap-3 > div:nth-child(2) {
+  border-color: var(--assignment-card-blue-border) !important;
+  background: var(--assignment-card-blue) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-create-page main > section.soft-paper {
+  border-color: var(--assignment-card-blue-border) !important;
+  background: var(--assignment-card-blue) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-create-page aside > section:nth-child(1) {
+  border-color: var(--assignment-card-green-border) !important;
+  background: var(--assignment-card-green) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-create-page aside > section:nth-child(2) {
+  border-color: var(--assignment-card-orange-border) !important;
+  background: var(--assignment-card-orange) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-detail-vintage .soft-paper:nth-child(4n + 1),
+.teacher-notebook-content .assignment-feature .assignment-grading-page .soft-paper:nth-child(4n + 1),
+.teacher-notebook-content .assignment-feature .assignment-edit-page .soft-paper:nth-child(4n + 1) {
+  border-color: var(--assignment-card-blue-border) !important;
+  background: var(--assignment-card-blue) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-detail-vintage .soft-paper:nth-child(4n + 2),
+.teacher-notebook-content .assignment-feature .assignment-grading-page .soft-paper:nth-child(4n + 2),
+.teacher-notebook-content .assignment-feature .assignment-edit-page .soft-paper:nth-child(4n + 2) {
+  border-color: var(--assignment-card-green-border) !important;
+  background: var(--assignment-card-green) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-detail-vintage .soft-paper:nth-child(4n + 3),
+.teacher-notebook-content .assignment-feature .assignment-grading-page .soft-paper:nth-child(4n + 3),
+.teacher-notebook-content .assignment-feature .assignment-edit-page .soft-paper:nth-child(4n + 3) {
+  border-color: var(--assignment-card-orange-border) !important;
+  background: var(--assignment-card-orange) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-detail-vintage .soft-paper:nth-child(4n),
+.teacher-notebook-content .assignment-feature .assignment-grading-page .soft-paper:nth-child(4n),
+.teacher-notebook-content .assignment-feature .assignment-edit-page .soft-paper:nth-child(4n) {
+  border-color: var(--assignment-card-purple-border) !important;
+  background: var(--assignment-card-purple) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-student-panel,
+.teacher-notebook-content .assignment-feature .assignment-question-map-panel {
+  border-color: var(--assignment-card-purple-border) !important;
+  background: var(--assignment-card-purple) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-question-filter-panel {
+  border-color: var(--assignment-card-blue-border) !important;
+  background: var(--assignment-card-blue) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-essay-score-panel,
+.teacher-notebook-content .assignment-feature .assignment-essay-card {
+  border-color: var(--assignment-card-orange-border) !important;
+  background: var(--assignment-card-orange) !important;
+}
+
+.teacher-notebook-content .assignment-feature .paper-scrap[class*="bg-emerald"],
+.teacher-notebook-content .assignment-feature .sticky-note[class*="bg-emerald"],
+.teacher-notebook-content .assignment-feature [class*="bg-green-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-emerald-50"] {
+  border-color: var(--assignment-card-green-border) !important;
+  background: var(--assignment-card-green) !important;
+}
+
+.teacher-notebook-content .assignment-feature .paper-scrap[class*="bg-orange"],
+.teacher-notebook-content .assignment-feature .paper-scrap[class*="bg-amber"],
+.teacher-notebook-content .assignment-feature .sticky-note[class*="bg-orange"],
+.teacher-notebook-content .assignment-feature .sticky-note[class*="bg-amber"],
+.teacher-notebook-content .assignment-feature [class*="bg-orange-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-amber-50"] {
+  border-color: var(--assignment-card-orange-border) !important;
+  background: var(--assignment-card-orange) !important;
+}
+
+.teacher-notebook-content .assignment-feature .paper-scrap[class*="bg-rose"],
+.teacher-notebook-content .assignment-feature .sticky-note[class*="bg-rose"],
+.teacher-notebook-content .assignment-feature [class*="bg-red-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-rose-50"] {
+  border-color: var(--assignment-card-red-border) !important;
+  background: var(--assignment-card-red) !important;
+}
+
+.teacher-notebook-content .assignment-feature .paper-scrap[class*="bg-blue"],
+.teacher-notebook-content .assignment-feature .sticky-note[class*="bg-blue"],
+.teacher-notebook-content .assignment-feature [class*="bg-blue-50"] {
+  border-color: var(--assignment-card-blue-border) !important;
+  background: var(--assignment-card-blue) !important;
+}
+
+/* Detail questions tab: only two tones, matching the question map. */
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type="mcq"] {
+  border-color: #b8cd94 !important;
+  background:
+    radial-gradient(circle at 18% 0, rgba(255, 255, 255, .66), transparent 32%),
+    linear-gradient(135deg, #f2f8e8, #e3efcf) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type="essay"] {
+  border-color: #c9aedc !important;
+  background:
+    radial-gradient(circle at 18% 0, rgba(255, 255, 255, .66), transparent 32%),
+    linear-gradient(135deg, #f7f0ff, #eadcf5) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type="mcq"] [class*="bg-[#2f9955]"],
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type="mcq"] [class*="bg-[#e99025]"],
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type="mcq"] [class*="bg-[#c9433f]"],
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type="mcq"] [class*="bg-[#9b9485]"] {
+  background-color: #24804c !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type="essay"] [class*="bg-[#5940a8]"],
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type="essay"] [class*="bg-[#e99025]"],
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type="essay"] [class*="bg-[#c9433f]"],
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type="essay"] [class*="bg-[#9b9485]"] {
+  background-color: #5940a8 !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-detail-question-map {
+  border-color: #d6c2e4 !important;
+  background:
+    linear-gradient(135deg, rgba(242, 248, 232, .72), rgba(234, 220, 245, .78)),
+    #fffef8 !important;
+}
+
+/* Keep question and grading work surfaces on the original beige paper. */
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type],
+.teacher-notebook-content .assignment-feature .assignment-grading-page .soft-paper,
+.teacher-notebook-content .assignment-feature .assignment-grading-page .assignment-essay-card,
+.teacher-notebook-content .assignment-feature .assignment-grading-page .assignment-essay-score-panel {
+  border-color: #e2cda7 !important;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(120, 76, 30, .07), transparent 25%),
+    radial-gradient(circle at 80% 85%, rgba(120, 76, 30, .06), transparent 24%),
+    linear-gradient(135deg, rgba(255, 255, 255, .62), rgba(246, 226, 190, .78)),
+    #fff6e6 !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list > [data-question-type] > button {
+  background:
+    linear-gradient(90deg, rgba(255, 198, 198, .18) 0 2px, transparent 2px 100%),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(96, 122, 154, .08) 31px 32px),
+    #fffaf1 !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-detail-question-body,
+.teacher-notebook-content .assignment-feature .assignment-question-detail-body,
+.teacher-notebook-content .assignment-feature .assignment-grading-page [class*="bg-white"],
+.teacher-notebook-content .assignment-feature .assignment-grading-page [class*="bg-[#fffdf8]"],
+.teacher-notebook-content .assignment-feature .assignment-grading-page [class*="bg-[#fffaf1]"],
+.teacher-notebook-content .assignment-feature .assignment-grading-page [class*="bg-[#fff7ec]"] {
+  background-color: #fffaf1 !important;
+}
+
+/* Overview assignment list returns to the original beige paper surface. */
+.teacher-notebook-content .assignment-feature .assignment-overview-page > .grid > section > .soft-paper,
+.teacher-notebook-content .assignment-feature .assignment-overview-page .assignment-list-scroll,
+.teacher-notebook-content .assignment-feature .assignment-overview-page .assignment-lesson-assignment-list {
+  border-color: #e2cda7 !important;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(120, 76, 30, .07), transparent 25%),
+    radial-gradient(circle at 80% 85%, rgba(120, 76, 30, .06), transparent 24%),
+    linear-gradient(135deg, rgba(255, 255, 255, .62), rgba(246, 226, 190, .78)),
+    #fff6e6 !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-overview-page .assignment-list-scroll > div > button,
+.teacher-notebook-content .assignment-feature .assignment-overview-page .assignment-list-scroll > div > div,
+.teacher-notebook-content .assignment-feature .assignment-overview-page .assignment-lesson-assignment-list > div {
+  border-color: #dec7a3 !important;
+  background-color: rgba(255, 248, 234, .82) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-overview-page .assignment-lesson-assignment-list > div:hover,
+.teacher-notebook-content .assignment-feature .assignment-overview-page .assignment-list-scroll > div > button:hover {
+  background-color: rgba(244, 231, 207, .84) !important;
+}
+
+/* Create assignment: source documents and AI preview stay on beige paper. */
+.teacher-notebook-content .assignment-feature .assignment-create-page main > section.soft-paper,
+.teacher-notebook-content .assignment-feature .assignment-create-page aside > section:nth-child(1),
+.teacher-notebook-content .assignment-feature .assignment-create-page aside > section:nth-child(1) [class*="bg-[#fffaf1]"],
+.teacher-notebook-content .assignment-feature .assignment-create-page main > section.soft-paper [class*="bg-[#f4f1dc]"],
+.teacher-notebook-content .assignment-feature .assignment-create-page main > section.soft-paper [class*="bg-[#fffaf1]"] {
+  border-color: #e2cda7 !important;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(120, 76, 30, .07), transparent 25%),
+    radial-gradient(circle at 80% 85%, rgba(120, 76, 30, .06), transparent 24%),
+    linear-gradient(135deg, rgba(255, 255, 255, .62), rgba(246, 226, 190, .78)),
+    #fff6e6 !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-create-page main > section.soft-paper [class*="bg-[#edf3ff]"],
+.teacher-notebook-content .assignment-feature .assignment-create-page main > section.soft-paper [class*="bg-[#e7dcff]"],
+.teacher-notebook-content .assignment-feature .assignment-create-page aside > section:nth-child(1) [class*="bg-[#eff6ff]"],
+.teacher-notebook-content .assignment-feature .assignment-create-page aside > section:nth-child(1) [class*="bg-[#d7efd7]"] {
+  border-color: #dec7a3 !important;
+  background-color: #fffaf1 !important;
+}
+
+/* Question cards should read as beige paper, not white panels. */
+.teacher-notebook-content .assignment-feature .assignment-create-page main > section.soft-paper [class*="bg-[#fffdf8]"],
+.teacher-notebook-content .assignment-feature .assignment-create-page main > section.soft-paper [class*="bg-white"],
+.teacher-notebook-content .assignment-feature .assignment-edit-page [class*="bg-[#fffdf8]"],
+.teacher-notebook-content .assignment-feature .assignment-edit-page [class*="bg-white"],
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list [class*="bg-[#fffdf8]"],
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list [class*="bg-white"],
+.teacher-notebook-content .assignment-feature .assignment-grading-page [class*="bg-[#fffdf8]"],
+.teacher-notebook-content .assignment-feature .assignment-grading-page [class*="bg-white"] {
+  border-color: #e2cda7 !important;
+  background-color: #fffaf1 !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-create-page main > section.soft-paper [class*="bg-[#fffaf1]"],
+.teacher-notebook-content .assignment-feature .assignment-edit-page [class*="bg-[#fffaf1]"],
+.teacher-notebook-content .assignment-feature .assignment-detail-question-list [class*="bg-[#fffaf1]"],
+.teacher-notebook-content .assignment-feature .assignment-grading-page [class*="bg-[#fffaf1]"] {
+  background-color: #fffaf1 !important;
+}
+
+/* Question map and filters should stay neutral, not multi-tone. */
+.teacher-notebook-content .assignment-feature .assignment-question-filter-panel,
+.teacher-notebook-content .assignment-feature .assignment-question-map-panel,
+.teacher-notebook-content .assignment-feature .assignment-detail-question-map,
+.teacher-notebook-content .assignment-feature .assignment-question-navigator {
+  border-color: #e2cda7 !important;
+  background:
+    radial-gradient(circle at 18% 0, rgba(255, 255, 255, .72), transparent 34%),
+    #fffaf1 !important;
+  box-shadow: 0 12px 24px rgba(82, 54, 24, .1) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-edit-page .assignment-question-navigator.soft-paper,
+.teacher-notebook-content .assignment-feature .assignment-question-navigator.soft-paper,
+.teacher-notebook-content .assignment-feature .assignment-question-map-grid,
+.teacher-notebook-content .assignment-feature .assignment-question-filter__items,
+.teacher-notebook-content .assignment-feature .assignment-question-legend {
+  background:
+    radial-gradient(circle at 18% 0, rgba(255, 255, 255, .68), transparent 34%),
+    #fffaf1 !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-question-navigator.soft-paper {
+  border-color: #e2cda7 !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-question-map-grid,
+.teacher-notebook-content .assignment-feature .assignment-question-filter__items,
+.teacher-notebook-content .assignment-feature .assignment-question-legend {
+  border-radius: 10px;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-essay-inline-score {
+  display: inline-grid;
+  grid-template-columns: auto 28px minmax(36px, auto) 28px auto;
+  align-items: center;
+  justify-self: end;
+  width: max-content;
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid #d8c7ab;
+  border-radius: 8px;
+  background: #fffaf1;
+  color: #40516a;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-essay-work-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  align-items: center;
+  gap: 10px;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-essay-inline-score span {
+  padding: 0 8px;
+  color: #66758a;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-essay-inline-score button {
+  display: grid;
+  min-height: 28px;
+  place-items: center;
+  border: 0;
+  border-left: 1px solid #d8c7ab;
+  border-radius: 0 !important;
+  background: #fff7e8 !important;
+  color: #1459d9;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-essay-inline-score strong {
+  min-width: 38px;
+  padding: 0 8px;
+  border-left: 1px solid #d8c7ab;
+  color: #c96a15;
+  font-size: 16px;
+  text-align: center;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-essay-inline-score em {
+  padding: 0 8px 0 6px;
+  color: #66758a;
+  font-style: normal;
+}
+
+@media (max-width: 720px) {
+  .teacher-notebook-content .assignment-feature .assignment-essay-work-header {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .teacher-notebook-content .assignment-feature .assignment-essay-inline-score {
+    justify-self: start;
+  }
+}
+
+.teacher-notebook-content .assignment-feature .assignment-question-filter-panel [class*="bg-[#f5fbef]"],
+.teacher-notebook-content .assignment-feature .assignment-question-filter-panel [class*="bg-[#fbf5ff]"],
+.teacher-notebook-content .assignment-feature .assignment-question-filter-panel [class*="bg-[#edf3ff]"],
+.teacher-notebook-content .assignment-feature .assignment-question-map-panel [class*="bg-[#f5fbef]"],
+.teacher-notebook-content .assignment-feature .assignment-question-map-panel [class*="bg-[#fbf5ff]"],
+.teacher-notebook-content .assignment-feature .assignment-question-map-panel [class*="bg-[#edf3ff]"] {
+  background-color: #fffdf8 !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-question-filter-panel [class*="border-[#d5e6c6]"],
+.teacher-notebook-content .assignment-feature .assignment-question-filter-panel [class*="border-[#e0d2e9]"],
+.teacher-notebook-content .assignment-feature .assignment-question-filter-panel [class*="border-[#2d63ff]"],
+.teacher-notebook-content .assignment-feature .assignment-question-map-panel [class*="border-[#d5e6c6]"],
+.teacher-notebook-content .assignment-feature .assignment-question-map-panel [class*="border-[#e0d2e9]"],
+.teacher-notebook-content .assignment-feature .assignment-question-map-panel [class*="border-[#2d63ff]"] {
+  border-color: #e2cda7 !important;
+}
+
+/* Restore the original beige paper tone for assignment cards/components. */
+.teacher-notebook-content .assignment-feature .soft-paper,
+.teacher-notebook-content .assignment-feature .paper-scrap,
+.teacher-notebook-content .assignment-feature .sticky-note,
+.teacher-notebook-content .assignment-feature .assignment-form,
+.teacher-notebook-content .assignment-feature .assignment-student-panel,
+.teacher-notebook-content .assignment-feature .assignment-question-map-panel,
+.teacher-notebook-content .assignment-feature .assignment-detail-question-map,
+.teacher-notebook-content .assignment-feature .assignment-essay-card,
+.teacher-notebook-content .assignment-feature .assignment-essay-score-panel,
+.teacher-notebook-content .assignment-feature .assignment-list-scroll,
+.teacher-notebook-content .assignment-feature .assignment-lesson-assignment-list,
+.teacher-notebook-content .assignment-feature section[class*="rounded"][class*="border"],
+.teacher-notebook-content .assignment-feature aside[class*="rounded"][class*="border"],
+.teacher-notebook-content .assignment-feature article[class*="rounded"][class*="border"],
+.teacher-notebook-content .assignment-feature div[class*="rounded"][class*="border"] {
+  border-color: #d8c7ab !important;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(120, 76, 30, .07), transparent 25%),
+    radial-gradient(circle at 80% 85%, rgba(120, 76, 30, .06), transparent 24%),
+    linear-gradient(135deg, rgba(255, 255, 255, .62), rgba(246, 226, 190, .78)),
+    #fff6e6 !important;
+  box-shadow:
+    0 8px 18px rgba(82, 54, 24, .12),
+    inset 0 0 0 1px rgba(144, 109, 65, .18) !important;
+}
+
+.teacher-notebook-content .assignment-feature .paper,
+.teacher-notebook-content .assignment-feature header.paper {
+  border-color: #d8c7ab !important;
+  background:
+    linear-gradient(to bottom, rgba(56, 91, 145, .12) 1px, transparent 1px),
+    radial-gradient(circle at 20% 30%, rgba(98, 63, 25, .08), transparent 28%),
+    linear-gradient(135deg, rgba(255, 255, 255, .72), rgba(247, 232, 201, .82)),
+    #fff8ea !important;
+  background-size: 100% 32px, 100% 100%, 100% 100%, 100% 100% !important;
+  box-shadow:
+    0 12px 24px rgba(82, 54, 24, .15),
+    inset 0 0 0 1px rgba(136, 101, 58, .18) !important;
+}
+
+.teacher-notebook-content .assignment-feature input,
+.teacher-notebook-content .assignment-feature textarea,
+.teacher-notebook-content .assignment-feature select,
+.teacher-notebook-content .assignment-feature .assignment-edit-input {
+  border-color: #d8c7ab !important;
+  background: #fffaf1 !important;
+}
+
+/* Document-style light surfaces for assignment: bright cards, color only on small badges/icons. */
+.teacher-notebook-content .assignment-feature {
+  --assignment-doc-surface: rgba(255, 253, 249, .94);
+  --assignment-doc-card: rgba(255, 255, 255, .74);
+  --assignment-doc-list: rgba(255, 255, 255, .62);
+  --assignment-doc-border: rgba(222, 213, 201, .88);
+  --assignment-doc-shadow: 0 5px 10px rgba(87, 63, 36, .05);
+  --assignment-doc-shadow-card: 0 14px 26px rgba(87, 63, 36, .12);
+}
+
+.teacher-notebook-content .assignment-feature .paper:not(header),
+.teacher-notebook-content .assignment-feature .soft-paper,
+.teacher-notebook-content .assignment-feature .paper-scrap,
+.teacher-notebook-content .assignment-feature .sticky-note,
+.teacher-notebook-content .assignment-feature .assignment-form,
+.teacher-notebook-content .assignment-feature .assignment-student-panel,
+.teacher-notebook-content .assignment-feature .assignment-question-map-panel,
+.teacher-notebook-content .assignment-feature .assignment-detail-question-map,
+.teacher-notebook-content .assignment-feature .assignment-essay-card,
+.teacher-notebook-content .assignment-feature .assignment-essay-score-panel,
+.teacher-notebook-content .assignment-feature .assignment-list-scroll,
+.teacher-notebook-content .assignment-feature .assignment-lesson-assignment-list,
+.teacher-notebook-content .assignment-feature section[class*="rounded"][class*="border"],
+.teacher-notebook-content .assignment-feature aside[class*="rounded"][class*="border"],
+.teacher-notebook-content .assignment-feature article[class*="rounded"][class*="border"],
+.teacher-notebook-content .assignment-feature div[class*="rounded"][class*="border"] {
+  border-color: var(--assignment-doc-border) !important;
+  background: var(--assignment-doc-surface) !important;
+  box-shadow: var(--assignment-doc-shadow-card) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-list-scroll > div > div,
+.teacher-notebook-content .assignment-feature .assignment-lesson-assignment-list > div,
+.teacher-notebook-content .assignment-feature div[class*="rounded"][class*="border"] > div[class*="rounded"][class*="border"],
+.teacher-notebook-content .assignment-feature section[class*="rounded"][class*="border"] > div[class*="rounded"][class*="border"] {
+  border-color: var(--assignment-doc-border) !important;
+  background: var(--assignment-doc-card) !important;
+  box-shadow: var(--assignment-doc-shadow) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-question-map-grid,
+.teacher-notebook-content .assignment-feature .assignment-question-detail-body,
+.teacher-notebook-content .assignment-feature .assignment-create-page main > section.soft-paper [class*="bg-[#f4f1dc]"] {
+  background: var(--assignment-doc-list) !important;
+}
+
+.teacher-notebook-content .assignment-feature [class*="bg-blue-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-green-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-emerald-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-orange-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-amber-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-rose-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-red-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-purple-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-violet-50"],
+.teacher-notebook-content .assignment-feature [class*="bg-[#fff"],
+.teacher-notebook-content .assignment-feature [class*="bg-white"] {
+  background-color: rgba(255, 255, 255, .74) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-question-map-item,
+.teacher-notebook-content .assignment-feature .session-badge,
+.teacher-notebook-content .assignment-feature span[class*="bg-[#"],
+.teacher-notebook-content .assignment-feature i[class*="bg-[#"] {
+  box-shadow: none !important;
+}
+
+.teacher-notebook-content .assignment-feature div[class*="rounded"],
+.teacher-notebook-content .assignment-feature label[class*="rounded"] {
+  border-color: var(--assignment-doc-border) !important;
+}
+
+.teacher-notebook-content .assignment-feature div[class*="bg-[#"],
+.teacher-notebook-content .assignment-feature label[class*="bg-[#"] {
+  background-color: rgba(255, 255, 255, .74) !important;
+  background-image: none !important;
+}
+
+.teacher-notebook-content .assignment-feature div[class*="rounded"][class*="bg-[#"],
+.teacher-notebook-content .assignment-feature label[class*="rounded"][class*="bg-[#"] {
+  background: rgba(255, 255, 255, .74) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-question-map-item.is-mcq,
+.teacher-notebook-content .assignment-feature .assignment-question-map-item.is-essay,
+.teacher-notebook-content .assignment-feature .assignment-question-map-item.assignment-question-map-add {
+  background: rgba(255, 255, 255, .74) !important;
+}
+
+.teacher-notebook-content .assignment-feature .assignment-question-map-done,
+.teacher-notebook-content .assignment-feature .assignment-question-map-alert,
+.teacher-notebook-content .assignment-feature .assignment-question-map-warning,
+.teacher-notebook-content .assignment-feature .push-pin {
+  background-color: currentColor !important;
 }

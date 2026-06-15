@@ -1,5 +1,4 @@
 import { ArrowLeft, Save, Send, X } from "lucide-react";
-import { NotebookLayout } from "../../../../layouts/NotebookLayout";
 import type { AssignmentView } from "../types";
 import { PaperTexture, TopButton, UploadPanel, PreviewPanel, SettingsPanel } from "../components/create";
 
@@ -39,8 +38,7 @@ export function AssignmentCreatePage({ onNavigate }: AssignmentCreatePageProps) 
         }
       `}</style>
 
-      <NotebookLayout className="assignment-scroll-shell" contentClassName="assignment-notebook-content">
-        <div className="assignment-create-page relative min-h-full overflow-x-hidden rounded-xl p-2 text-[#14294f]">
+      <div className="assignment-create-page relative min-h-full overflow-x-hidden rounded-xl p-2 text-[#14294f]">
           <PaperTexture />
 
         <header className="paper relative z-10 mb-3 flex flex-col gap-3 rounded-sm px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
@@ -85,8 +83,7 @@ export function AssignmentCreatePage({ onNavigate }: AssignmentCreatePageProps) 
             </section>
           </aside>
         </main>
-        </div>
-      </NotebookLayout>
+      </div>
     </>
   );
 }

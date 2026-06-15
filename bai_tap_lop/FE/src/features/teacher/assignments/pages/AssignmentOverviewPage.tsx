@@ -10,7 +10,6 @@ import {
   Send,
   TriangleAlert,
 } from "lucide-react";
-import { NotebookLayout } from "../../../../layouts/NotebookLayout";
 import type { AssignmentView } from "../types";
 import { AssignmentGroup, IconButton, Panel, lessons, students, upcoming } from "../components/overview";
 
@@ -111,7 +110,6 @@ export function AssignmentOverviewPage({ onNavigate }: AssignmentOverviewPagePro
         }
       `}</style>
 
-      <NotebookLayout className="assignment-scroll-shell" contentClassName="assignment-notebook-content">
       <div className="vintage-page assignment-overview-page min-h-full rounded-xl p-2">
         <div className="grid w-full grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(300px,330px)]">
           <section className="min-w-0 space-y-3">
@@ -163,23 +161,11 @@ export function AssignmentOverviewPage({ onNavigate }: AssignmentOverviewPagePro
                     </button>
 
                     {index === 0 && openLessons.has(item.title) && (
-                      <div className="grid grid-cols-1 gap-3 bg-[#fff8ea]/80 p-3 xl:grid-cols-2">
+                      <div className="bg-[#fff8ea]/80 p-3">
                         <AssignmentGroup
-                          color="orange"
-                          title="Tự luận"
-                          count="2"
                           rows={[
                             ["Bài tập chương 2", "18/23 nộp", "8 cần chấm"],
                             ["Chứng minh đồ thị hàm số", "15/23 nộp", "7 cần chấm"],
-                          ]}
-                          onOpenAssignment={() => onNavigate("detail")}
-                          onNavigate={onNavigate}
-                        />
-                        <AssignmentGroup
-                          color="blue"
-                          title="Trắc nghiệm"
-                          count="3"
-                          rows={[
                             ["Quiz 1 – Hàm số bậc hai", "22/23 nộp", "0 cần chấm"],
                             ["Quiz 2 – Đồ thị", "21/23 nộp", "0 cần chấm"],
                             ["Quiz 3 – Bất phương trình", "20/23 nộp", "0 cần chấm"],
@@ -256,7 +242,6 @@ export function AssignmentOverviewPage({ onNavigate }: AssignmentOverviewPagePro
           </aside>
         </div>
       </div>
-      </NotebookLayout>
     </>
   );
 }

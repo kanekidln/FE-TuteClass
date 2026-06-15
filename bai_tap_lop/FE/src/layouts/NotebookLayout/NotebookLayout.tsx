@@ -20,18 +20,27 @@ const teacherSectionMarkers: SectionMarkerItem[] = [
   { key: "discussion", label: "Trao đổi" }
 ];
 
+function navigateHash(hash: string) {
+  if (window.location.hash === hash) {
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+    return;
+  }
+
+  window.location.hash = hash;
+}
+
 function navigateTeacherSection(sectionKey: SectionKey) {
   if (sectionKey === "schedule") {
-    window.location.hash = "#teacher/schedule";
+    navigateHash("#teacher/schedule");
     return;
   }
 
   if (sectionKey === "assignments") {
-    window.location.hash = "#teacher/assignments";
+    navigateHash("#teacher/assignments");
     return;
   }
 
-  window.location.hash = "#teacher/landing";
+  navigateHash("#teacher/landing");
 }
 
 type NotebookLayoutProps = {

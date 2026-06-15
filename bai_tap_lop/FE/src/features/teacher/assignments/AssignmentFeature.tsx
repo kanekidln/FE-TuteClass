@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AssignmentCreatePage } from "./pages/AssignmentCreatePage";
 import { AssignmentDetailPage } from "./pages/AssignmentDetailPage";
 import { AssignmentEditPage } from "./pages/AssignmentEditPage";
@@ -9,6 +9,20 @@ import "./assignments.css";
 
 export function AssignmentFeature() {
   const [view, setView] = useState<AssignmentView>("overview");
+
+  useEffect(() => {
+    const resetToOverview = () => {
+      if (window.location.hash.startsWith("#teacher/assignments")) {
+        setView("overview");
+      }
+    };
+
+    window.addEventListener("hashchange", resetToOverview);
+
+    return () => {
+      window.removeEventListener("hashchange", resetToOverview);
+    };
+  }, []);
 
   return (
     <div className="assignment-feature">

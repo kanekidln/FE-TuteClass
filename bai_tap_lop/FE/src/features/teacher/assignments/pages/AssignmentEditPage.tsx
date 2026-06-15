@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import { NotebookLayout } from "../../../../layouts/NotebookLayout";
 import type { AssignmentView } from "../types";
 import { Texture, Decor, Header, TopForm, QuestionNavigator, EditingQuestion, ScanImportCard, DescriptionCard, FilesCard, OptionsCard } from "../components/edit";
 import type { EditableQuestionType } from "../components/edit";
@@ -104,8 +103,7 @@ export function AssignmentEditPage({ onNavigate }: AssignmentEditPageProps) {
         }
       `}</style>
 
-      <NotebookLayout className="assignment-scroll-shell" contentClassName="assignment-notebook-content">
-        <div className="assignment-edit-page relative min-h-full overflow-x-hidden rounded-xl p-2">
+      <div className="assignment-edit-page relative min-h-full overflow-x-hidden rounded-xl p-2">
           <Texture />
           <Decor />
 
@@ -142,8 +140,7 @@ export function AssignmentEditPage({ onNavigate }: AssignmentEditPageProps) {
               </aside>
             </main>
           </div>
-        </div>
-      </NotebookLayout>
+      </div>
     </>
   );
 }

@@ -2,15 +2,11 @@ import { useState } from "react";
 import { Edit3, Eye, MoreHorizontal } from "lucide-react";
 import type { AssignmentGroupProps } from "./types";
 
-export function AssignmentGroup({ color, title, count, rows, onOpenAssignment, onNavigate }: AssignmentGroupProps) {
+export function AssignmentGroup({ rows, onOpenAssignment, onNavigate }: AssignmentGroupProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   return (
-    <div className="rounded-lg border border-[#dfc49a] bg-[#fff8ec]/80 p-3">
-      <h3 className={`mb-3 font-extrabold ${color === "blue" ? "text-[#2367d1]" : "text-[#e67e22]"}`}>
-        {title} <span>({count})</span>
-      </h3>
-
+    <div className="assignment-lesson-assignment-list rounded-lg border border-[#dfc49a] bg-[#fff8ec]/80 p-3">
       {rows.map((r, i) => (
         <div
           key={r[0]}

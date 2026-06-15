@@ -1,94 +1,130 @@
 import { useEffect, useState } from "react";
 import { MainHeader } from "./components/MainHeader";
 import { StudentNotebookWorkspace } from "./features/student/notebook";
-import { AssignmentFeature } from "./features/teacher/assignments";
-import { LandingPage } from "./features/teacher/landingpage";
 import { TeacherScheduleWorkspace } from "./features/teacher/schedule";
+import { TeacherOverviewPage } from "./features/teacher/overview";
+import { TeacherDocumentsPage } from "./features/teacher/documents";
+import { AssignmentFeature } from "./features/teacher/assignments";
+import { TeacherNotebookShell, type TeacherNotebookSection } from "./features/teacher/layout";
+import {
+  parseTeacherOverviewHash,
+  type TeacherOverviewRouteParams,
+  type TeacherOverviewRouteState,
+} from "./features/teacher/overview/utils/teacherOverviewRoute";
+import { parseTeacherDocumentsHash } from "./features/teacher/documents/utils/teacherDocumentsRoute";
+import type { TeacherDocumentsRouteParams } from "./features/teacher/documents";
 
 type Workspace = "student" | "teacher";
-type TeacherFeature = "landing" | "schedule" | "assignments";
-
-type AppRoute =
-  | {
-      workspace: "student";
-    }
-  | {
-      workspace: "teacher";
-      feature: TeacherFeature;
-    };
+type TeacherRoute =
+  | { view: "schedule"; reopenLessonDetail: boolean }
+  | { view: "assignments" }
+  | { view: "overview"; params: TeacherOverviewRouteParams }
+  | { view: "documents"; params: TeacherDocumentsRouteParams };
 
 const DEFAULT_WORKSPACE: Workspace = "student";
-const DEFAULT_STUDENT_ROUTE: AppRoute = { workspace: "student" };
-const DEFAULT_TEACHER_ROUTE: AppRoute = { workspace: "teacher", feature: "landing" };
 
-function getRouteFromHash(hash: string): AppRoute {
-  const [workspace, feature] = hash.replace(/^#\/?/, "").split("/");
-
-  if (workspace === "teacher") {
-    if (feature === "schedule" || feature === "assignments" || feature === "landing") {
-      return { workspace, feature };
-    }
-
-    return DEFAULT_TEACHER_ROUTE;
-  }
-
-  return DEFAULT_STUDENT_ROUTE;
+function getWorkspaceFromHash(hash: string): Workspace {
+  return hash.startsWith("#teacher") ? "teacher" : DEFAULT_WORKSPACE;
 }
 
-function getHashFromRoute(route: AppRoute) {
-  if (route.workspace === "student") {
-    return "#student";
+function getTeacherRouteFromHash(hash: string): TeacherRoute {
+  if (hash.startsWith("#teacher/assignments")) {
+    return { view: "assignments" };
   }
 
-  return `#${route.workspace}/${route.feature}`;
-}
+  const documentsParams = parseTeacherDocumentsHash(hash);
 
-function getDefaultRouteForWorkspace(workspace: Workspace): AppRoute {
-  return workspace === "teacher" ? { ...DEFAULT_TEACHER_ROUTE } : { ...DEFAULT_STUDENT_ROUTE };
+  if (documentsParams) {
+    return { view: "documents", params: documentsParams };
+  }
+
+  const overviewParams = parseTeacherOverviewHash(hash);
+
+  if (overviewParams) {
+    return { view: "overview", params: overviewParams };
+  }
+
+  const state = window.history.state as TeacherOverviewRouteState | null;
+
+  return { view: "schedule", reopenLessonDetail: Boolean(state?.returnToLessonDetail) };
 }
 
 export default function App() {
-  const [route, setRoute] = useState<AppRoute>(() => getRouteFromHash(window.location.hash));
+  const [activeWorkspace, setActiveWorkspace] = useState<Workspace>(() => getWorkspaceFromHash(window.location.hash));
+  const [teacherRoute, setTeacherRoute] = useState<TeacherRoute>(() => getTeacherRouteFromHash(window.location.hash));
 
   useEffect(() => {
-    const syncRoute = () => {
-      setRoute(getRouteFromHash(window.location.hash));
+    const syncWorkspace = () => {
+      setActiveWorkspace(getWorkspaceFromHash(window.location.hash));
+      setTeacherRoute(getTeacherRouteFromHash(window.location.hash));
     };
 
     if (!window.location.hash) {
-      window.history.replaceState(null, "", getHashFromRoute(DEFAULT_STUDENT_ROUTE));
+      window.history.replaceState(null, "", "#student");
     }
 
-    syncRoute();
-    window.addEventListener("hashchange", syncRoute);
+    syncWorkspace();
+    window.addEventListener("hashchange", syncWorkspace);
 
     return () => {
-      window.removeEventListener("hashchange", syncRoute);
+      window.removeEventListener("hashchange", syncWorkspace);
     };
   }, []);
 
   const handleWorkspaceChange = (workspace: Workspace) => {
-    const nextRoute = getDefaultRouteForWorkspace(workspace);
-    const nextHash = getHashFromRoute(nextRoute);
+    const nextHash = `#${workspace}`;
 
     if (window.location.hash !== nextHash) {
       window.location.hash = nextHash;
       return;
     }
 
-    setRoute(nextRoute);
+    setActiveWorkspace(workspace);
   };
 
-  const activeWorkspace = route.workspace;
-  const activeFeature = route.workspace === "teacher" ? route.feature : undefined;
+  const activeTeacherSection: TeacherNotebookSection =
+    teacherRoute.view === "overview"
+      ? "overview"
+      : teacherRoute.view === "documents"
+        ? "resources"
+        : teacherRoute.view === "assignments"
+          ? "assignments"
+          : "schedule";
+  const activeTeacherClassName =
+    teacherRoute.view === "schedule" || teacherRoute.view === "assignments" ? "Web Foundation K12" : teacherRoute.params.className;
+
+  const teacherContent =
+    teacherRoute.view === "assignments" ? (
+      <AssignmentFeature />
+    ) : teacherRoute.view === "documents" ? (
+      <TeacherDocumentsPage
+        classId={teacherRoute.params.classId}
+        className={teacherRoute.params.className}
+        scope={teacherRoute.params.scope}
+        type={teacherRoute.params.type}
+      />
+    ) : teacherRoute.view === "overview" ? (
+      <TeacherOverviewPage classId={teacherRoute.params.classId} className={teacherRoute.params.className} />
+    ) : (
+      <TeacherScheduleWorkspace reopenLessonDetail={teacherRoute.reopenLessonDetail} />
+    );
 
   return (
     <>
-      <MainHeader activeFeature={activeFeature} activeWorkspace={activeWorkspace} onWorkspaceChange={handleWorkspaceChange} />
-      {route.workspace === "student" && <StudentNotebookWorkspace />}
-      {route.workspace === "teacher" && route.feature === "landing" && <LandingPage />}
-      {route.workspace === "teacher" && route.feature === "schedule" && <TeacherScheduleWorkspace />}
-      {route.workspace === "teacher" && route.feature === "assignments" && <AssignmentFeature />}
+      <MainHeader
+        activeFeature={
+          activeWorkspace === "teacher" ? (teacherRoute.view === "assignments" ? "assignments" : teacherRoute.view === "overview" ? "landing" : "schedule") : undefined
+        }
+        activeWorkspace={activeWorkspace}
+        onWorkspaceChange={handleWorkspaceChange}
+      />
+      {activeWorkspace === "teacher" ? (
+        <TeacherNotebookShell activeClassName={activeTeacherClassName} activeSection={activeTeacherSection}>
+          {teacherContent}
+        </TeacherNotebookShell>
+      ) : (
+        <StudentNotebookWorkspace />
+      )}
     </>
   );
 }

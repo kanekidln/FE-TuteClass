@@ -1,3 +1,5 @@
+import "./SpiralBinding.css";
+
 const RING_COUNT = 14;
 
 export function SpiralBinding() {
