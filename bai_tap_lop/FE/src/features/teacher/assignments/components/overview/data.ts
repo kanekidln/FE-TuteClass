@@ -1,0 +1,120 @@
+export const lessons = [
+  {
+    title: "Buổi 15 – Hàm số bậc hai",
+    date: "13/06/2026",
+    submit: "18/23 nộp",
+    late: "5 chưa nộp",
+    grade: "10 cần chấm",
+    open: true,
+  },
+  {
+    title: "Buổi 14 – Hệ phương trình bậc nhất hai ẩn",
+    date: "06/06/2026",
+    submit: "21/23 nộp",
+    late: "2 chưa nộp",
+    grade: "5 cần chấm",
+  },
+  {
+    title: "Buổi 13 – Phương trình bậc hai",
+    date: "30/05/2026",
+    submit: "20/23 nộp",
+    late: "3 chưa nộp",
+    grade: "6 cần chấm",
+  },
+  {
+    title: "Buổi 12 – Định lý Viète",
+    date: "23/05/2026",
+    submit: "23/23 nộp",
+    late: "0 chưa nộp",
+    grade: "0 cần chấm",
+  },
+  {
+    title: "Buổi 11 – Căn bậc hai",
+    date: "16/05/2026",
+    submit: "22/23 nộp",
+    late: "1 chưa nộp",
+    grade: "3 cần chấm",
+  },
+  {
+    title: "Buổi 10 – Biến đổi căn thức",
+    date: "09/05/2026",
+    submit: "19/23 nộp",
+    late: "4 chưa nộp",
+    grade: "9 cần chấm",
+  },
+  {
+    title: "Buổi 09 – Hệ thức lượng trong tam giác",
+    date: "02/05/2026",
+    submit: "23/23 nộp",
+    late: "0 chưa nộp",
+    grade: "2 cần chấm",
+  },
+  {
+    title: "Buổi 08 – Đường tròn ngoại tiếp",
+    date: "25/04/2026",
+    submit: "20/23 nộp",
+    late: "3 chưa nộp",
+    grade: "5 cần chấm",
+  },
+  {
+    title: "Buổi 07 – Góc nội tiếp",
+    date: "18/04/2026",
+    submit: "18/23 nộp",
+    late: "5 chưa nộp",
+    grade: "7 cần chấm",
+  },
+  {
+    title: "Buổi 06 – Tứ giác nội tiếp",
+    date: "11/04/2026",
+    submit: "21/23 nộp",
+    late: "2 chưa nộp",
+    grade: "4 cần chấm",
+  },
+  {
+    title: "Buổi 05 – Ôn tập chương hình học",
+    date: "04/04/2026",
+    submit: "22/23 nộp",
+    late: "1 chưa nộp",
+    grade: "6 cần chấm",
+  },
+  {
+    title: "Buổi 04 – Đường thẳng song song",
+    date: "28/03/2026",
+    submit: "20/23 nộp",
+    late: "3 chưa nộp",
+    grade: "5 cần chấm",
+  },
+  {
+    title: "Buổi 03 – Tam giác đồng dạng",
+    date: "21/03/2026",
+    submit: "19/23 nộp",
+    late: "4 chưa nộp",
+    grade: "8 cần chấm",
+  },
+  {
+    title: "Buổi 02 – Tỉ số lượng giác",
+    date: "14/03/2026",
+    submit: "21/23 nộp",
+    late: "2 chưa nộp",
+    grade: "3 cần chấm",
+  },
+  {
+    title: "Buổi 01 – Khởi động chương trình",
+    date: "07/03/2026",
+    submit: "23/23 nộp",
+    late: "0 chưa nộp",
+    grade: "1 cần chấm",
+  },
+];
+
+export const upcoming = [
+  ["Buổi 15", "Hàm số bậc hai", "13/06/2026", "5 học sinh chưa nộp", "Còn 1 ngày"],
+  ["Buổi 16", "Reading Homework", "15/06/2026", "2 học sinh chưa nộp", "Còn 2 ngày"],
+  ["Buổi 14", "Kiểm tra chương 2", "16/06/2026", "4 học sinh chưa nộp", "Còn 3 ngày"],
+];
+
+export const students = [
+  ["👨🏻", "Minh", "3 lần nộp muộn"],
+  ["👩🏻", "Lan", "Chưa nộp 2 bài liên tiếp"],
+  ["👨🏻‍🦱", "Nam", "Điểm trung bình giảm 20%"],
+];

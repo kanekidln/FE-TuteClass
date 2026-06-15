@@ -1,0 +1,213 @@
+@import "../../styles/notebook.css";
+@import "../../components/SpiralBinding/SpiralBinding.css";
+
+.notebook-page-shell {
+  position: relative;
+}
+
+.notebook-page-shell-inner {
+  position: relative;
+  overflow: visible;
+}
+
+.class-fold-tab-wrap {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  overflow: hidden;
+}
+
+.class-fold-tab-wrap.current-tab-wrap {
+  z-index: 12;
+}
+
+.class-tab-nav {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  min-width: 72px;
+  min-height: 68px;
+  border: 1px solid rgba(234, 220, 199, .9);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  color: white;
+  cursor: pointer;
+  background: linear-gradient(135deg, #0b5eee, #0a46b7);
+  box-shadow: 0 14px 28px rgba(11, 94, 238, .24);
+  transition: background-color .15s ease, transform .08s ease, box-shadow .15s ease;
+}
+
+.class-tab-nav:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 18px 34px rgba(11, 94, 238, .3);
+  transform: translateY(1px);
+}
+
+.class-tab-nav svg {
+  width: 26px;
+  height: 26px;
+}
+
+.class-fold-tab-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.class-tab-list {
+  display: grid;
+  grid-template-columns: 72px repeat(4, minmax(0, 1fr)) 72px;
+  gap: 8px;
+  align-items: start;
+  padding: 0 16px;
+}
+
+.class-fold-tab {
+  --fold: 16px;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid rgba(234, 220, 199, .9);
+  clip-path: polygon(0 0, calc(100% - var(--fold)) 0, 100% var(--fold), 100% 100%, 0 100%);
+  box-shadow: 0 16px 28px rgba(93, 64, 30, .12);
+  transition: filter .15s ease, transform .08s ease, box-shadow .15s ease;
+}
+
+.class-fold-tab::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--fold);
+  height: var(--fold);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .55) 0%, rgba(255, 255, 255, .25) 45%, rgba(0, 0, 0, .18) 100%);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  border-bottom-left-radius: 5px;
+  pointer-events: none;
+}
+
+.class-fold-tab:hover {
+  filter: brightness(.97);
+  box-shadow: 0 20px 32px rgba(93, 64, 30, .15);
+  transform: translateY(1px);
+}
+
+.current-tab-wrap .class-fold-tab {
+  transform: translateY(0);
+}
+
+.class-fold-tab.current-class {
+  background: linear-gradient(135deg, #9ec6ff, #76b3ff);
+  border-color: #2563eb;
+}
+
+.class-fold-tab.english-class {
+  background: linear-gradient(135deg, #ffe59a, #ffd447);
+}
+
+.class-fold-tab.physics-class {
+  background: linear-gradient(135deg, #ffb3a3, #ff8c7b);
+}
+
+.class-fold-tab.literature-class {
+  background: linear-gradient(135deg, #d6c1ff, #b8a0ff);
+}
+
+.side-page-markers {
+  position: absolute;
+  top: 0;
+  right: -104px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8rem;
+  z-index: auto;
+}
+
+.page-marker {
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 120px;
+  height: 88px;
+  padding: 10px 12px;
+  background-color: var(--marker-bg);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 900;
+  color: white;
+  text-decoration: none;
+  transition: background-color .15s, transform .1s, box-shadow .15s ease;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  z-index: 1;
+  overflow: hidden;
+  box-shadow: 0 16px 28px rgba(93, 64, 30, .16);
+}
+
+.page-marker svg,
+.page-marker span {
+  position: relative;
+  z-index: 1;
+}
+
+.page-marker svg {
+  flex: 0 0 auto;
+}
+
+.page-marker:hover {
+  background-color: var(--marker-hover);
+  box-shadow: 0 20px 32px rgba(93, 64, 30, .2);
+  transform: translateX(3px);
+  z-index: 4;
+}
+
+.page-marker.active {
+  transform: translateX(4px);
+  box-shadow: 0 20px 32px rgba(15, 23, 42, .2);
+  z-index: 14;
+}
+
+.page-marker.overview {
+  --marker-bg: #0d9488;
+  --marker-hover: #0f766e;
+}
+
+.page-marker.schedule {
+  --marker-bg: #2563eb;
+  --marker-hover: #1d4ed8;
+}
+
+.page-marker.assignments {
+  --marker-bg: #4f46e5;
+  --marker-hover: #4338ca;
+}
+
+.page-marker.resources {
+  --marker-bg: #0284c7;
+  --marker-hover: #0369a1;
+}
+
+.page-marker.discussion {
+  --marker-bg: #dc2626;
+  --marker-hover: #b91c1c;
+}

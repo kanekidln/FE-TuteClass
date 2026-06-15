@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import type { SectionKey, SectionMarkerItem } from "../..";
-import "./SidePageMarkers.css";
 
 const icons: Record<SectionKey, ReactNode> = {
   overview: (

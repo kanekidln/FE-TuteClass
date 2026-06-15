@@ -20,7 +20,7 @@
 .spiral-ring {
   width: var(--spiral-column-width);
   height: 38px;
-  background-image: url("../../../../../assets/images/Notebook-Spiral-Binding-Single.png");
+  background-image: url("../../assets/images/Notebook-Spiral-Binding-Single.png");
   background-size: var(--spiral-image-width) auto;
   background-repeat: no-repeat;
   background-position: center;

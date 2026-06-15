@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
+import { SpiralBinding } from "../../../../../components/SpiralBinding";
 import { ClassTabs } from "../../components/ClassTabs";
 import { SidePageMarkers } from "../../components/SidePageMarkers";
-import { SpiralBinding } from "../../components/SpiralBinding/SpiralBinding";
 import type { ClassKey, ClassTabItem, SectionKey, SectionMarkerItem } from "../..";
 import "./NotebookLayout.css";
 

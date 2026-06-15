@@ -1,4 +1,7 @@
 @import "../../../../../styles/notebook.css";
+@import "../../../../../components/SpiralBinding/SpiralBinding.css";
+@import "../../components/ClassTabs/ClassTabs.css";
+@import "../../components/SidePageMarkers/SidePageMarkers.css";
 
 .notebook-page-shell {
   position: relative;

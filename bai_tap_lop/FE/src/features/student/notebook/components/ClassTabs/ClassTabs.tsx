@@ -1,5 +1,4 @@
 import type { ClassKey, ClassTabItem } from "../..";
-import "./ClassTabs.css";
 
 type ClassTabsProps = {
   activeClassKey: ClassKey;

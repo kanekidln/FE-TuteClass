@@ -1,0 +1,507 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Tuteclass | Simplify Your Teaching Workflow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            tuteNavy: '#0f3c65',
+            tuteOrange: '#e75f25',
+            tuteBeige: '#f8f9ff',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-animations">
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } } 
+  .animate-fade-in { animation: fadeInUp 0.8s ease-out forwards; } 
+  .reveal-node { opacity: 0; transition: all 0.6s ease-out; } 
+  .reveal-node.visible { opacity: 1; transform: translateY(0); } 
+  .wavy-path { stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawLine 4s cubic-bezier(0.45, 0, 0.55, 1) forwards; } 
+  @keyframes drawLine { to { stroke-dashoffset: 0; } } 
+  @keyframes scanPulse { 0%, 100% { opacity: 0.28; transform: translate(-50%, -50%) scale(0.92); } 50% { opacity: 0.82; transform: translate(-50%, -50%) scale(1.14); } }
+  @keyframes pathSignal { to { stroke-dashoffset: -56; } }
+  .planet-shape { position: relative; width: 50px; height: 50px; border-radius: 999px; margin-bottom: 10px; overflow: visible; isolation: isolate; translate: 0 0; scale: 1; transition: all 0.45s cubic-bezier(0.33, 1, 0.68, 1); box-shadow: inset -13px -15px 21px rgba(24,42,58,0.28), inset 8px 8px 16px rgba(255,246,218,0.5), 0 17px 30px -18px rgba(15,60,101,0.78); }
+  .planet-shape::before { content: ""; position: absolute; inset: -9px -15px; display: none; border: 1px solid rgba(79,125,158,0.42); border-radius: 50%; transform: rotate(-18deg) scaleY(0.42); z-index: -2; transition: all 0.45s cubic-bezier(0.33, 1, 0.68, 1); }
+  .planet-shape::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle at 29% 23%, rgba(255,226,142,0.72) 0 8%, rgba(120,186,218,0.24) 21%, transparent 44%), linear-gradient(135deg, rgba(255,202,102,0.24), transparent 43%, rgba(31,75,111,0.26)); z-index: 4; pointer-events: none; }
+  .planet-surface { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; z-index: 1; }
+  .planet-surface::before { content: ""; position: absolute; inset: -8%; border-radius: inherit; opacity: 0.86; background: radial-gradient(ellipse at 26% 34%, rgba(255,190,84,0.52) 0 8%, transparent 9%), radial-gradient(ellipse at 60% 30%, currentColor 0 13%, transparent 14%), radial-gradient(ellipse at 36% 62%, currentColor 0 17%, transparent 18%), radial-gradient(ellipse at 73% 68%, currentColor 0 12%, transparent 13%), radial-gradient(ellipse at 17% 74%, rgba(65,150,190,0.34) 0 10%, transparent 11%); filter: blur(0.15px); }
+  .planet-surface::after { content: ""; position: absolute; inset: 18% -20%; opacity: 0.42; background: repeating-linear-gradient(8deg, transparent 0 8px, rgba(55,145,190,0.58) 9px 11px, transparent 12px 18px); transform: rotate(-10deg); }
+  .planet-moon { position: absolute; right: -7px; top: 3px; width: 10px; height: 10px; border-radius: 999px; background: radial-gradient(circle at 30% 25%, #fff 0 18%, #dce7ef 48%, #aeb9c1 100%); border: 1px solid rgba(15,60,101,0.16); box-shadow: inset -3px -4px 7px rgba(15,60,101,0.22), 0 5px 12px -7px rgba(15,60,101,0.9); z-index: 5; }
+  .workflow-card { min-width: 96px; background: linear-gradient(180deg, rgba(11,29,48,0.78), rgba(15,60,101,0.68)); box-shadow: 0 0 0 1px rgba(180,220,255,0.14), 0 12px 26px -20px rgba(8,24,44,0.92); color: rgba(255,255,255,0.92); letter-spacing: 0.04em; text-transform: uppercase; transition: all 0.45s cubic-bezier(0.33, 1, 0.68, 1); z-index: 10; } 
+  .station-code { display: block; margin-bottom: 4px; color: rgba(149,211,255,0.86); font-size: 8px; line-height: 1; font-weight: 800; letter-spacing: 0.12em; }
+  .node-orange .station-code { color: rgba(255,190,138,0.9); }
+  .workflow-item { pointer-events: auto; cursor: pointer; transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1); } 
+  .workflow-item::before { content: ""; position: absolute; left: 50%; top: 25px; width: 86px; height: 86px; border: 1px solid rgba(149,211,255,0.32); border-radius: 999px; opacity: 0; transform: translate(-50%, -50%) scale(0.86); pointer-events: none; transition: opacity 0.25s ease; }
+  .node-orange::before { border-color: rgba(255,178,118,0.36); }
+  .workflow-item:hover::before,
+  .workflow-item:focus-visible::before { animation: scanPulse 1.35s ease-in-out infinite; opacity: 0.66; }
+  .workflow-item:focus-visible { outline: 3px solid rgba(149,211,255,0.5); outline-offset: 8px; border-radius: 12px; }
+  .workflow-item:hover { z-index: 50; transform: scale(1.06); } 
+  .node-orange .planet-shape { background: radial-gradient(circle at 32% 26%, #fff4e8 0 11%, #f69b65 35%, #e75f25 66%, #9c2f0c 100%); color: rgba(255,235,207,0.72); border: 1px solid rgba(231,95,37,0.45); }
+  .node-navy .planet-shape { background: radial-gradient(circle at 32% 26%, #edf8ff 0 11%, #66a1c8 35%, #0f6d91 62%, #0f3c65 100%); color: rgba(208,239,227,0.7); border: 1px solid rgba(15,60,101,0.36); }
+  .node-orange .planet-shape::before { border-color: rgba(231,95,37,0.38); }
+  .node-navy .planet-shape::before { border-color: rgba(15,60,101,0.28); }
+  .node-orange .workflow-card { border-color: rgba(255,169,102,0.34); }
+  .node-navy .workflow-card { border-color: rgba(133,204,255,0.32); }
+  .node-orange:hover .workflow-card { background: linear-gradient(180deg, rgba(231,95,37,0.88), rgba(92,35,15,0.82)); border-color: rgba(255,211,163,0.68); color: white; box-shadow: 0 0 18px rgba(231,95,37,0.34), 0 16px 30px -22px rgba(231,95,37,0.85); }
+  .node-navy:hover .workflow-card { background: linear-gradient(180deg, rgba(28,118,173,0.86), rgba(10,42,76,0.86)); border-color: rgba(159,221,255,0.68); color: white; box-shadow: 0 0 18px rgba(62,169,230,0.32), 0 16px 30px -22px rgba(15,60,101,0.8); }
+  .node-orange:hover .planet-shape { color: #c96c2e; border-color: rgba(218,126,54,0.72); translate: 0 -12px; scale: 1.12; box-shadow: inset -12px -14px 20px rgba(126,60,28,0.28), inset 8px 8px 15px rgba(255,198,95,0.42), 0 20px 32px -20px rgba(197,97,40,0.82); }
+  .node-navy:hover .planet-shape { color: #237bb0; border-color: rgba(55,138,194,0.72); translate: 0 -12px; scale: 1.12; box-shadow: inset -12px -14px 20px rgba(26,80,124,0.3), inset 8px 8px 15px rgba(113,199,226,0.38), 0 20px 32px -20px rgba(38,119,173,0.86); }
+  .workflow-item:hover .planet-shape::before { transform: rotate(-18deg) scaleY(0.42) scale(1.16); border-color: rgba(68,150,206,0.66); }
+  .workflow-item:hover .planet-2::before { transform: rotate(13deg) scaleY(0.32) scale(1.12); border-color: rgba(237,188,86,0.72); }
+  .workflow-item:hover .planet-6::before { transform: rotate(20deg) scaleY(0.34) scale(1.14); border-color: rgba(87,186,247,0.76); }
+  .roadmap-path-active { stroke-dasharray: 1224; stroke-dashoffset: 1224; opacity: 0; transition: stroke-dashoffset 0.55s ease, opacity 0.25s ease; filter: drop-shadow(0 0 8px rgba(255,255,255,0.4)); }
+  .roadmap-signal { animation: pathSignal 1.7s linear infinite; }
+  .node-final .workflow-card { background: linear-gradient(180deg, rgba(25,148,240,0.84), rgba(20,43,113,0.9)); border-color: rgba(177,230,255,0.48); color: white; box-shadow: 0 0 18px rgba(87,186,247,0.3), 0 16px 30px -22px rgba(15,60,101,0.8); }
+  .node-final:hover .workflow-card { background: linear-gradient(180deg, rgba(231,95,37,0.9), rgba(20,43,113,0.9)); border-color: rgba(255,225,188,0.72); box-shadow: 0 0 22px rgba(87,186,247,0.38), 0 16px 30px -22px rgba(231,95,37,0.85); }
+  .node-final .planet-shape { background: radial-gradient(circle at 32% 26%, #fff4e8 0 10%, #f2a56e 30%, #e75f25 55%, #0f3c65 100%); color: rgba(255,238,210,0.76); border: 1px solid rgba(60,150,226,0.62); }
+  .node-final:hover .planet-shape { border-color: rgba(52,154,230,0.82); translate: 0 -12px; scale: 1.14; box-shadow: inset -12px -14px 20px rgba(26,77,139,0.34), inset 8px 8px 15px rgba(125,211,245,0.38), 0 20px 34px -19px rgba(40,126,203,0.9); }
+  .node-orange .planet-1 { width: 44px; height: 44px; background: radial-gradient(circle at 30% 24%, #ffe2b1 0 8%, #b89764 28%, #756145 62%, #3d3328 100%); color: rgba(92,68,42,0.78); border-color: rgba(154,118,70,0.62); }
+  .planet-1::before { display: none; }
+  .planet-1 .planet-surface::before { opacity: 0.96; background: radial-gradient(circle at 61% 30%, #332f2b 0 8%, transparent 9%), radial-gradient(circle at 34% 58%, #2c2a28 0 11%, transparent 12%), radial-gradient(circle at 76% 69%, #77706a 0 9%, transparent 10%), radial-gradient(circle at 22% 24%, #b7aea1 0 8%, transparent 9%), radial-gradient(circle at 46% 78%, #49423a 0 6%, transparent 7%); }
+  .planet-1 .planet-surface::after { inset: 0; opacity: 0.24; background: linear-gradient(130deg, transparent 0 34%, rgba(255,232,184,0.28) 35% 42%, transparent 43% 100%); transform: rotate(0); }
+  .node-navy .planet-2 { width: 50px; height: 50px; background: radial-gradient(circle at 28% 23%, #ffe18b 0 9%, #f0b246 30%, #c66f26 63%, #7a3d1c 100%); color: rgba(255,189,60,0.76); border-color: rgba(210,122,36,0.62); }
+  .planet-2::before { inset: -8px -23px; display: block; border-width: 3px; transform: rotate(13deg) scaleY(0.32); border-color: rgba(237,188,86,0.52); box-shadow: 0 0 0 3px rgba(255,217,134,0.16), inset 0 0 0 2px rgba(122,61,28,0.12); }
+  .planet-2 .planet-surface::before { opacity: 0.5; background: radial-gradient(ellipse at 62% 36%, #d48625 0 18%, transparent 19%), radial-gradient(ellipse at 34% 64%, #9e4f18 0 22%, transparent 23%); filter: blur(1px); }
+  .planet-2 .planet-surface::after { opacity: 0.8; background: repeating-linear-gradient(-12deg, rgba(235,151,38,0.6) 0 5px, rgba(154,73,22,0.48) 6px 11px, rgba(247,188,67,0.48) 12px 17px); transform: rotate(10deg); filter: blur(0.3px); }
+  .node-orange .planet-3 { width: 52px; height: 52px; background: radial-gradient(circle at 30% 23%, #a8e7ff 0 8%, #21a6e8 26%, #1478c6 56%, #0b4a87 100%); color: rgba(47,171,90,0.92); border-color: rgba(38,157,221,0.66); }
+  .planet-3::before { display: none; }
+  .planet-3 .planet-moon { right: auto; left: -9px; top: 9px; width: 8px; height: 8px; }
+  .planet-3 .planet-surface::before { opacity: 0.94; transform: rotate(12deg); background: radial-gradient(ellipse at 35% 36%, #2f9a5b 0 17%, transparent 18%), radial-gradient(ellipse at 66% 28%, #4c9f5c 0 12%, transparent 13%), radial-gradient(ellipse at 62% 70%, #245f42 0 16%, transparent 17%), radial-gradient(ellipse at 26% 72%, rgba(74,118,128,0.58) 0 10%, transparent 11%); }
+  .planet-3 .planet-surface::after { opacity: 0.58; background: radial-gradient(ellipse at 45% 33%, rgba(229,247,255,0.72) 0 14%, transparent 15%), radial-gradient(ellipse at 70% 58%, rgba(217,243,250,0.56) 0 11%, transparent 12%), repeating-linear-gradient(8deg, transparent 0 9px, rgba(60,139,182,0.42) 10px 12px, transparent 13px 20px); transform: rotate(-8deg); }
+  .node-navy .planet-4 { width: 48px; height: 48px; background: radial-gradient(circle at 31% 23%, #ffb46c 0 8%, #e05f2f 31%, #b72e24 62%, #6f1d1a 100%); color: rgba(151,43,32,0.86); border-color: rgba(204,65,38,0.64); }
+  .planet-4::before { display: none; }
+  .planet-4 .planet-surface::before { background: radial-gradient(ellipse at 50% 8%, #ffd6b5 0 9%, transparent 10%), radial-gradient(circle at 66% 32%, #57201c 0 11%, transparent 12%), radial-gradient(circle at 32% 66%, #f0a05e 0 10%, transparent 11%), radial-gradient(ellipse at 62% 72%, #5b211d 0 16%, transparent 17%); }
+  .planet-4 .planet-surface::after { opacity: 0.36; background: repeating-linear-gradient(3deg, transparent 0 6px, rgba(242,161,94,0.5) 7px 9px, transparent 10px 17px); }
+  .node-orange .planet-5 { width: 60px; height: 60px; background: radial-gradient(circle at 31% 23%, #ffe49c 0 7%, #e5a446 24%, #c96c2e 51%, #7b4127 100%); color: rgba(163,78,33,0.76); border-color: rgba(208,120,44,0.64); }
+  .planet-5::before { display: none; }
+  .planet-5 .planet-moon { right: -10px; top: 37px; width: 7px; height: 7px; opacity: 0.95; }
+  .planet-5 .planet-surface::before { opacity: 0.86; background: radial-gradient(ellipse at 72% 58%, #9d3f2d 0 11%, #d88556 12% 18%, transparent 19%), radial-gradient(ellipse at 40% 38%, rgba(255,226,132,0.58) 0 12%, transparent 13%); filter: blur(0.15px); }
+  .planet-5 .planet-surface::after { inset: 8% -22%; opacity: 0.92; background: repeating-linear-gradient(0deg, #e1a64f 0 5px, #b65f2d 6px 10px, #7c3e2a 11px 15px, #d08436 16px 21px); transform: rotate(-7deg); filter: blur(0.25px); }
+  .node-final .planet-6 { width: 56px; height: 56px; background: radial-gradient(circle at 30% 23%, #86e3ff 0 8%, #1994f0 28%, #1e5fd3 55%, #17389b 100%); color: rgba(93,195,255,0.68); border-color: rgba(51,153,240,0.68); }
+  .planet-6::before { inset: -10px -20px; display: block; transform: rotate(20deg) scaleY(0.34); border-width: 2px; border-color: rgba(65,132,214,0.42); box-shadow: 0 0 18px rgba(87,186,247,0.34); }
+  .planet-6 .planet-moon { right: -9px; top: 8px; width: 12px; height: 12px; }
+  .planet-6 .planet-surface::before { opacity: 0.34; background: radial-gradient(ellipse at 62% 34%, #7cc7ff 0 20%, transparent 21%), radial-gradient(ellipse at 34% 70%, #0c347c 0 22%, transparent 23%); filter: blur(1px); }
+  .planet-6 .planet-surface::after { opacity: 0.54; background: repeating-linear-gradient(12deg, transparent 0 8px, rgba(46,151,231,0.62) 9px 12px, transparent 13px 21px); transform: rotate(17deg); filter: blur(0.4px); }
+  @keyframes planetFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } } 
+  .feature-modal { position: fixed; left: 0; top: 0; z-index: 80; width: min(88vw, 300px); opacity: 0; pointer-events: none; transition: opacity 0.22s ease; }
+  .feature-modal.is-open { opacity: 1; pointer-events: auto; }
+  .feature-dialog { position: relative; display: flex; flex-direction: column-reverse; gap: 10px; border: 1px solid rgba(149,211,255,0.28); border-radius: 9px; background: linear-gradient(135deg, rgba(8,25,45,0.96), rgba(16,54,86,0.94)); box-shadow: 0 24px 74px -42px rgba(5,16,31,0.98), 0 0 34px rgba(87,186,247,0.16); color: white; padding: 11px; transform: translateY(10px) scale(0.98); transition: transform 0.22s ease; }
+  .feature-modal.is-open .feature-dialog { transform: translateY(0) scale(1); }
+  .feature-modal.theme-orange .feature-dialog { border-color: rgba(255,178,118,0.34); background: linear-gradient(135deg, rgba(40,20,16,0.96), rgba(91,38,19,0.94)); box-shadow: 0 34px 90px -48px rgba(34,13,8,0.95), 0 0 34px rgba(231,95,37,0.2); }
+  .feature-dialog::before { content: ""; position: absolute; left: var(--connector-x, 50%); top: 100%; width: 1px; height: 30px; background: linear-gradient(180deg, rgba(149,211,255,0.72), transparent); transform-origin: top; }
+  .feature-dialog::after { content: ""; position: absolute; left: var(--connector-x, 50%); top: calc(100% + 28px); width: 7px; height: 7px; border-radius: 999px; background: rgba(149,211,255,0.96); box-shadow: 0 0 14px rgba(149,211,255,0.8); transform: translateX(-50%); }
+  .feature-modal.theme-orange .feature-dialog::before { background: linear-gradient(180deg, transparent, rgba(255,178,118,0.78)); }
+  .feature-modal.theme-orange .feature-dialog::after { background: rgba(255,178,118,0.96); box-shadow: 0 0 14px rgba(255,178,118,0.82); }
+  .modal-code { color: rgba(149,211,255,0.94); font-size: 9px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+  .feature-modal.theme-orange .modal-code { color: rgba(255,190,138,0.96); }
+  .modal-title { margin-top: 5px; font-size: 16px; line-height: 1.1; font-weight: 800; }
+  .modal-copy { margin-top: 5px; color: rgba(233,246,255,0.78); font-size: 11px; line-height: 1.35; }
+  .modal-close { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.08); color: white; display: grid; place-items: center; transition: all 0.2s ease; }
+  .modal-close:hover { background: rgba(255,255,255,0.16); }
+  .demo-panel { aspect-ratio: 1 / 0.82; min-height: 0; border-radius: 8px; border: 1px solid rgba(255,255,255,0.16); background: radial-gradient(circle at 24% 20%, rgba(149,211,255,0.22), transparent 30%), linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.06)); padding: 10px; overflow: hidden; }
+  .feature-modal.theme-orange .demo-panel { background: radial-gradient(circle at 24% 20%, rgba(255,178,118,0.24), transparent 30%), linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.06)); }
+  .demo-image { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block; background: #f8fafc; }
+  .demo-kicker { display: flex; align-items: center; justify-content: space-between; gap: 10px; height: 14px; margin-bottom: 12px; }
+  .demo-bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.2); flex: 1; }
+  .demo-chip { width: 44px; height: 8px; border-radius: 999px; background: rgba(149,211,255,0.5); }
+  .feature-modal.theme-orange .demo-chip { background: rgba(255,178,118,0.58); }
+  .demo-grid { display: grid; grid-template-columns: 0.75fr 1fr; gap: 8px; }
+  .demo-card { min-height: 58px; border-radius: 7px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.12); padding: 8px; }
+  .demo-line { height: 6px; border-radius: 999px; background: rgba(236,248,255,0.62); margin-bottom: 7px; }
+  .demo-line.short { width: 54%; }
+  .demo-line.mid { width: 72%; }
+  .demo-orbit { position: relative; height: 46px; margin-top: 8px; border-radius: 8px; background: rgba(3,14,27,0.28); overflow: hidden; }
+  .demo-orbit::before { content: ""; position: absolute; left: 12%; right: 12%; top: 17px; height: 22px; border: 1px solid rgba(149,211,255,0.44); border-radius: 50%; transform: rotate(-9deg); }
+  .feature-modal.theme-orange .demo-orbit::before { border-color: rgba(255,178,118,0.48); }
+  .demo-dot { position: absolute; width: 13px; height: 13px; border-radius: 999px; background: rgba(149,211,255,0.92); box-shadow: 0 0 14px rgba(149,211,255,0.72); }
+  .feature-modal.theme-orange .demo-dot { background: rgba(255,178,118,0.94); box-shadow: 0 0 14px rgba(255,178,118,0.72); }
+  .demo-dot.one { left: 20%; top: 24px; }
+  .demo-dot.two { left: 48%; top: 10px; }
+  .demo-dot.three { right: 18%; top: 27px; }
+  .demo-calendar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .demo-day { height: 22px; border-radius: 6px; background: rgba(255,255,255,0.11); border: 1px solid rgba(255,255,255,0.11); }
+  .demo-day.active { background: rgba(149,211,255,0.34); box-shadow: inset 0 0 0 1px rgba(149,211,255,0.4); }
+  .feature-modal.theme-orange .demo-day.active { background: rgba(255,178,118,0.34); box-shadow: inset 0 0 0 1px rgba(255,178,118,0.44); }
+  .demo-list { display: grid; gap: 6px; }
+  .demo-row { display: grid; grid-template-columns: 14px 1fr 34px; align-items: center; gap: 7px; min-height: 24px; padding: 6px; border-radius: 7px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); }
+  .demo-row .demo-line,
+  .demo-row .demo-tag { margin-bottom: 0; }
+  .demo-status { width: 10px; height: 10px; border-radius: 999px; background: rgba(149,211,255,0.86); box-shadow: 0 0 10px rgba(149,211,255,0.5); }
+  .feature-modal.theme-orange .demo-status { background: rgba(255,178,118,0.9); box-shadow: 0 0 10px rgba(255,178,118,0.52); }
+  .demo-tag { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.2); }
+  .demo-files { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+  .demo-file { min-height: 56px; border-radius: 7px; background: rgba(255,255,255,0.11); border: 1px solid rgba(255,255,255,0.12); padding: 8px; }
+  .demo-file::before { content: ""; display: block; width: 18px; height: 21px; margin-bottom: 8px; border-radius: 4px 8px 4px 4px; background: rgba(149,211,255,0.46); }
+  .feature-modal.theme-orange .demo-file::before { background: rgba(255,178,118,0.52); }
+  .demo-progress { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.14); overflow: hidden; }
+  .demo-progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, rgba(149,211,255,0.86), rgba(255,255,255,0.78)); }
+  .feature-modal.theme-orange .demo-progress span { background: linear-gradient(90deg, rgba(255,178,118,0.92), rgba(255,244,223,0.76)); }
+  .demo-spaced { margin-top: 9px; }
+  .demo-chart { display: flex; align-items: end; gap: 7px; height: 68px; padding: 9px; border-radius: 8px; background: rgba(3,14,27,0.24); }
+  .demo-chart span { flex: 1; min-width: 10px; border-radius: 999px 999px 4px 4px; background: linear-gradient(180deg, rgba(149,211,255,0.92), rgba(25,148,240,0.38)); }
+  .site-nav-link { position: relative; border-radius: 999px; padding: 8px 10px; letter-spacing: 0.01em; transition: color 0.25s ease, background 0.25s ease; }
+  .site-nav-link { color: rgba(255,255,255,0.94); text-shadow: 0 1px 10px rgba(7,20,36,0.34); }
+  .site-nav-link:hover { background: rgba(255,255,255,0.18); color: #ffd7bd; }
+  .site-nav-link:focus-visible,
+  .login-link:focus-visible { outline: 3px solid rgba(231,95,37,0.28); outline-offset: 3px; }
+  .site-nav-link::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 3px; height: 1px; background: linear-gradient(90deg, transparent, rgba(231,95,37,0.64), transparent); opacity: 0; transition: opacity 0.25s ease; }
+  .site-nav-link:hover::after { opacity: 1; }
+  .login-link { letter-spacing: 0.03em; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.62); color: white; box-shadow: 0 12px 24px -18px rgba(15,60,101,0.85), inset 0 1px 0 rgba(255,255,255,0.22); backdrop-filter: blur(8px); }
+  .login-link:hover { background: #e75f25; border-color: rgba(255,255,255,0.72); color: white; box-shadow: 0 14px 28px -18px rgba(231,95,37,0.86), 0 0 18px rgba(231,95,37,0.18); }
+  .hero-title { color: rgba(255,255,255,0.96); letter-spacing: 0; text-wrap: balance; text-shadow: 0 2px 22px rgba(7,20,36,0.42), 0 1px 2px rgba(7,20,36,0.3); }
+  .hero-title .hero-accent { position: relative; display: inline-block; color: #ff8a4f; text-shadow: 0 10px 24px rgba(231,95,37,0.34), 0 1px 12px rgba(7,20,36,0.32); }
+  .hero-title .hero-accent::after { content: ""; position: absolute; left: 8%; right: 8%; bottom: -6px; height: 2px; border-radius: 999px; background: linear-gradient(90deg, transparent, rgba(231,95,37,0.72), rgba(25,148,240,0.36), transparent); }
+  .hero-cta-label { letter-spacing: 0.02em; }
+  .hero-cta { position: relative; overflow: visible; transform: translateY(0); }
+  .hero-cta::after { content: ""; position: absolute; inset: -5px; border-radius: 999px; background: linear-gradient(90deg, rgba(231,95,37,0.34), rgba(87,186,247,0.24), rgba(231,95,37,0.34)); opacity: 0; filter: blur(12px); transition: opacity 0.28s ease; z-index: -1; pointer-events: none; }
+  .hero-cta { box-shadow: 0 0 0 1px rgba(255,255,255,0.28), 0 12px 30px -20px rgba(231,95,37,0.8), 0 0 24px rgba(231,95,37,0.13); }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(159,221,255,0.4), 0 14px 32px -20px rgba(15,60,101,0.86), 0 0 28px rgba(87,186,247,0.18); }
+  .hero-cta:hover::after { opacity: 1; }
+  .hero-cta:focus-visible { outline: 3px solid rgba(231, 95, 37, 0.35); outline-offset: 4px; }
+  .footer-link { letter-spacing: 0.04em; text-transform: uppercase; font-size: 10px; }
+  .main-header-soft { background: linear-gradient(180deg, rgba(248,245,240,0.18), rgba(248,245,240,0)); }
+  @media (max-width: 767px) {
+    .feature-modal { width: min(88vw, 280px); }
+    .feature-dialog { padding: 11px; }
+    .modal-title { font-size: 16px; }
+    .demo-panel { aspect-ratio: 1 / 0.82; }
+    .demo-files { grid-template-columns: 1fr 1fr; }
+    .planet-shape { width: 40px; height: 40px; margin-bottom: 8px; }
+    .node-orange .planet-1,
+    .node-navy .planet-2,
+    .node-orange .planet-3,
+    .node-orange .planet-5 { width: 40px; height: 40px; }
+    .node-navy .planet-4 { width: 43px; height: 43px; }
+    .node-final .planet-6 { width: 46px; height: 46px; }
+    .planet-shape::before { inset: -6px -9px; }
+    .planet-shape::after { top: 7px; left: 8px; width: 9px; height: 6px; }
+    .planet-moon { right: -5px; top: 3px; width: 8px; height: 8px; }
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+</head>
+<body class="font-sans text-tuteNavy overflow-x-hidden selection:bg-tuteOrange selection:text-white" style="background-color: rgb(248, 245, 240);">
+<!-- BEGIN: HeroSection -->
+<section class="relative min-h-screen w-full flex flex-col overflow-hidden" id="hero">
+<!-- Hero Background Image with Overlay -->
+<div class="absolute inset-0 z-0">
+<img alt="Educational workspace" class="w-full h-full object-cover object-center brightness-[0.72] saturate-[0.82]" decoding="async" fetchpriority="high" src="img3.png">
+<!-- Gradient overlays for smooth transition and logo/text legibility -->
+<div class="absolute inset-0 bg-gradient-to-b from-[#f8f5f0]/78 via-[#f8f5f0]/28 to-[#071424]/42"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0f3c65]/22 to-[#071424]/58"></div>
+<div class="absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-b from-transparent via-[#0f3c65]/22 to-[#071424]/66"></div>
+<!-- Soft edge treatment for smoother blending into the page background -->
+<div class="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-[#071424]/45 to-transparent"></div>
+</div>
+<!-- BEGIN: MainHeader -->
+<header class="main-header-soft relative z-20 grid min-h-[76px] grid-cols-[1fr_auto_1fr] items-center overflow-visible px-5 py-4 md:px-10">
+<div class="flex items-center justify-self-start">
+<img alt="Tuteclass Logo" class="h-8 md:h-10 w-auto object-contain" data-purpose="brand-logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdXBGE4C0ATGohtxLoNA_5wyx7PB9jeUJY4ZVFnPg8PasMwpyPdv1skCUpJm-vO8C0fyfQMfFCtSAMQZI0sr4B3CghOKgzX_b2PnH8vcf1Cc4ExAXtt82nmtDcEwLfAmCS_unEhmzYt6BNzGgFkP1FV3ubezpe9RS2jzdALO_XvcI3MIWOCQ58QVvQnrIaIgnXJNaGrfYRyyGREQDy-G5IR6CkA-oIroOL14KTjzFEti0nYc7W0ode48xxk5sm5QOECtmpw5jt6Rxb">
+</div>
+<nav class="hidden md:flex items-center justify-center space-x-10 text-sm font-medium justify-self-center">
+<a class="site-nav-link" href="#">About us</a>
+<div class="group relative">
+<button class="site-nav-link flex items-center">
+            Solutions
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<a class="site-nav-link" href="#">Resources</a>
+<a class="site-nav-link" href="#">Pricing</a>
+</nav>
+<div class="justify-self-end">
+<a class="login-link px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300" href="#">
+          Login
+        </a>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: HeroContent -->
+<div class="relative z-20 flex-1 flex flex-col items-center justify-start pt-12 md:pt-16 px-4 text-center">
+<h1 class="hero-title text-3xl md:text-5xl lg:text-6xl font-bold max-w-4xl leading-tight animate-fade-in drop-shadow-sm">
+        Master Your Workflow <br>
+<span class="hero-accent text-tuteOrange">with Tuteclass!</span>
+</h1>
+<div class="absolute left-1/2 top-[calc(50vh-76px)] z-30 -translate-x-1/2 -translate-y-1/2">
+<div class="animate-fade-in" style="animation-delay: 0.4s">
+<a class="hero-cta group text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-300 ease-out inline-flex items-center gap-2.5 bg-tuteOrange border border-white/30 active:scale-95 hover:bg-tuteNavy" href="#features"><span class="hero-cta-label relative z-10 font-medium">Explore Features</span><span class="material-symbols-outlined relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-4">chevron_right</span></a>
+</div>
+</div>
+</div>
+<!-- END: HeroContent -->
+<!-- BEGIN: RoadmapJourney -->
+<div class="relative z-10 w-full h-[420px] mt-[-80px] md:mt-[-40px] scroll-mt-10 pointer-events-none" id="features">
+<!-- SVG Wavy Path -->
+<svg class="absolute top-0 left-0 w-full h-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 1440 400">
+<defs>
+<linearGradient gradientUnits="userSpaceOnUse" id="orbitGradient" x1="144" x2="1368" y1="260" y2="165">
+<stop offset="0%" stop-color="#b89764"></stop>
+<stop offset="18%" stop-color="#f0b246"></stop>
+<stop offset="38%" stop-color="#21a6e8"></stop>
+<stop offset="58%" stop-color="#e05f2f"></stop>
+<stop offset="78%" stop-color="#d08436"></stop>
+<stop offset="100%" stop-color="#1994f0"></stop>
+</linearGradient>
+<linearGradient gradientUnits="userSpaceOnUse" id="orbitSpark" x1="144" x2="1368" y1="260" y2="165">
+<stop offset="0%" stop-color="#6f5b43"></stop>
+<stop offset="32%" stop-color="#48bde8"></stop>
+<stop offset="66%" stop-color="#f28b4e"></stop>
+<stop offset="100%" stop-color="#57baf7"></stop>
+</linearGradient>
+</defs>
+<path d="M 144,260 C 245,250 270,165 360,165 C 455,165 520,285 605,285 C 700,285 765,175 864,175 C 965,175 1030,305 1123,305 C 1218,305 1260,165 1368,165" fill="none" stroke="url(#orbitGradient)" stroke-linecap="round" stroke-opacity="0.2" stroke-width="24"></path>
+<path d="M 144,260 C 245,250 270,165 360,165 C 455,165 520,285 605,285 C 700,285 765,175 864,175 C 965,175 1030,305 1123,305 C 1218,305 1260,165 1368,165" fill="none" stroke="url(#orbitGradient)" stroke-linecap="round" stroke-opacity="0.82" stroke-width="10"></path>
+<path d="M 144,260 C 245,250 270,165 360,165 C 455,165 520,285 605,285 C 700,285 765,175 864,175 C 965,175 1030,305 1123,305 C 1218,305 1260,165 1368,165" fill="none" stroke="#173955" stroke-linecap="round" stroke-opacity="0.18" stroke-width="4"></path>
+<path d="M 144,260 C 245,250 270,165 360,165 C 455,165 520,285 605,285 C 700,285 765,175 864,175 C 965,175 1030,305 1123,305 C 1218,305 1260,165 1368,165" fill="none" stroke="url(#orbitSpark)" stroke-dasharray="10 18" stroke-linecap="round" stroke-opacity="0.9" stroke-width="3"></path>
+<path class="roadmap-path-active" id="roadmapPathActive" d="M 144,260 C 245,250 270,165 360,165 C 455,165 520,285 605,285 C 700,285 765,175 864,175 C 965,175 1030,305 1123,305 C 1218,305 1260,165 1368,165" fill="none" stroke="url(#orbitSpark)" stroke-linecap="round" stroke-width="7"></path>
+<path class="roadmap-signal" d="M 144,260 C 245,250 270,165 360,165 C 455,165 520,285 605,285 C 700,285 765,175 864,175 C 965,175 1030,305 1123,305 C 1218,305 1260,165 1368,165" fill="none" stroke="rgba(255,255,255,0.72)" stroke-dasharray="4 52" stroke-linecap="round" stroke-opacity="0.62" stroke-width="3"></path>
+</svg>
+<!-- Roadmap Nodes -->
+<!-- Node 1: Create Class -->
+<div class="reveal-node workflow-item node-orange absolute flex flex-col items-center group visible" data-demo="class" data-modal-code="Station 01" data-modal-copy="Open a new learning orbit." data-modal-index="1" data-modal-theme="orange" data-modal-title="Create Class" style="left: 10%; top: 55%; translate: -50% 0; transition-delay: 0.2s; transform: translateY(0px);">
+<div class="planet-shape planet-1">
+<span class="planet-surface"></span>
+</div>
+<div class="workflow-card backdrop-blur-md px-3.5 py-2 rounded-lg border text-center relative">
+<span class="station-code">ST-01</span>
+<p class="font-semibold text-[10px] md:text-[11px] leading-none whitespace-nowrap">Create Class</p>
+</div>
+</div>
+<!-- Node 2: Schedule Lessons -->
+<div class="reveal-node workflow-item node-navy absolute flex flex-col items-center group visible" data-demo="schedule" data-modal-code="Orbit Plan" data-modal-copy="Sync lessons into weekly paths." data-modal-index="2" data-modal-theme="blue" data-modal-title="Schedule Lessons" style="left: 25%; top: 31%; translate: -50% 0; transition-delay: 0.4s; transform: translateY(0px);">
+<div class="planet-shape planet-2">
+<span class="planet-surface"></span>
+</div>
+<div class="workflow-card backdrop-blur-md px-3.5 py-2 rounded-lg border text-center relative">
+<span class="station-code">OP-02</span>
+<p class="font-semibold text-[10px] md:text-[11px] leading-none whitespace-nowrap">Schedule Lessons</p>
+</div>
+</div>
+<!-- Node 3: Take Attendance -->
+<div class="reveal-node workflow-item node-orange absolute flex flex-col items-center group visible" data-demo="attendance" data-modal-code="Signal Check" data-modal-copy="Track every student signal." data-modal-index="3" data-modal-theme="orange" data-modal-title="Take Attendance" style="left: 42%; top: 61%; translate: -50% 0; transition-delay: 0.6s; transform: translateY(0px);">
+<div class="planet-shape planet-3">
+<span class="planet-surface"></span>
+<span class="planet-moon"></span>
+</div>
+<div class="workflow-card backdrop-blur-md px-3.5 py-2 rounded-lg border text-center relative">
+<span class="station-code">SC-03</span>
+<p class="font-semibold text-[10px] md:text-[11px] leading-none whitespace-nowrap">Take Attendance</p>
+</div>
+</div>
+<!-- Node 4: Share Materials -->
+<div class="reveal-node workflow-item node-navy absolute flex flex-col items-center group visible" data-demo="materials" data-modal-code="Cargo Drop" data-modal-copy="Beam resources to the class fleet." data-modal-index="4" data-modal-theme="blue" data-modal-title="Share Materials" style="left: 60%; top: 34%; translate: -50% 0; transition-delay: 0.8s; transform: translateY(0px);">
+<div class="planet-shape planet-4">
+<span class="planet-surface"></span>
+</div>
+<div class="workflow-card backdrop-blur-md px-3.5 py-2 rounded-lg border text-center relative">
+<span class="station-code">CD-04</span>
+<p class="font-semibold text-[10px] md:text-[11px] leading-none whitespace-nowrap">Share Materials</p>
+</div>
+</div>
+<!-- Node 5: Assign Homework -->
+<div class="reveal-node workflow-item node-orange absolute flex flex-col items-center group visible" data-demo="homework" data-modal-code="Mission Task" data-modal-copy="Launch assignments with clear due dates." data-modal-index="5" data-modal-theme="orange" data-modal-title="Assign Homework" style="left: 78%; top: 66%; translate: -50% 0; transition-delay: 1s; transform: translateY(0px);">
+<div class="planet-shape planet-5">
+<span class="planet-surface"></span>
+<span class="planet-moon"></span>
+</div>
+<div class="workflow-card backdrop-blur-md px-3.5 py-2 rounded-lg border text-center relative">
+<span class="station-code">MT-05</span>
+<p class="font-semibold text-[10px] md:text-[11px] leading-none whitespace-nowrap">Assign Homework</p>
+</div>
+</div>
+<!-- Node 6: Ask AI Insights (Destination) -->
+<div class="reveal-node workflow-item node-final absolute flex flex-col items-center group visible" data-demo="insights" data-modal-code="AI Observatory" data-modal-copy="Read patterns from the learning galaxy." data-modal-index="6" data-modal-theme="blue" data-modal-title="Ask AI Insights" style="left: 93%; top: 31%; translate: -50% 0; transition-delay: 1.2s; scale: 1.04; transform: translateY(0px);">
+<div class="planet-shape planet-6 ring-2 ring-[#1d4870]/35">
+<span class="planet-surface"></span>
+<span class="planet-moon"></span>
+</div>
+<div class="workflow-card px-4 py-2.5 rounded-lg border shadow-xl text-center relative">
+<span class="station-code">AI-06</span>
+<p class="font-semibold text-[11px] md:text-xs leading-none whitespace-nowrap">Ask AI Insights</p>
+</div>
+</div>
+</div>
+<!-- END: RoadmapJourney -->
+</section>
+<!-- END: HeroSection -->
+<div aria-hidden="true" aria-labelledby="featureModalTitle" aria-modal="false" class="feature-modal" id="featureModal" role="dialog">
+<div class="feature-dialog relative">
+<button aria-label="Close feature preview" class="modal-close" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+<div class="pr-7">
+<span class="modal-code" id="featureModalCode">Station 01</span>
+<h2 class="modal-title" id="featureModalTitle">Create Class</h2>
+<p class="modal-copy" id="featureModalCopy">Open a new learning orbit.</p>
+</div>
+<div aria-hidden="true" class="demo-panel" id="featureDemoPanel"></div>
+</div>
+</div>
+<!-- BEGIN: MainFooter -->
+<footer class="bg-white px-6 md:px-12 border-t border-gray-100 py-3">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
+<div class="flex flex-col items-center md:items-start">
+<img alt="Tuteclass Logo" class="h-7 opacity-80 hover:grayscale-0 transition-all mb-1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdXBGE4C0ATGohtxLoNA_5wyx7PB9jeUJY4ZVFnPg8PasMwpyPdv1skCUpJm-vO8C0fyfQMfFCtSAMQZI0sr4B3CghOKgzX_b2PnH8vcf1Cc4ExAXtt82nmtDcEwLfAmCS_unEhmzYt6BNzGgFkP1FV3ubezpe9RS2jzdALO_XvcI3MIWOCQ58QVvQnrIaIgnXJNaGrfYRyyGREQDy-G5IR6CkA-oIroOL14KTjzFEti0nYc7W0ode48xxk5sm5QOECtmpw5jt6Rxb">
+<p class="text-xs text-gray-500 text-center md:text-left">Empowering educators with smart management tools.</p>
+</div>
+<div class="flex space-x-8 font-medium text-gray-600">
+<a class="footer-link hover:text-tuteOrange transition-colors" href="#">Terms</a>
+<a class="footer-link hover:text-tuteOrange transition-colors" href="#">Privacy</a>
+<a class="footer-link hover:text-tuteOrange transition-colors" href="#">Support</a>
+<a class="footer-link hover:text-tuteOrange transition-colors" href="#">Careers</a>
+</div>
+<div class="text-xs text-gray-400">
+        © 2026 Tuteclass. All rights reserved.
+      </div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+<script data-purpose="scroll-animations">
+    // Simple Intersection Observer to trigger entrance animations
+    const observerOptions = {
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal-node').forEach(node => {
+      observer.observe(node);
+    });
+
+    const featureModal = document.getElementById('featureModal');
+    const featureModalCode = document.getElementById('featureModalCode');
+    const featureModalTitle = document.getElementById('featureModalTitle');
+    const featureModalCopy = document.getElementById('featureModalCopy');
+    const featureDemoPanel = document.getElementById('featureDemoPanel');
+    const roadmapPathActive = document.getElementById('roadmapPathActive');
+    const closeFeatureModal = featureModal.querySelector('.modal-close');
+    let modalCloseTimer;
+    const pathLength = 1224;
+
+    const featureDemos = {
+      class: `
+        <img class="demo-image" src="demo1.png" alt="Create Class demo preview">
+      `,
+      schedule: `
+        <img class="demo-image" src="demo2.png" alt="Schedule Lessons demo preview">
+      `,
+      attendance: `
+        <img class="demo-image" src="demo3.png" alt="Take Attendance demo preview">
+      `,
+      materials: `
+        <img class="demo-image" src="demo4.png" alt="Share Materials demo preview">
+      `,
+      homework: `
+        <img class="demo-image" src="demo5.png" alt="Assign Homework demo preview">
+      `,
+      insights: `
+        <img class="demo-image" src="demo6.png" alt="Ask AI Insights demo preview">
+      `
+    };
+
+    function openFeatureModal(node) {
+      featureModalCode.textContent = node.dataset.modalCode;
+      featureModalTitle.textContent = node.dataset.modalTitle;
+      featureModalCopy.textContent = node.dataset.modalCopy;
+      featureDemoPanel.innerHTML = featureDemos[node.dataset.demo] || featureDemos.class;
+      featureModal.classList.toggle('theme-orange', node.dataset.modalTheme === 'orange');
+      featureModal.classList.toggle('theme-blue', node.dataset.modalTheme !== 'orange');
+      featureModal.classList.add('is-open');
+      featureModal.setAttribute('aria-hidden', 'false');
+      positionFeatureModal(node);
+      updateRoadmapProgress(node);
+    }
+
+    function hideFeatureModal() {
+      featureModal.classList.remove('is-open');
+      featureModal.setAttribute('aria-hidden', 'true');
+      if (roadmapPathActive) {
+        roadmapPathActive.style.opacity = '0';
+      }
+    }
+
+    function positionFeatureModal(node) {
+      const rect = node.getBoundingClientRect();
+      const modalRect = featureModal.getBoundingClientRect();
+      const margin = 16;
+      const nodeCenterX = rect.left + rect.width / 2;
+      let left = nodeCenterX - modalRect.width / 2;
+      let top = rect.top - modalRect.height - 38;
+
+      if (top < margin) {
+        top = rect.bottom + 38;
+      }
+
+      left = Math.max(margin, Math.min(left, window.innerWidth - modalRect.width - margin));
+      top = Math.max(margin, Math.min(top, window.innerHeight - modalRect.height - margin));
+
+      const connectorX = nodeCenterX - left;
+
+      featureModal.style.left = `${left}px`;
+      featureModal.style.top = `${top}px`;
+      featureModal.style.setProperty('--connector-x', `${Math.max(18, Math.min(connectorX, modalRect.width - 18))}px`);
+    }
+
+    function updateRoadmapProgress(node) {
+      if (!roadmapPathActive) return;
+      const index = Number(node.dataset.modalIndex || 1);
+      const progress = Math.max(0.12, Math.min(index / 6, 1));
+      roadmapPathActive.style.opacity = '1';
+      roadmapPathActive.style.strokeDashoffset = `${pathLength * (1 - progress)}`;
+    }
+
+    function scheduleHideFeatureModal() {
+      window.clearTimeout(modalCloseTimer);
+      modalCloseTimer = window.setTimeout(hideFeatureModal, 140);
+    }
+
+    function keepFeatureModalOpen() {
+      window.clearTimeout(modalCloseTimer);
+    }
+
+    document.querySelectorAll('.workflow-item[data-modal-title]').forEach(node => {
+      node.setAttribute('tabindex', '0');
+      node.setAttribute('aria-haspopup', 'dialog');
+      node.addEventListener('mouseenter', () => {
+        keepFeatureModalOpen();
+        openFeatureModal(node);
+      });
+      node.addEventListener('mouseleave', scheduleHideFeatureModal);
+      node.addEventListener('focus', () => openFeatureModal(node));
+      node.addEventListener('blur', scheduleHideFeatureModal);
+      node.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openFeatureModal(node);
+        }
+      });
+    });
+
+    closeFeatureModal.addEventListener('click', hideFeatureModal);
+    featureModal.addEventListener('mouseenter', keepFeatureModalOpen);
+    featureModal.addEventListener('mouseleave', scheduleHideFeatureModal);
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && featureModal.classList.contains('is-open')) {
+        hideFeatureModal();
+      }
+    });
+  </script>
+
+
+</body></html>
