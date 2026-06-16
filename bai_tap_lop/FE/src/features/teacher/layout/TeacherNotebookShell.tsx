@@ -1,14 +1,17 @@
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
-import { BookOpen, CalendarDays, ChevronLeft, ChevronRight, FileText, Home, MessageSquare, Timer } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { SpiralBinding } from "../../../components/SpiralBinding";
+import { ClassTabs } from "../../student/notebook/components/ClassTabs";
+import { SidePageMarkers } from "../../student/notebook/components/SidePageMarkers";
 import { useFlipTransition } from "../../student/notebook/hooks/useFlipTransition";
+import type { ClassKey, ClassTabItem, SectionKey, SectionMarkerItem } from "../../student/notebook";
 import { createTeacherDocumentsHash } from "../documents/utils/teacherDocumentsRoute";
 import { createTeacherOverviewHash } from "../overview/utils/teacherOverviewRoute";
 import type { TeacherDocumentsScope } from "../documents";
 import "./TeacherNotebookShell.css";
 
-export type TeacherNotebookSection = "overview" | "schedule" | "resources" | "assignments" | "discussion";
+export type TeacherNotebookSection = SectionKey;
 
 type TeacherNotebookShellProps = {
   activeClassName: string;
@@ -16,24 +19,19 @@ type TeacherNotebookShellProps = {
   renderPage: (section: TeacherNotebookSection) => ReactNode;
 };
 
-const teacherClasses = [
-  { id: "web-foundation", name: "Web Foundation K12", teacher: "Cô Lan", themeClass: "current-class" },
-  { id: "math-9a", name: "Toán 9A", teacher: "Cô Lan", themeClass: "english-class" },
-  { id: "physics-9a", name: "Vật lý 9A", teacher: "Thầy Minh", themeClass: "physics-class" },
-  { id: "literature-9a", name: "Ngữ văn 9A", teacher: "Cô Hoa", themeClass: "literature-class" },
+const teacherClasses: ClassTabItem[] = [
+  { key: "math", name: "Web Foundation K12", teacher: "Cô Lan", themeClass: "current-class" },
+  { key: "english", name: "Toán 9A", teacher: "Cô Lan", themeClass: "english-class" },
+  { key: "physics", name: "Vật lý 9A", teacher: "Thầy Minh", themeClass: "physics-class" },
+  { key: "literature", name: "Ngữ văn 9A", teacher: "Cô Hoa", themeClass: "literature-class" },
 ];
 
-const teacherSections: Array<{
-  key: TeacherNotebookSection;
-  label: string;
-  disabled?: boolean;
-  icon: typeof Home;
-}> = [
-  { key: "overview", label: "Tổng quan", icon: Home },
-  { key: "schedule", label: "Lịch dạy", icon: CalendarDays },
-  { key: "assignments", label: "Bài tập", icon: Timer },
-  { key: "resources", label: "Tài liệu", icon: FileText },
-  { key: "discussion", label: "Trao đổi", icon: MessageSquare, disabled: true },
+const teacherSections: SectionMarkerItem[] = [
+  { key: "overview", label: "Tổng quan" },
+  { key: "schedule", label: "Lịch dạy" },
+  { key: "assignments", label: "Bài tập" },
+  { key: "resources", label: "Tài liệu" },
+  { key: "discussion", label: "Trao đổi" },
 ];
 
 function getSectionHash(section: TeacherNotebookSection, className: string): string {
@@ -47,6 +45,10 @@ function getSectionHash(section: TeacherNotebookSection, className: string): str
 
   if (section === "assignments") {
     return "#teacher/assignments";
+  }
+
+  if (section === "discussion") {
+    return "#teacher/discussions";
   }
 
   return "#teacher";
@@ -101,6 +103,7 @@ function TeacherPageFrame({ children, faceBackOnly = false, mode, onTransitionCo
         : "rotateY(0deg)";
 
   const className = [
+    "spread-page",
     "teacher-spread-page",
     mode === "static" ? "page-static" : "",
     mode === "under" ? "page-under" : "",
@@ -114,16 +117,16 @@ function TeacherPageFrame({ children, faceBackOnly = false, mode, onTransitionCo
 
   return (
     <section className={className} data-section={section} onTransitionEnd={mode === "outgoing" || mode === "incoming" ? onTransitionComplete : undefined} style={{ transform }}>
-      <div className="teacher-spread-leaf">
-        <div className="teacher-spread-face teacher-spread-face-front">
-          <div className="teacher-spread-page-shell">
+      <div className="spread-leaf teacher-spread-leaf">
+        <div className="spread-face spread-face-front teacher-spread-face teacher-spread-face-front">
+          <div className="spread-page-shell teacher-spread-page-shell">
             <div className="teacher-notebook-content">{children}</div>
-            <div className="teacher-spread-page-curl" />
+            <div className="spread-page-curl teacher-spread-page-curl" />
           </div>
         </div>
-        <div className="teacher-spread-face teacher-spread-face-back">
-          <div className="teacher-spread-page-backdrop" />
-          <div className="teacher-spread-page-backshade" />
+        <div className="spread-face spread-face-back teacher-spread-face teacher-spread-face-back">
+          <div className="spread-page-backdrop teacher-spread-page-backdrop" />
+          <div className="spread-page-backshade teacher-spread-page-backshade" />
         </div>
       </div>
     </section>
@@ -169,16 +172,21 @@ function TeacherFlipBook({ accelerateTransition, currentIndex, faceBackOnly, onT
 
   return (
     <div
-      className={`teacher-flip-stage ${accelerateTransition ? "is-accelerating" : ""}`}
-      style={{ ["--teacher-turn-duration" as string]: accelerateTransition ? "240ms" : "1080ms" }}
+      className={`notebook-flip-stage teacher-flip-stage ${accelerateTransition ? "is-accelerating" : ""}`}
+      style={{
+        ["--teacher-turn-duration" as string]: accelerateTransition ? "240ms" : "1080ms",
+        ["--turn-duration" as string]: accelerateTransition ? "240ms" : "1080ms",
+      }}
     >
-      <div className="teacher-spread-book">{pageNodes}</div>
+      <div className="spread-book teacher-spread-book">{pageNodes}</div>
     </div>
   );
 }
 
 export function TeacherNotebookShell({ activeClassName, activeSection, renderPage }: TeacherNotebookShellProps) {
-  const currentClass = teacherClasses.find((item) => item.name === activeClassName) ?? teacherClasses[0];
+  const initialClass = teacherClasses.find((item) => item.name === activeClassName) ?? teacherClasses[0];
+  const [activeClassKey, setActiveClassKey] = useState<ClassKey>(initialClass.key);
+  const currentClass = teacherClasses.find((item) => item.key === activeClassKey) ?? initialClass;
   const [currentIndex, setCurrentIndex] = useState(() => getSectionIndex(activeSection));
   const transitionController = useFlipTransition({
     currentIndex,
@@ -193,8 +201,28 @@ export function TeacherNotebookShell({ activeClassName, activeSection, renderPag
     }
   }, [activeSection, currentIndex, transitionController]);
 
-  const handleClassChange = (className: string) => {
-    navigateHash(getSectionHash(activeSection, className));
+  useEffect(() => {
+    setActiveClassKey(initialClass.key);
+  }, [initialClass.key]);
+
+  const handleClassChange = (classKey: ClassKey) => {
+    const nextClass = teacherClasses.find((item) => item.key === classKey) ?? currentClass;
+    setActiveClassKey(nextClass.key);
+    navigateHash(getSectionHash(activeSection, nextClass.name));
+  };
+
+  const handlePreviousClass = () => {
+    const currentClassIndex = teacherClasses.findIndex((item) => item.key === currentClass.key);
+    const nextClass = teacherClasses[(currentClassIndex - 1 + teacherClasses.length) % teacherClasses.length];
+    setActiveClassKey(nextClass.key);
+    navigateHash(getSectionHash(activeSection, nextClass.name));
+  };
+
+  const handleNextClass = () => {
+    const currentClassIndex = teacherClasses.findIndex((item) => item.key === currentClass.key);
+    const nextClass = teacherClasses[(currentClassIndex + 1) % teacherClasses.length];
+    setActiveClassKey(nextClass.key);
+    navigateHash(getSectionHash(activeSection, nextClass.name));
   };
 
   const handleSectionChange = (section: TeacherNotebookSection) => {
@@ -211,35 +239,17 @@ export function TeacherNotebookShell({ activeClassName, activeSection, renderPag
   };
 
   return (
-    <main className="teacher-notebook-stage">
-      <div className="teacher-notebook-page-shell">
-        <div className="teacher-class-tab-list">
-          <button type="button" className="teacher-class-tab-nav prev" aria-label="Xem lớp trước">
-            <ChevronLeft size={25} />
-          </button>
-          {teacherClasses.map((item) => {
-            const isActive = item.id === currentClass.id;
+    <main className={`teacher-notebook-stage ${transitionController.transition ? "is-flipping" : ""}`}>
+      <div className={`teacher-notebook-page-shell notebook-page-shell ${transitionController.transition ? "is-flipping" : ""}`}>
+        <ClassTabs
+          activeClassKey={currentClass.key}
+          items={teacherClasses}
+          onClassChange={handleClassChange}
+          onNextClass={handleNextClass}
+          onPreviousClass={handlePreviousClass}
+        />
 
-            return (
-              <div className={`teacher-class-fold-tab-wrap ${isActive ? "current-tab-wrap" : ""}`} key={item.id}>
-                <button type="button" className="teacher-class-fold-tab-button" onClick={() => handleClassChange(item.name)}>
-                  <div className={`teacher-class-fold-tab ${item.themeClass} ${isActive ? "is-active" : ""}`}>
-                    <div>
-                      <span>{item.name}</span>
-                      {isActive ? <b>★</b> : null}
-                    </div>
-                    <small>{item.teacher}</small>
-                  </div>
-                </button>
-              </div>
-            );
-          })}
-          <button type="button" className="teacher-class-tab-nav next" aria-label="Xem lớp tiếp theo">
-            <ChevronRight size={25} />
-          </button>
-        </div>
-
-        <section className={`teacher-notebook-container ${transitionController.transition ? "is-page-turning" : ""} ${transitionController.spiralHidden ? "spiral-hidden" : ""}`} aria-label="Teacher notebook">
+        <section className={`notebook-container teacher-notebook-container ${transitionController.transition ? "is-flipping is-page-turning" : ""} ${transitionController.spiralHidden ? "spiral-hidden" : ""}`} aria-label="Teacher notebook">
           <SpiralBinding />
           <span className="teacher-shell-tape" aria-hidden="true" />
           <span className="teacher-shell-paperclip" aria-hidden="true" />
@@ -255,25 +265,7 @@ export function TeacherNotebookShell({ activeClassName, activeSection, renderPag
         </section>
       </div>
 
-      <nav className="teacher-side-page-markers" aria-label="Teacher sections">
-        {teacherSections.map((section) => {
-          const Icon = section.icon;
-          const isActive = section.key === activeSection;
-
-          return (
-            <button
-              className={`teacher-page-marker ${section.key} ${isActive ? "active" : ""}`}
-              disabled={section.disabled}
-              key={section.key}
-              onClick={() => handleSectionChange(section.key)}
-              type="button"
-            >
-              <Icon size={28} />
-              <span>{section.label}</span>
-            </button>
-          );
-        })}
-      </nav>
+      <SidePageMarkers activeSectionKey={activeSection} items={teacherSections} onSectionChange={handleSectionChange} />
     </main>
   );
 }

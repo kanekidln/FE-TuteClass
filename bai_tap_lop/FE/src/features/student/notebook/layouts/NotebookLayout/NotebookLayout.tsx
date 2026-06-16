@@ -33,7 +33,7 @@ export function NotebookLayout({
   onSectionChange
 }: NotebookLayoutProps) {
   return (
-    <main className="notebook-stage mx-auto relative">
+    <main className={`notebook-stage mx-auto relative ${isFlipping ? "is-flipping" : ""}`}>
       <div className={`notebook-page-shell ${isFlipping ? "is-flipping" : ""}`}>
         <ClassTabs
           activeClassKey={activeClassKey}

@@ -29,7 +29,7 @@
   letter-spacing: -0.01em;
   color: white;
   text-decoration: none;
-  transition: background-color .15s, transform .1s, box-shadow .15s ease;
+  transition: background-color .12s ease, transform .01s ease, box-shadow .08s ease;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   z-index: 1;
@@ -58,6 +58,33 @@
   transform: translateX(4px);
   box-shadow: 0 20px 32px rgba(15, 23, 42, .2);
   z-index: 14;
+}
+
+.notebook-stage.is-flipping .side-page-markers,
+.teacher-notebook-stage.is-flipping .side-page-markers {
+  z-index: 0;
+  pointer-events: none;
+}
+
+.notebook-stage.is-flipping .notebook-page-shell,
+.teacher-notebook-stage.is-flipping .notebook-page-shell {
+  z-index: 2;
+}
+
+.notebook-stage.is-flipping .notebook-container,
+.teacher-notebook-stage.is-flipping .notebook-container {
+  z-index: 10;
+}
+
+.notebook-stage.is-flipping .page-marker,
+.notebook-stage.is-flipping .page-marker:hover,
+.notebook-stage.is-flipping .page-marker.active,
+.teacher-notebook-stage.is-flipping .page-marker,
+.teacher-notebook-stage.is-flipping .page-marker:hover,
+.teacher-notebook-stage.is-flipping .page-marker.active {
+  z-index: 1;
+  transform: translateX(0);
+  box-shadow: 0 12px 22px rgba(93, 64, 30, 0.12);
 }
 
 .page-marker.overview {

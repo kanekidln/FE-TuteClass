@@ -5,6 +5,8 @@ import { TeacherScheduleWorkspace } from "./features/teacher/schedule";
 import { TeacherOverviewPage } from "./features/teacher/overview";
 import { TeacherDocumentsPage } from "./features/teacher/documents";
 import { AssignmentFeature } from "./features/teacher/assignments";
+import DiscussionGeneralPage from "./features/teacher/discussions/pages/DiscussionGeneralPage";
+import TeacherPrivateDiscussionPage from "./features/teacher/discussions/pages/DiscussionPrivatePage";
 import { LandingPage } from "./features/teacher/landingpage";
 import { TeacherNotebookShell, type TeacherNotebookSection } from "./features/teacher/layout";
 import {
@@ -22,6 +24,7 @@ type TeacherRoute =
   | { view: "landing" }
   | { view: "schedule"; reopenLessonDetail: boolean }
   | { view: "assignments" }
+  | { view: "discussion"; mode: "general" | "private" }
   | { view: "overview"; params: TeacherOverviewRouteParams }
   | { view: "documents"; params: TeacherDocumentsRouteParams };
 type AppRoute = Workspace | "login" | "register";
@@ -51,6 +54,14 @@ function getTeacherRouteFromHash(hash: string): TeacherRoute {
 
   if (hash.startsWith("#teacher/assignments")) {
     return { view: "assignments" };
+  }
+
+  if (hash.startsWith("#teacher/discussions/private") || hash.startsWith("#teacher/discussion/private")) {
+    return { view: "discussion", mode: "private" };
+  }
+
+  if (hash.startsWith("#teacher/discussions") || hash.startsWith("#teacher/discussion")) {
+    return { view: "discussion", mode: "general" };
   }
 
   const documentsParams = parseTeacherDocumentsHash(hash);
@@ -111,9 +122,11 @@ export default function App() {
         ? "resources"
         : teacherRoute.view === "assignments"
           ? "assignments"
-          : "schedule";
+          : teacherRoute.view === "discussion"
+            ? "discussion"
+            : "schedule";
   const activeTeacherClassName =
-    teacherRoute.view === "landing" || teacherRoute.view === "schedule" || teacherRoute.view === "assignments" ? "Web Foundation K12" : teacherRoute.params.className;
+    teacherRoute.view === "landing" || teacherRoute.view === "schedule" || teacherRoute.view === "assignments" || teacherRoute.view === "discussion" ? "Web Foundation K12" : teacherRoute.params.className;
 
   const renderTeacherPage = (section: TeacherNotebookSection) =>
     section === "assignments" ? (
@@ -127,6 +140,8 @@ export default function App() {
       />
     ) : section === "overview" ? (
       <TeacherOverviewPage classId="web-foundation-k12" className={activeTeacherClassName} />
+    ) : section === "discussion" ? (
+      teacherRoute.view === "discussion" && teacherRoute.mode === "private" ? <TeacherPrivateDiscussionPage /> : <DiscussionGeneralPage />
     ) : (
       <TeacherScheduleWorkspace reopenLessonDetail={teacherRoute.view === "schedule" ? teacherRoute.reopenLessonDetail : false} />
     );
